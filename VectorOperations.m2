@@ -1,6 +1,6 @@
 
 p = 5
-N = 1
+N = 3
 A = ZZ[x_0..x_N,y_0..y_N]
 
 print("Calculating S_n for n = 0.." | (toString N));
@@ -13,11 +13,10 @@ for n from 0 to N do (
 	);
 	s_n = s_n//(p^n);
 	s_n = s_n + x_n + y_n;
-	print(s_n)
 );
 )
 
-print(s_2)
+print("The polynomial s_" | (toString N) | " has " | (toString (#(terms s_N))) | " terms.")
 
 print("Calculating the sum of two vectors over F_" | (toString p));
 time(
