@@ -1,6 +1,6 @@
 
 p = 5
-N = 2
+N = 3
 R = ZZ[x_0..x_N,y_0..y_N]
 
 print("Calculating A_n for n = 0.." | (toString N));
