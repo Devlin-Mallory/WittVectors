@@ -1,6 +1,13 @@
 needs "Kernels.m2"
 rld = () -> (load "WittVectors.m2")
 
+
+---
+--- Eamon: here is an idea (from Karl). Maybe change the names of output variables
+--- so that, e.g., the variable that corresponds to p^3 x^(2/p^3) is called
+--- p3x_2, or something like that?
+---
+
 wittVectors=method()
 wittVectors(ZZ,Ring):=(n,R)->(
 -- check if R is polynomial ring
