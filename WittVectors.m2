@@ -31,6 +31,10 @@ WR :=wittVectors(n,R);
 )
 
 ---
+--- Eamon: note that when variables are indexed, like in R = GF(3)[x_1, x_2], wittVectors does
+--- not work. I tried to implement the function addIndex below, but I am stuck...
+--- The goal would be that, e.g., for R = GF(3)[x_1, x_2], the function addIndex(3, x_2)
+--- would return x_(2,3). So far it works for R = GF(3)[x, y]...
 ---
 
 addIndex = method() 
@@ -47,8 +51,8 @@ addIndex(ZZ, Symbol) := (n, x) -> (
     x_n
     )
 
---  addIndex(ZZ, RingElement) := (n, x) -> (
---  addIndex( n, symbol(x) )
--- )
+addIndex(ZZ, RingElement) := (n, x) -> (
+    addIndex( n, getSymbol toString x )
+    )
     
 
