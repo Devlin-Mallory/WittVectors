@@ -11,7 +11,7 @@ if class R =!= PolynomialRing then(
 p:=char R;
 d:=numgens R; -- number of variables
 indices := flatten for i from 0 to n-1 list for j from 1 to max(p^i-1,1) list (i,j);
-iA:=ZZ[flatten for x in gens R list apply(indices,i->x_i)]/p^n;
+ A:=ZZ[flatten for x in gens R list apply(indices,i->x_i)]/p^n;
 --A:=ZZ[flatten for x in gens R list toList(x_(0)..x_(n-1))]/p^n;
 t:=symbol t;
 B:=ZZ[t_0..t_(d-1)]/p^n;
@@ -55,4 +55,7 @@ addIndex(ZZ, RingElement) := (n, x) -> (
     addIndex( n, getSymbol toString x )
     )
     
+---
+---
+
 
