@@ -9,6 +9,7 @@ rld = () -> (load "WittVectors.m2")
 --- p3x_2, or something like that?
 ---
 
+ 
 wittVectors=method()
 wittVectors(ZZ,Ring):=(n,R)->(
 -- check if R is polynomial ring
@@ -38,6 +39,7 @@ aK := sub(K, aA);
 WR:=quotient (iA + aK);
 Phi:=map(B,WR,L);
 WR.cache.overringMap=Phi;
+R.WittRing#n=WR;
 WR
 )
 
@@ -47,7 +49,8 @@ wittTupleToRing(ZZ,List):=(n,L)->(
 if length unique apply(L,i->ring i) > 1 then return "error: all elements of tuple must live in the same ring";
 if length L !=n then return "error: input tuple must be of length n";
 R := ring first L;
-WR :=wittVectors(n,R);
+p:=char R;
+WR := if R.WittRing#?n == true then R.WittRing#n else  wittVectors(n,R);
 Phi := WR.cache.overringMap;
 OR := target Phi;
 use R;
@@ -55,7 +58,10 @@ use R;
 G:=sum for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(p^(i))))(L_i))^(p^(n-1-i));
 print G;
 (B,pi):=flattenRing quotient ideal G;
-kernelZZ(pi*map(source pi,WR,Phi))
+preimages := (kernelZZ(pi*map(source pi,WR,Phi)))_*;
+multiplied:=flatten for i in preimages list for j from 1 to p^n-1 list i*j;
+first select(multiplied,i->Phi(i)==G)
+--G//Phi(vars source Phi)
 )
 
 ---
