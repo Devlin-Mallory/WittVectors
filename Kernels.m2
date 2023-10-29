@@ -72,6 +72,11 @@ chh:=false;
                      ideal mapback selectInSubring(1,generators G))
 
 
+    preimageZZ = method()
+    preimageZZ(RingMap, Ideal) := Ideal => (f, J) -> (
+            R := ring J;
+            kernelZZ( map(R/J, R) * f ))
+
 
 ----------
 p=3;

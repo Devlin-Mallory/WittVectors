@@ -1,4 +1,5 @@
 needs "Kernels.m2"
+needsPackage "Polyhedra"
 rld = () -> (load "WittVectors.m2")
 
 
@@ -17,19 +18,27 @@ if class R =!= PolynomialRing then(
 --
 p:=char R;
 d:=numgens R; -- number of variables
-indxs := flatten for i from 0 to n-1 list for j from 1 to max(p^i-1,1) list (i,j);
-A:=ZZ[flatten for x in gens R list apply(indxs,i->x_i)]/p^n;
---A:=ZZ[flatten for x in gens R list toList(x_(0)..x_(n-1))]/p^n;
+--indxs := flatten for i from 0 to n-1 list for j from 1 to max(p^i-1,1) list (i,j);
+--smarter ways to do the next line
+baseVariables:= apply(unique permutations( {1}|toList(d-1:0)),i->{0}|{i});
+cubes := baseVariables| sort select( flatten for i from 1 to n-1 list apply(flatten \ entries \ latticePoints hypercube(d, 0, p^(i) - 1),j->{i}|{j}), i->last i != toList(d:0));
+--A:=ZZ[flatten for x in gens R list apply(indxs,i->x_i)]/p^n;
+T:=symbol T;
+A:=ZZ[for i in cubes list T_i]/p^n;
 t:=symbol t;
 B:=ZZ[t_0..t_(d-1)]/p^n;
-L:=flatten flatten for j from 0 to d-1 list for i from 0 to n-1 list for k from 1 to max(p^i-1,1) list p^i* B_j^(k*p^(n-i-1));
+L:= for i in cubes list p^(first i)*(product for j from 0 to d - 1 list B_j^((last i)_j*p^(n-first i -1)));
+--L:=flatten flatten for j from 0 to d-1 list for i from 0 to n-1 list for k from 1 to max(p^i-1,1) list p^i* B_j^(k*p^(n-i-1));
 --x_(i) is p^i * x^(1/p^i)
 --quotient kernelZZ map(B,A,L)
 aA := ambient A;
 iA := ideal A;
 K := kernelZZ map(B, A, L);
 aK := sub(K, aA);
-quotient (iA + aK)
+WR:=quotient (iA + aK);
+Phi:=map(B,WR,L);
+WR.cache.overringMap=Phi;
+WR
 )
 
 
@@ -39,7 +48,14 @@ if length unique apply(L,i->ring i) > 1 then return "error: all elements of tupl
 if length L !=n then return "error: input tuple must be of length n";
 R := ring first L;
 WR :=wittVectors(n,R);
-
+Phi := WR.cache.overringMap;
+OR := target Phi;
+use R;
+ --for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(p^(i))))(L_i))
+G:=sum for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(p^(i))))(L_i))^(p^(n-1-i));
+print G;
+(B,pi):=flattenRing quotient ideal G;
+kernelZZ(pi*map(source pi,WR,Phi))
 )
 
 ---
