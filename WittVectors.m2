@@ -2,6 +2,12 @@ needs "Kernels.m2"
 needsPackage "Polyhedra"
 rld = () -> (load "WittVectors.m2")
 
+---TO DO
+---1. Need a method from going from elements of the output of wittVectors to wittTuples
+---2. Frobenius map on wittVectors
+---3. implement Verschiebung? 
+
+
 
 ---
 --- Eamon: here is an idea (from Karl). Maybe change the names of output variables
