@@ -4,8 +4,11 @@ rld = () -> (load "WittVectors.m2")
 
 ---TO DO
 ---1. Need a method from going from elements of the output of wittVectors to wittTuples
----2. Frobenius map on wittVectors
----3. implement Verschiebung? 
+---2. Quotients of polynomial rings
+---3. Frobenius map on wittVectors
+---4. implement Verschiebung? 
+---5. fix kernelZZ to be more robust (should be able to get rid of degree check in wittTupleToRing)
+
 
 
 
@@ -26,24 +29,22 @@ if class R =!= PolynomialRing then(
 --
 p:=char R;
 d:=numgens R; -- number of variables
---indxs := flatten for i from 0 to n-1 list for j from 1 to max(p^i-1,1) list (i,j);
 baseVariables:=apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
+--cubes is the list of indices; T_{n,{a_1..a_d}} corresponds to p^n * x_1^{a_1/p^n}..x_d^{a_n/p^n}
 cubes := baseVariables| sort select( flatten for i from 1 to n-1 list apply(flatten \ entries \ latticePoints hypercube(d, 0, p^(i) - 1),j->{i}|{j}), i->last i != toList(d:0));
---A:=ZZ[flatten for x in gens R list apply(indxs,i->x_i)]/p^n;
 T:=symbol T;
 A:=ZZ[for i in cubes list T_i]/p^n;
 t:=symbol t;
+--t_i is x_i^(1/p^n)
 B:=ZZ[t_0..t_(d-1)]/p^n;
 L:= for i in cubes list p^(first i)*(product for j from 0 to d - 1 list B_j^((last i)_j*p^(n-first i -1)));
---L:=flatten flatten for j from 0 to d-1 list for i from 0 to n-1 list for k from 1 to max(p^i-1,1) list p^i* B_j^(k*p^(n-i-1));
---x_(i) is p^i * x^(1/p^i)
---quotient kernelZZ map(B,A,L)
 aA := ambient A;
 iA := ideal A;
 K := kernelZZ map(B, A, L);
 aK := sub(K, aA);
 WR:=quotient (iA + aK);
 Phi:=map(B,WR,L);
+--this is all caching stuff
 WR.cache.overringMap=Phi;
 if R.?WittRing==false then R.WittRing = new MutableHashTable ;
 (R.WittRing)#n = WR;
@@ -64,15 +65,17 @@ WR := if R.?WittRing == true then (if R.WittRing#?n == true then R.WittRing#n el
 Phi := WR.cache.overringMap;
 OR := target Phi;
 use R;
- --for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(p^(i))))(L_i))
+--G takes the tuple to its image in the overring
 G:=sum for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(p^(i))))(L_i))^(p^(n-1-i));
 print G;
 sum for m in terms G list(
+if degree m == {0} then sub(m,source Phi) else(
 (B,pi):=flattenRing quotient ideal m;
 --the below method doesn't always work to find a preimage... we should figure out a better way
 preimages := (kernelZZ(pi*map(source pi,WR,Phi)))_*;
 multiplied:=flatten for i in preimages list for j from 1 to p^n-1 list i*j;
 first select(multiplied,i->Phi(i)==m)
+)
 )
 --G//Phi(vars source Phi)
 )
