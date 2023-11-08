@@ -1,4 +1,5 @@
 needs "Kernels.m2"
+needs "Verschiebung.m2"
 needsPackage "Polyhedra"
 rld = () -> (load "WittVectors.m2")
 
@@ -61,12 +62,13 @@ n:=length L;
 --if n == 1 then return first L;
 R := ring first L;
 p:=char R;
-WR := if R.?WittRing == true then (if R.WittRing#?n == true then R.WittRing#n else wittVectors(n,R)) else  wittVectors(n,R);
+WR = if R.?WittRing == true then (if R.WittRing#?n == true then R.WittRing#n else wittVectors(n,R)) else  wittVectors(n,R);
 Phi := WR.cache.overringMap;
 OR := target Phi;
 use R;
 --G takes the tuple to its image in the overring
-G:=sum for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(p^(i))))(L_i))^(p^(n-1-i));
+--G:=sum for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(p^(i))))(L_i))^(p^(n-1-i));
+G:=sum for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(1)))(L_i))^(p^(n-1-i));
 print G;
 sum for m in terms G list(
 if degree m == {0} then sub(m,source Phi) else(
