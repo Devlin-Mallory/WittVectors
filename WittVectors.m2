@@ -5,47 +5,76 @@ needsPackage "Polyhedra"
 rld = () -> (load "WittVectors.m2")
 
 ---TO DO
----1. Need a method from going from elements of the output of wittVectors to wittTuples
+---1. Need a method from going from elements of the output of 
+--    wittVectors to wittTuples
 ---2. Quotients of polynomial rings
 ---3. Frobenius map on wittVectors
 ---4. implement Verschiebung? 
 ---5. fix kernelZZ to be more robust (should be able to get rid of degree check in wittTupleToRing)
 
 
+wittOverring = method()
+wittOverring(ZZ, Ring) := (n, R) -> (
+    if class R =!= PolynomialRing then(
+	error "wittOverring currently only implemented for polynomial rings";
+	);
+    Rvars := flatten entries vars R;
+    p := char R;
+    d := length Rvars;
+    -- we create the WittOverring; called so because the n-th Witt ring of R
+    -- will be a subring of this WittOverring.
+    if not R#?wittOverrings then(
+	R#wittOverrings = new MutableHashTable;
+	);
+    if not R#wittOverrings#?n then(
+	OR := ZZ[T_1 .. T_d] / p^n;
+	ORvars := flatten entries vars OR;
+	WittSub := map(OR, R, ORvars); -- WARNING: this is not a "real" map!
+	OR#wittSub = WittSub;
+	OR#unWitt = R;
+	R#wittOverrings#n = OR;
+	);
+    R#wittOverrings#n
+)
 
+wittTupleToOverring = method()
+wittTupleToOverring(List) := (LL) -> (
+    R := ring first LL;
+    n := length LL;
+    OR := wittOverring(n, R);
+    WittSub := OR#wittSub;
+    WittLL := apply(LL, ff -> WittSub(ff));
+    
+    sum toList apply(0..(n-1), j -> p^j*(WittLL#j)^(p^(n-1-j)) )
+    )
+--ww = (xx) -> wittTupleToOverring(xx);
 
----
---- Eamon: here is an idea (from Karl). Maybe change the names of output variables
---- so that, e.g., the variable that corresponds to p^3 x^(2/p^3) is called
---- p3x_2, or something like that?
----
-
- 
 wittVectors=method()
 wittVectors(ZZ,Ring):=(n,R)->(
---if n ==1 then return R;
+--if n == 1 then return R;
 -- check if R is polynomial ring
 if class R =!= PolynomialRing then( 
-    return "error: wittVectors currently only implemented for polynomial rings";
+    error "wittVectors currently only implemented for polynomial rings";
     );
 --
-p:=char R;
-d:=numgens R; -- number of variables
-baseVariables:=apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
---cubes is the list of indices; T_{n,{a_1..a_d}} corresponds to p^n * x_1^{a_1/p^n}..x_d^{a_n/p^n}
+p := char R;
+d := numgens R; -- number of variables
+baseVariables := apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
+-- cubes is the list of indices; 
+-- T_{n,{a_1..a_d}} corresponds to p^n * x_1^{a_1/p^n}..x_d^{a_n/p^n}
 cubes := baseVariables| sort select( flatten for i from 1 to n-1 list apply(flatten \ entries \ latticePoints hypercube(d, 0, p^(i) - 1),j->{i}|{j}), i->last i != toList(d:0));
-T:=symbol T;
-A:=ZZ[for i in cubes list T_i]/p^n;
-t:=symbol t;
+T := symbol T;
+A := ZZ[for i in cubes list T_i]/p^n;
+t := symbol t;
 --t_i is x_i^(1/p^n)
-B:=ZZ[t_0..t_(d-1)]/p^n;
-L:= for i in cubes list p^(first i)*(product for j from 0 to d - 1 list B_j^((last i)_j*p^(n-first i -1)));
+B := ZZ[t_0..t_(d-1)]/p^n;
+L := for i in cubes list p^(first i)*(product for j from 0 to d - 1 list B_j^((last i)_j*p^(n-first i -1)));
 aA := ambient A;
 iA := ideal A;
 K := kernelZZ map(B, A, L);
 aK := sub(K, aA);
-WR:=quotient (iA + aK);
-Phi:=map(B,WR,L);
+WR := quotient (iA + aK);
+Phi := map(B,WR,L);
 --this is all caching stuff
 WR.cache.overringMap=Phi;
 if R.?WittRing==false then R.WittRing = new MutableHashTable ;
@@ -120,10 +149,47 @@ breakString(String) := s -> (
     (substring(s, 0, usLocation), substring(s, usLocation + 1, length s - 1))
 	)
     
-    
+
+end -- loading stops here
 
     
 ---
+--- GARBAGE:
 ---
 
+R = GF(3)[x,y]
+
+p = char R;
+d = numgens R; -- number of variables
+baseVariables = apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j})
+--cubes is the list of indices; 
+--T_{n,{a_1..a_d}} corresponds to p^n * x_1^{a_1/p^n}..x_d^{a_n/p^n}
+
+cubes = baseVariables| 
+sort select( 
+    flatten for i from 1 to n-1 list apply(
+	flatten \ entries \ latticePoints 
+	hypercube(d, 0, p^(i) - 1),j->{i}|{j}), i->last i != toList(d:0)
+    );
+
+cubes = baseVariables| sort select( flatten for i from 1 to n-1 list apply(flatten \ entries \ latticePoints hypercube(d, 0, p^(i) - 1),j->{i}|{j}), i->last i != toList(d:0));
+T:=symbol T;
+A:=ZZ[for i in cubes list T_i]/p^n;
+t:=symbol t;
+--t_i is x_i^(1/p^n)
+B:=ZZ[t_0..t_(d-1)]/p^n;
+L:= for i in cubes list p^(first i)*(product for j from 0 to d - 1 list B_j^((last i)_j*p^(n-first i -1)));
+aA := ambient A;
+iA := ideal A;
+K := kernelZZ map(B, A, L);
+aK := sub(K, aA);
+WR:=quotient (iA + aK);
+Phi:=map(B,WR,L);
+--this is all caching stuff
+WR.cache.overringMap=Phi;
+if R.?WittRing==false then R.WittRing = new MutableHashTable ;
+(R.WittRing)#n = WR;
+--R.WittRing=WR;
+WR
+)
 
