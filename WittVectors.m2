@@ -112,6 +112,11 @@ first select(multiplied,i->Phi(i)==m)
 --G//Phi(vars source Phi)
 )
 
+wittRingToTuple = method()
+wittRingToTuple(RingElement,ZZ):=(t,n)->(
+    return for i from 1 to n list t;
+)
+
 ---
 --- Eamon: note that when variables are indexed, like in R = GF(3)[x_1, x_2], wittVectors does
 --- not work. I tried to implement the function addIndex below, but I am stuck...
