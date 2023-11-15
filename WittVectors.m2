@@ -57,6 +57,7 @@ if class R =!= PolynomialRing then(
     error "wittVectors currently only implemented for polynomial rings";
     );
 --
+if R.?cache==true and R.cache.?WittRing==true and R.cache.WittRing#?n==true then return R.cache.WittRing#n else
 p := char R;
 d := numgens R; -- number of variables
 baseVariables := apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
@@ -77,9 +78,10 @@ WR := quotient (iA + aK);
 Phi := map(B,WR,L);
 --this is all caching stuff
 WR.cache.overringMap=Phi;
-if R.?WittRing==false then R.WittRing = new MutableHashTable ;
-(R.WittRing)#n = WR;
---R.WittRing=WR;
+WR.cache.unWitt = R;
+if R.?cache==false then new CacheTable;
+if R.cache.?WittRing==false then R.cache.WittRing = new MutableHashTable ;
+(R.cache.WittRing)#n = WR;
 WR
 )
 
@@ -93,12 +95,12 @@ n:=length L;
 R := ring first L;
 p:=char R;
 WR = if R.?WittRing == true then (if R.WittRing#?n == true then R.WittRing#n else wittVectors(n,R)) else  wittVectors(n,R);
-Phi := WR.cache.overringMap;
-OR := target Phi;
+--Phi := WR.cache.overringMap;
+--OR := target Phi;
 use R;
 --G takes the tuple to its image in the overring
---G:=sum for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(p^(i))))(L_i))^(p^(n-1-i));
-G:=sum for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(1)))(L_i))^(p^(n-1-i));
+--G:=sum for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(1)))(L_i))^(p^(n-1-i));
+G:=wittTupleToOverring(L);
 print G;
 sum for m in terms G list(
 if degree m == {0} then sub(m,source Phi) else(
