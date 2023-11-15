@@ -38,15 +38,16 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 	OR.cache.unWitt = R;
 	R.cache.wittOverrings.n = OR;
 	);
-    R.wittOverrings.n
+    R.cache.wittOverrings.n
 )
 
 wittTupleToOverring = method()
 wittTupleToOverring(List) := (LL) -> (
     R := ring first LL;
+    p := char R;
     n := length LL;
     OR := wittOverring(n, R);
-    WittSub := OR#wittSub;
+    WittSub := OR.cache#wittSub;
     WittLL := apply(LL, ff -> WittSub(ff));
     
     sum toList apply(0..(n-1), j -> p^j*(WittLL#j)^(p^(n-1-j)) )
@@ -72,7 +73,8 @@ T := symbol T;
 A := ZZ[for i in cubes list T_i]/p^n;
 t := symbol t;
 --t_i is x_i^(1/p^n)
-B := ZZ[t_0..t_(d-1)]/p^n;
+--B := ZZ[t_0..t_(d-1)]/p^n;
+B:=wittOverring(n,R);
 L := for i in cubes list p^(first i)*(product for j from 0 to d - 1 list B_j^((last i)_j*p^(n-first i -1)));
 aA := ambient A;
 iA := ideal A;
@@ -83,7 +85,7 @@ Phi := map(B,WR,L);
 --this is all caching stuff
 WR.cache.overringMap=Phi;
 WR.cache.unWitt = R;
-if R.?cache==false then new CacheTable;
+if R.?cache==false then R.cache= new CacheTable;
 if R.cache.?WittRing==false then R.cache.WittRing = new MutableHashTable ;
 (R.cache.WittRing)#n = WR;
 WR
@@ -105,6 +107,7 @@ use R;
 --G takes the tuple to its image in the overring
 --G:=sum for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(1)))(L_i))^(p^(n-1-i));
 G:=wittTupleToOverring(L);
+Phi := (((ring G).cache.unWitt).cache.WittRing#n).cache.overringMap;
 print G;
 sum for m in terms G list(
 if degree m == {0} then sub(m,source Phi) else(
