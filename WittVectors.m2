@@ -23,18 +23,22 @@ wittOverring(ZZ, Ring) := (n, R) -> (
     d := length Rvars;
     -- we create the WittOverring; called so because the n-th Witt ring of R
     -- will be a subring of this WittOverring.
-    if not R#?wittOverrings then(
-	R#wittOverrings = new MutableHashTable;
+    if not R.?cache then(
+	R.cache = new CacheTable
 	);
-    if not R#wittOverrings#?n then(
+    if not R.cache.?wittOverrings then(
+	R.cache.wittOverrings = new MutableHashTable;
+	);
+    if not R.cache.wittOverrings.?n then(
 	OR := ZZ[T_1 .. T_d] / p^n;
+	OR.cache = new CacheTable;
 	ORvars := flatten entries vars OR;
 	WittSub := map(OR, R, ORvars); -- WARNING: this is not a "real" map!
-	OR#wittSub = WittSub;
-	OR#unWitt = R;
-	R#wittOverrings#n = OR;
+	OR.cache.wittSub = WittSub;
+	OR.cache.unWitt = R;
+	R.cache.wittOverrings.n = OR;
 	);
-    R#wittOverrings#n
+    R.wittOverrings.n
 )
 
 wittTupleToOverring = method()
