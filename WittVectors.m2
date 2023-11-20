@@ -62,65 +62,65 @@ wittVectors(ZZ,Ring):=(n,R)->(
     if class R =!= PolynomialRing then( 
     	error "wittVectors currently only implemented for polynomial rings";
     );
---
-if R.?cache==true and R.cache.?WittRing==true and R.cache.WittRing#?n==true then return R.cache.WittRing#n else
-p := char R;
-d := numgens R; -- number of variables
-baseVariables := apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
--- cubes is the list of indices; 
--- T_{n,{a_1..a_d}} corresponds to p^n * x_1^{a_1/p^n}..x_d^{a_n/p^n}
-cubes := baseVariables| sort select( flatten for i from 1 to n-1 list apply(flatten \ entries \ latticePoints hypercube(d, 0, p^(i) - 1),j->{i}|{j}), i->last i != toList(d:0));
-T := symbol T;
-A := ZZ[for i in cubes list T_i]/p^n;
-t := symbol t;
---t_i is x_i^(1/p^n)
---B := ZZ[t_0..t_(d-1)]/p^n;
-B:=wittOverring(n,R);
-L := for i in cubes list p^(first i)*(product for j from 0 to d - 1 list B_j^((last i)_j*p^(n-first i -1)));
-aA := ambient A;
-iA := ideal A;
-K := kernelZZ map(B, A, L);
-aK := sub(K, aA);
-WR := quotient (iA + aK);
-Phi := map(B,WR,L);
---this is all caching stuff
-WR.cache.overringMap=Phi;
-WR.cache.unWitt = R;
-if R.?cache==false then R.cache= new CacheTable;
-if R.cache.?WittRing==false then R.cache.WittRing = new MutableHashTable ;
-(R.cache.WittRing)#n = WR;
-WR
-)
+    --
+    if R.?cache==true and R.cache.?WittRing==true and R.cache.WittRing#?n==true then return R.cache.WittRing#n else
+    p := char R;
+    d := numgens R; -- number of variables
+    baseVariables := apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
+    -- cubes is the list of indices; 
+    -- T_{n,{a_1..a_d}} corresponds to p^n * x_1^{a_1/p^n}..x_d^{a_n/p^n}
+    cubes := baseVariables| sort select( flatten for i from 1 to n-1 list apply(flatten \ entries \ latticePoints hypercube(d, 0, p^(i) - 1),j->{i}|{j}), i->last i != toList(d:0));
+    T := symbol T;
+    A := ZZ[for i in cubes list T_i]/p^n;
+    t := symbol t;
+    --t_i is x_i^(1/p^n)
+    --B := ZZ[t_0..t_(d-1)]/p^n;
+    B:=wittOverring(n,R);
+    L := for i in cubes list p^(first i)*(product for j from 0 to d - 1 list B_j^((last i)_j*p^(n-first i -1)));
+    aA := ambient A;
+    iA := ideal A;
+    K := kernelZZ map(B, A, L);
+    aK := sub(K, aA);
+    WR := quotient (iA + aK);
+    Phi := map(B,WR,L);
+    --this is all caching stuff
+    WR.cache.overringMap=Phi;
+    WR.cache.unWitt = R;
+    if R.?cache==false then R.cache= new CacheTable;
+    if R.cache.?WittRing==false then R.cache.WittRing = new MutableHashTable ;
+    (R.cache.WittRing)#n = WR;
+    WR
+    )
 
 
 wittTupleToRing = method()
 wittTupleToRing(List):=(L)->(
-if length unique apply(L,i->ring i) > 1 then return "error: all elements of tuple must live in the same ring";
---if length L !=n then return "error: input tuple must be of length n";
-n:=length L;
---if n == 1 then return first L;
-R := ring first L;
-p:=char R;
-WR = if R.?WittRing == true then (if R.WittRing#?n == true then R.WittRing#n else wittVectors(n,R)) else  wittVectors(n,R);
---Phi := WR.cache.overringMap;
---OR := target Phi;
-use R;
---G takes the tuple to its image in the overring
---G:=sum for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(1)))(L_i))^(p^(n-1-i));
-G:=wittTupleToOverring(L);
-Phi := (((ring G).cache.unWitt).cache.WittRing#n).cache.overringMap;
-print G;
-sum for m in terms G list(
-if degree m == {0} then sub(m,source Phi) else(
-(B,pi):=flattenRing quotient ideal m;
---the below method doesn't always work to find a preimage... we should figure out a better way
-preimages := (kernelZZ(pi*map(source pi,WR,Phi)))_*;
-multiplied:=flatten for i in preimages list for j from 1 to p^n-1 list i*j;
-first select(multiplied,i->Phi(i)==m)
-)
-)
---G//Phi(vars source Phi)
-)
+    if length unique apply(L,i->ring i) > 1 then return "error: all elements of tuple must live in the same ring";
+    --if length L !=n then return "error: input tuple must be of length n";
+    n:=length L;
+    --if n == 1 then return first L;
+    R := ring first L;
+    p:=char R;
+    WR = if R.?WittRing == true then (if R.WittRing#?n == true then R.WittRing#n else wittVectors(n,R)) else  wittVectors(n,R);
+    --Phi := WR.cache.overringMap;
+    --OR := target Phi;
+    use R;
+    --G takes the tuple to its image in the overring
+    --G:=sum for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(1)))(L_i))^(p^(n-1-i));
+    G:=wittTupleToOverring(L);
+    Phi := (((ring G).cache.unWitt).cache.WittRing#n).cache.overringMap;
+    print G;
+    sum for m in terms G list(
+	if degree m == {0} then sub(m,source Phi) else(
+	    (B,pi):=flattenRing quotient ideal m;
+	    --the below method doesn't always work to find a preimage... we should figure out a better way    
+	    preimages := (kernelZZ(pi*map(source pi,WR,Phi)))_*;
+	    multiplied:=flatten for i in preimages list for j from 1 to p^n-1 list i*j;
+	    first select(multiplied,i->Phi(i)==m)
+	    )    
+	)
+    --G//Phi(vars source Phi)
+    )
 
 wittRingToTuple = method()
 wittRingToTuple(RingElement,ZZ):=(t,n)->(
