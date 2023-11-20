@@ -11,6 +11,7 @@ rld = () -> (load "WittVectors.m2")
 ---3. Frobenius map on wittVectors
 ---4. implement Verschiebung? 
 ---5. fix kernelZZ to be more robust (should be able to get rid of degree check in wittTupleToRing)
+---6. implement test for non-defined maps
 
 
 wittOverring = method()
@@ -47,7 +48,7 @@ wittTupleToOverring(List) := (LL) -> (
     p := char R;
     n := length LL;
     OR := wittOverring(n, R);
-    WittSub := OR.cache#wittSub;
+    WittSub := OR.cache.wittSub;
     WittLL := apply(LL, ff -> WittSub(ff));
     
     sum toList apply(0..(n-1), j -> p^j*(WittLL#j)^(p^(n-1-j)) )
@@ -56,10 +57,10 @@ wittTupleToOverring(List) := (LL) -> (
 
 wittVectors=method()
 wittVectors(ZZ,Ring):=(n,R)->(
---if n == 1 then return R;
--- check if R is polynomial ring
-if class R =!= PolynomialRing then( 
-    error "wittVectors currently only implemented for polynomial rings";
+    --if n == 1 then return R;
+    -- check if R is polynomial ring
+    if class R =!= PolynomialRing then( 
+    	error "wittVectors currently only implemented for polynomial rings";
     );
 --
 if R.?cache==true and R.cache.?WittRing==true and R.cache.WittRing#?n==true then return R.cache.WittRing#n else
