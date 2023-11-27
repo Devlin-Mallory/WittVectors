@@ -124,7 +124,7 @@ wittTupleToRing(List):=(L)->(
 
 wittRingToTuple = method()
 wittRingToTuple(RingElement,ZZ):=(t,n)->(
-    return for i from 1 to n list t;
+    return for i from 1 to n list (t%p);
 )
 
 ---
