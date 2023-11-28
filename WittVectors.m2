@@ -123,7 +123,8 @@ wittTupleToRing(List):=(L)->(
     )
 
 wittOverringToTuple = method()
-wittOverringToTuple(RingElement):=(f)->(
+wittOverringToTuple(RingElement):=(F)->(
+f:=F;
     OR := ring f;
     R := OR.cache.unWitt;
     d := numgens R;
@@ -138,13 +139,12 @@ wittOverringToTuple(RingElement):=(f)->(
     for e from 0 to n-1 do (
         phi := map(RY, OR, for i from 0 to d-1 list y_i^(p^e));
         g := f%p;
-        --print g;
-        --print phi(g);
         g0 := sub(phi(g),R);
-        --print g0;
         answer = answer | {g0};
-        f = f - wittTupleToOverring(toList (e:0_R) | {g0} | toList (n-e-1:0_R));
-        f = f//p;
+        --f = f - wittTupleToOverring(toList (e:0_R) | {g0} | toList (n-e-1:0_R));
+        --the above line was giving the wrong answer for n > 2, while the below line seems to work
+         f = F - wittTupleToOverring(answer|toList(n-e-1:0_R));
+        f = f//p^(e+1);
     );
     return answer;
 )
