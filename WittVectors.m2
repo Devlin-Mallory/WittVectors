@@ -122,9 +122,28 @@ wittTupleToRing(List):=(L)->(
     --G//Phi(vars source Phi)
     )
 
-wittRingToTuple = method()
-wittRingToTuple(RingElement,ZZ):=(t,n)->(
-    return for i from 1 to n list (t%p);
+wittOverringToTuple = method()
+wittOverringToTuple(RingElement):=(f)->(
+    OR = ring f;
+    R = OR.cache.unWitt;
+    d = numgens R;
+    p = (radical ideal char OR)_0;
+    n = (log_p(char OR))^ZZ;
+    RY = R[y_0..y_(d-1)]/ideal(for i from 0 to d-1 list y_i^(p^(n-1))-R_i);
+    -- This is not a real ring map!
+    answer = {};
+    for e from 0 to n-1 do (
+        phi = map(RY, OR, for i from 0 to d-1 list y_i^(p^e));
+        g := f%p;
+        print g;
+        print phi(g);
+        g0 := sub(phi(g),R);
+        print g0;
+        answer = answer | {g0};
+        f = f - wittTupleToOverring(toList (e:0_R) | {g0} | toList (n-e-1:0_R));
+        f = f//p;
+    );
+    return answer;
 )
 
 ---
