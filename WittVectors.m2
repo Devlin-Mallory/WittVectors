@@ -109,7 +109,7 @@ wittTupleToRing(List):=(L)->(
     --G:=sum for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(1)))(L_i))^(p^(n-1-i));
     G:=wittTupleToOverring(L);
     Phi := (((ring G).cache.unWitt).cache.WittRing#n).cache.overringMap;
-    print G;
+    --print G;
     sum for m in terms G list(
 	if degree m == {0} then sub(m,source Phi) else(
 	    (B,pi):=flattenRing quotient ideal m;
@@ -121,6 +121,13 @@ wittTupleToRing(List):=(L)->(
 	)
     --G//Phi(vars source Phi)
     )
+
+wittRingToTuple=method()
+wittRingToTuple(RingElement):=(F)->(
+WR:=ring F;
+Phi=WR.cache.overringMap;
+return wittOverringToTuple(Phi(F))
+)
 
 wittOverringToTuple = method()
 wittOverringToTuple(RingElement):=(F)->(
