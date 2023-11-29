@@ -150,7 +150,10 @@ f:=F;
         answer = answer | {g0};
         --f = f - wittTupleToOverring(toList (e:0_R) | {g0} | toList (n-e-1:0_R));
         --the above line was giving the wrong answer for n > 2, while the below line seems to work
-         f = F - wittTupleToOverring(answer|toList(n-e-1:0_R));
+        f = F - wittTupleToOverring(answer|toList(n-e-1:0_R));
+        if (f%(p^(e+1)))!=0 then (
+            error "Element of overring is not in the witt ring";
+        );
         f = f//p^(e+1);
     );
     return answer;
