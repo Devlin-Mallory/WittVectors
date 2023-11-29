@@ -12,6 +12,8 @@ rld = () -> (load "WittVectors.m2")
 ---4. implement Verschiebung? 
 ---5. fix kernelZZ to be more robust (should be able to get rid of degree check in wittTupleToRing)
 ---6. implement test for non-defined maps
+---7. in wittOverringToTuple, does going mod a smaller power of p speed things up?
+
 
 
 wittOverring = method()
@@ -146,11 +148,11 @@ f:=F;
     for e from 0 to n-1 do (
         phi := map(RY, OR, for i from 0 to d-1 list y_i^(p^e));
         g := f%p;
-        g0 := sub(phi(g),R);
+        g0 :=elapsedTime sub(phi(g),R);
         answer = answer | {g0};
         --f = f - wittTupleToOverring(toList (e:0_R) | {g0} | toList (n-e-1:0_R));
         --the above line was giving the wrong answer for n > 2, while the below line seems to work
-        f = F - wittTupleToOverring(answer|toList(n-e-1:0_R));
+        f = elapsedTime( F - wittTupleToOverring(answer|toList(n-e-1:0_R)) );
         if (f%(p^(e+1)))!=0 then (
             error "Element of overring is not in the witt ring";
         );
@@ -199,6 +201,30 @@ breakString(String) := s -> (
 
 end -- loading stops here
 
+---
+--- TESTS
+---
+
+R = GF(5)[x,y,z]
+for xx in 0..0 do(
+    f1 = random(3, R);
+    f2 = random(2, R);
+    f3 = random(4, R);
+    
+    tt = {f1, f2, f3};
+    if not elapsedTime ( (tt == wittOverringToTuple wittTupleToOverring tt) ) then(
+	print "NOOOOOOO!!!!!!";
+	print tt;
+	);
+    )
+
+R = GF(7)[x,y]
+for n from 1 to 5 do(
+    print "-----";
+    print n;
+    elapsedTime wittTupleToOverring( for i from 0 to n-1 list random(3, R));
+)
+
     
 ---
 --- GARBAGE:
@@ -239,4 +265,3 @@ if R.?WittRing==false then R.WittRing = new MutableHashTable ;
 --R.WittRing=WR;
 WR
 )
-
