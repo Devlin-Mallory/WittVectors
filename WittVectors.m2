@@ -13,7 +13,7 @@ rld = () -> (load "WittVectors.m2")
 ---5. fix kernelZZ to be more robust (should be able to get rid of degree check in wittTupleToRing)
 ---6. implement test for non-defined maps
 ---7. in wittOverringToTuple, does going mod a smaller power of p speed things up?
-
+---8. Addition and multiplication operations.
 
 
 wittOverring = method()
