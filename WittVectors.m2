@@ -202,7 +202,13 @@ breakString(String) := s -> (
     usLocation = first usLocation;
     (substring(s, 0, usLocation), substring(s, usLocation + 1, length s - 1))
 	)
-    
+
+timingTest = () -> (
+R = GF(7)[x,y];
+for n from 1 to 5 do(
+    elapsedTime wittTupleToOverring( for i from 0 to n-1 list random(3, R));
+);
+);    
 
 end -- loading stops here
 
