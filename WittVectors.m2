@@ -2,6 +2,7 @@ needs "Kernels.m2"
 needs "Verschiebung.m2"
 needs "Frobenius.m2"
 needsPackage "Polyhedra"
+needsPackage "SLPexpressions"
 rld = () -> (load "WittVectors.m2")
 
 ---TO DO
@@ -53,6 +54,10 @@ wittTupleToOverring(List) := (LL) -> (
     WittSub := OR.cache.wittSub;
     WittLL := apply(LL, ff -> WittSub(ff));
     
+    --for j from 0 to n-1 do ( declareVariable inp_j; );
+    --outp := sum (for j from 0 to n-1 list p^j*((inp_j)^(p^(n-1-j))));
+    --slp = makeInterpretedSLProgram(for j from 0 to n-1 list inp_j, {outp});
+    --return (evaluate(slp,matrix{WittLL}))_0_0;
     sum toList apply(0..(n-1), j -> p^j*(WittLL#j)^(p^(n-1-j)) )
     )
 --ww = (xx) -> wittTupleToOverring(xx);
