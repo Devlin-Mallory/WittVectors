@@ -229,7 +229,6 @@ for n from 1 to 5 do(
     print n;
     elapsedTime wittTupleToOverring( for i from 0 to n-1 list random(3, R));
 )
-
     
 ---
 --- GARBAGE:
