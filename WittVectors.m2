@@ -1,6 +1,7 @@
 needs "Kernels.m2"
 needs "Verschiebung.m2"
 needs "Frobenius.m2"
+needs "Quotients.m2"
 needsPackage "Polyhedra"
 needsPackage "SLPexpressions"
 rld = () -> (load "WittVectors.m2")
