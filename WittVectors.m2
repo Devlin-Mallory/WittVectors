@@ -11,7 +11,6 @@ newPackage(
     },
     Headline => "A Macaulay2 package for Witt vectors",
     Keywords => {"Witt Vectors"},
-    PackageExports => {" "},
     DebuggingMode => true,
     Reload => true
     )
