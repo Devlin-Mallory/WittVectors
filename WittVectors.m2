@@ -6,6 +6,7 @@ needsPackage "Polyhedra"
 needsPackage "SLPexpressions"
 rld = () -> (load "WittVectors.m2")
 
+
 ---TO DO
 ---1. Need a method from going from elements of the output of 
 --    wittVectors to wittTuples
@@ -276,3 +277,5 @@ if R.?WittRing==false then R.WittRing = new MutableHashTable ;
 --R.WittRing=WR;
 WR
 )
+
+load "Documentation.m2"
