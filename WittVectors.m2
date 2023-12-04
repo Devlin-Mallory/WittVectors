@@ -1,3 +1,22 @@
+newPackage(
+    "WittVectors",
+    Version => "0.01",
+    Date => "December 4, 2023",
+    Authors => {
+	{Name => "Eamon Quinlan-Gallego", Email => "eamon.quinlan@utah.edu", HomePage => "https://eamonqg.github.io/"},
+    {Name => "Smart Dog", Email => "smart.dog@utah.edu", HomePage => "http://www.math.utah.edu/~dog/"},
+    {Name => "Fast Mouse", Email => "fast.mouse@utah.edu", HomePage => "http://www.math.utah.edu/~mouse/"}
+    },
+    Headline => "A Macaulay2 package for Witt vectors",
+    Keywords => {"Witt Vectors"},
+    PackageExports => {" "},
+    DebuggingMode => true,
+    Reload => true
+    )
+
+
+
+
 needs "Kernels.m2"
 needs "Verschiebung.m2"
 needs "Frobenius.m2"
