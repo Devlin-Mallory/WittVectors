@@ -8,3 +8,22 @@ doc ///
     wittOverring
 ///
 
+doc ///
+    wittTupleToOverring
+///
+
+doc /// 
+    wittVectors
+///
+
+doc ///
+    wittTupleToRing
+///
+
+doc ///
+    wittRingToTuple
+///
+
+doc ///
+    wittOverringToTuple
+///
