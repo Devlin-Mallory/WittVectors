@@ -10,10 +10,22 @@ newPackage(
     },
     Headline => "A Macaulay2 package for Witt vectors",
     Keywords => {"Witt Vectors"},
-    PackageExports => {" "},
     DebuggingMode => true,
     Reload => true
     )
+
+export {
+"wittOverring",
+"wittVectors",
+"wittTupleToOverring",
+"wittTupleToRing",
+"wittRingToTuple",
+"wittOverringToTuple",
+"verschiebung",
+"frobeniusOnWitt",
+"wittOverringIdeal",
+"wittRingIdeal",
+}
 
 
 
