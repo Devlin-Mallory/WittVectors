@@ -9,3 +9,15 @@ if  BaseRing= length unique select(L,i-> i =!= ZZ) > 1 then error "expected elem
 W:=new WittVector from L0;
 W.Ring = first BaseRing;
 )
+
+---
+--- ADDITION
+---
+
+WittVector + WittVector := (w1, w2) -> (
+    w1over := wittTupleToOverring w1;
+    w2over := wittTupleToOverring w2;
+    outputover := w1over + w2over;
+    wittOverringToTuple outputover
+    )
+
