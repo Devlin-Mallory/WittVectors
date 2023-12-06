@@ -11,7 +11,7 @@ W.Ring = first BaseRing;
 )
 
 ---
---- ADDITION
+--- OPERATIONS
 ---
 
 WittVector + WittVector := (w1, w2) -> (
@@ -21,3 +21,9 @@ WittVector + WittVector := (w1, w2) -> (
     wittOverringToTuple outputover
     )
 
+WittVector * WittVector := (w1, w2) -> (
+    w1over := wittTupleToOverring w1;
+    w2over := wittTupleToOverring w2;
+    outputover := w1over * w2over;
+    wittOverringToTuple outputover
+    )
