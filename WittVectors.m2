@@ -7,7 +7,7 @@ newPackage(
 	{Name => "Abhay Goel", Email => "u1421426@utah.edu", HomePage => "https://faculty.utah.edu/u1421426-ABHAY_GOEL/teaching/index.hml"},
 	{Name => "Devlin Mallory", Email => "malloryd@math.utah.edu", HomePage => "https://www.math.utah.edu/~malloryd/"},
 	{Name => "Eamon Quinlan-Gallego", Email => "eamon.quinlan@utah.edu", HomePage => "https://eamonqg.github.io/"},
-    	{Name => "Sandra Rodríguez Villalobos", Email => "rodriguez@math.utah.edu", HomePage => "http://www.math.utah.edu/~rodriguez/"},
+    	{Name => "Sandra Rodríguez Villalobos", Email => "rodriguez@math.utah.edu", HomePage => "http://www.math.utah.edu/~rodriguez/"}
     },
     Headline => "A Macaulay2 package for Witt vectors",
     Keywords => {"Witt Vectors"},
@@ -35,6 +35,7 @@ needs "Kernels.m2"
 needs "Verschiebung.m2"
 needs "Frobenius.m2"
 needs "Quotients.m2"
+needs "WittConstructor.m2"
 needsPackage "Polyhedra"
 needsPackage "SLPexpressions"
 rld = () -> (load "WittVectors.m2")
