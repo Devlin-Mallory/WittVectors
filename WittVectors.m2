@@ -37,7 +37,7 @@ needs "Frobenius.m2"
 needs "Quotients.m2"
 needsPackage "Polyhedra"
 needsPackage "SLPexpressions"
-rld = () -> (load "WittVectors.m2")
+rld = () -> (loadPackage "WittVectors")
 
 
 ---TO DO
