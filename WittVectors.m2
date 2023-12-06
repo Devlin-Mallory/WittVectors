@@ -16,6 +16,7 @@ newPackage(
     )
 
 export {
+"witt",
 "wittOverring",
 "wittVectors",
 "wittTupleToOverring",
