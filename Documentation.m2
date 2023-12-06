@@ -27,3 +27,9 @@ doc ///
 doc ///
     wittOverringToTuple
 ///
+    
+doc ///
+    wittOverringIdeal
+///
+
+
