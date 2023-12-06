@@ -15,6 +15,18 @@ newPackage(
     Reload => true
     )
 
+
+
+
+needs "Kernels.m2"
+needs "Verschiebung.m2"
+needs "Frobenius.m2"
+needs "Quotients.m2"
+needs "WittConstructor.m2"
+needsPackage "Polyhedra"
+needsPackage "SLPexpressions"
+rld = () -> (load "WittVectors.m2")
+
 export {
 "witt",
 "wittOverring",
@@ -200,7 +212,7 @@ f:=F;
         );
         f = f//p^(e+1);
     );
-    return answer;
+    return witt(answer);
 )
 
 ---
