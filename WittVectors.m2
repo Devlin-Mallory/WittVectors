@@ -72,6 +72,7 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 	R.cache.wittOverrings = new MutableHashTable;
 	);
     if not R.cache.wittOverrings#?n then(
+	T := symbol T;
 	OR := ZZ[T_1 .. T_d] / p^n;
 	OR.cache = new CacheTable;
 	ORvars := flatten entries vars OR;
@@ -146,7 +147,7 @@ wittTupleToRing(List):=(L)->(
     --if n == 1 then return first L;
     R := ring first L;
     p:=char R;
-    WR = if R.?WittRing == true then (if R.WittRing#?n == true then R.WittRing#n else wittVectors(n,R)) else  wittVectors(n,R);
+    WR := if R.?WittRing == true then (if R.WittRing#?n == true then R.WittRing#n else wittVectors(n,R)) else  wittVectors(n,R);
     --Phi := WR.cache.overringMap;
     --OR := target Phi;
     use R;
@@ -170,7 +171,7 @@ wittTupleToRing(List):=(L)->(
 wittRingToTuple=method()
 wittRingToTuple(RingElement):=(F)->(
 WR:=ring F;
-Phi=WR.cache.overringMap;
+Phi:=WR.cache.overringMap;
 return wittOverringToTuple(Phi(F))
 )
 
@@ -242,7 +243,9 @@ breakString(String) := s -> (
 	)
 
 timingTest = () -> (
-R = GF(7)[x,y];
+    x := symbol x;
+    y := symbol y;
+    R := GF(7)[x,y];
 for n from 1 to 5 do(
     elapsedTime wittTupleToOverring( for i from 0 to n-1 list random(3, R));
 );
