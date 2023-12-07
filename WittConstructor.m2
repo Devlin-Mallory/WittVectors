@@ -20,6 +20,8 @@ ring first W
 ---
 
 WittVector + WittVector := (w1, w2) -> (
+    if length w1 != length w2 then error "expected vectors of the same length";
+    if ring w1 != ring w2 then error "expected elements of the same ring";
     w1over := wittTupleToOverring w1;
     w2over := wittTupleToOverring w2;
     outputover := w1over + w2over;
@@ -27,6 +29,8 @@ WittVector + WittVector := (w1, w2) -> (
     )
 
 WittVector * WittVector := (w1, w2) -> (
+    if length w1 != length w2 then error "expected vectors of the same length";
+    if ring w1 != ring w2 then error "expected elements of the same ring";
     w1over := wittTupleToOverring w1;
     w2over := wittTupleToOverring w2;
     outputover := w1over * w2over;
