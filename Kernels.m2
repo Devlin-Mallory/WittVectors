@@ -71,6 +71,8 @@ chh:=false;
                      assert (not chh or G#?"rawGBSetHilbertFunction log"); -- ensure the Hilbert function hint was actually used in gb.m2
                      ideal mapback selectInSubring(1,generators G))
 
+protect symbol kernelZZ;
+
 
     preimageZZ = method()
     preimageZZ(RingMap, Ideal) := Ideal => (f, J) -> (

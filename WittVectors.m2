@@ -12,7 +12,8 @@ newPackage(
     Headline => "A Macaulay2 package for Witt vectors",
     Keywords => {"Witt Vectors"},
     DebuggingMode => true,
-    Reload => true
+    Reload => true,
+    AuxiliaryFiles => true
     )
 
 export {
@@ -20,6 +21,7 @@ export {
 "witt",
 "wittOverring",
 "wittVectors",
+"WittVector",
 "wittTupleToOverring",
 "wittTupleToRing",
 "wittRingToTuple",
@@ -28,6 +30,11 @@ export {
 "frobeniusOnWitt",
 "wittOverringIdeal",
 "wittRingIdeal",
+"unWitt",
+"overringMap",
+"WittRing",
+"wittSub",
+"wittOverrings"
 }
 
 
@@ -40,6 +47,7 @@ needs "Quotients.m2"
 needs "WittConstructor.m2"
 needsPackage "Polyhedra"
 needsPackage "SLPexpressions"
+needsPackage "MinimalPrimes"
 rld = () -> (loadPackage "WittVectors")
 
 
@@ -85,7 +93,7 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 )
 
 wittTupleToOverring = method()
-wittTupleToOverring(List) := (LL) -> (
+wittTupleToOverring(WittVector) := (LL) -> (
     R := ring first LL;
     p := char R;
     n := length LL;
@@ -100,6 +108,9 @@ wittTupleToOverring(List) := (LL) -> (
     sum toList apply(0..(n-1), j -> p^j*(WittLL#j)^(p^(n-1-j)) )
     )
 --ww = (xx) -> wittTupleToOverring(xx);
+
+
+wittTupleToOverring(List) := L->wittTupleToOverring(witt L)
 
 wittVectors=method()
 wittVectors(ZZ,Ring):=(n,R)->(
@@ -140,7 +151,7 @@ wittVectors(ZZ,Ring):=(n,R)->(
 
 
 wittTupleToRing = method()
-wittTupleToRing(List):=(L)->(
+wittTupleToRing(WittVector):=(L)->(
     if length unique apply(L,i->ring i) > 1 then return "error: all elements of tuple must live in the same ring";
     --if length L !=n then return "error: input tuple must be of length n";
     n:=length L;
@@ -167,6 +178,8 @@ wittTupleToRing(List):=(L)->(
 	)
     --G//Phi(vars source Phi)
     )
+
+wittTupleToRing(List):= L -> wittTupleToRing(witt L)
 
 wittRingToTuple=method()
 wittRingToTuple(RingElement):=(F)->(

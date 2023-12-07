@@ -2,10 +2,11 @@
 
 WittVector = new Type of List;
 
-witt=method()
+witt = method()
 witt(List) := L0->(
 L:=apply(L0,i->ring i);
-if  length (BaseRing= unique select(L,i-> i =!= ZZ)) > 1 then error "expected elements from the same ring";
+BaseRing:= unique select(L,i-> i =!= ZZ);
+if  length (BaseRing) > 1 then error "expected elements from the same ring";
 W:=new WittVector from apply(L0,i->sub(i, first BaseRing ));
 W
 )
