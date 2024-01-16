@@ -36,3 +36,6 @@ WittVector * WittVector := (w1, w2) -> (
     outputover := w1over * w2over;
     wittOverringToTuple outputover
     )
+
+-- Crop Witt vector to have a given length
+

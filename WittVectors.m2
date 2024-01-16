@@ -40,11 +40,11 @@ export {
 
 
 
-needs "Kernels.m2"
-needs "Verschiebung.m2"
-needs "Frobenius.m2"
-needs "Quotients.m2"
-needs "WittConstructor.m2"
+load "Kernels.m2"
+load "Verschiebung.m2"
+load "Frobenius.m2"
+load "Quotients.m2"
+load "WittConstructor.m2"
 needsPackage "Polyhedra"
 needsPackage "SLPexpressions"
 needsPackage "MinimalPrimes"
