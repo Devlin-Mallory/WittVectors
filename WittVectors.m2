@@ -34,7 +34,8 @@ export {
 "overringMap",
 "WittRing",
 "wittSub",
-"wittOverrings"
+"wittOverrings",
+"CropWittVector"
 }
 
 

@@ -37,5 +37,14 @@ WittVector * WittVector := (w1, w2) -> (
     wittOverringToTuple outputover
     )
 
--- Crop Witt vector to have a given length
+-- Crop Witt vector to have a given length. We want that because that will allow us to add/multiply Witt vectors of different lengths by cropping the longer one.
 
+CropWittVector = method ()
+CropWittVector(WittVector,ZZ):= (w,n)->(
+    if length w<n then error "Can't crop to something longer";
+    L:={};
+    for i from 0 to n-1 do {
+        L_i:=w_i;-- there is an issue here with lists being unmutable
+    };
+    return witt L;
+)
