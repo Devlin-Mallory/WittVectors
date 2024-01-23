@@ -53,21 +53,20 @@ rld = () -> (loadPackage "WittVectors")
 
 
 ---TO DO
----1. Need a method from going from elements of the output of 
---    wittVectors to wittTuples
----2. Quotients of polynomial rings
----3. Frobenius map on wittVectors
----4. implement Verschiebung? 
 ---5. fix kernelZZ to be more robust (should be able to get rid of degree check in wittTupleToRing)
 ---6. implement test for non-defined maps
 ---7. in wittOverringToTuple, does going mod a smaller power of p speed things up?
----8. Addition and multiplication operations.
 
 
 wittOverring = method()
 wittOverring(ZZ, Ring) := (n, R) -> (
     if class R =!= PolynomialRing then(
-	error "wittOverring currently only implemented for polynomial rings";
+	--error "wittOverring currently only implemented for polynomial rings";
+        S := ambient R; 
+        --TODO: flattenRing S before checking its polynomial?
+        if class S =!= PolynomialRing then( error "wittVectors currently only implemented for quotients of polynomial rings");
+        I:=ideal R; 
+        return quotient wittOverringIdeal(n,I)
 	);
     Rvars := flatten entries vars R;
     p := char R;
@@ -118,7 +117,12 @@ wittVectors(ZZ,Ring):=(n,R)->(
     --if n == 1 then return R;
     -- check if R is polynomial ring
     if class R =!= PolynomialRing then( 
-    	error "wittVectors currently only implemented for polynomial rings";
+    	--error "wittVectors currently only implemented for polynomial rings";
+        S := ambient R; 
+        --TODO: flattenRing S before checking its polynomial?
+        if class S =!= PolynomialRing then( error "wittVectors currently only implemented for quotients of polynomial rings");
+        I:=ideal R; 
+        return quotient wittRingIdeal(n,I)
     );
     --
     if R.?cache==true and R.cache.?WittRing==true and R.cache.WittRing#?n==true then return R.cache.WittRing#n else
