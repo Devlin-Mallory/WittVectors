@@ -157,6 +157,12 @@ wittVectors(ZZ,Ring):=(n,R)->(
     WR
     )
 
+wittVectors(ZZ,RingMap) := (n,f)->(
+(WT,WS):=(wittVectors(n,target f),wittVectors(n, source f));
+L:= for i in gens WS list wittTupleToRing(f \ (wittRingToTuple(i)));
+map(WT,WS,L)
+)
+
 
 wittTupleToRing = method()
 wittTupleToRing(WittVector):=(L)->(
