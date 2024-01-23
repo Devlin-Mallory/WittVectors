@@ -60,6 +60,16 @@ rld = () -> (loadPackage "WittVectors")
 ---5. in wittOverringToTuple, does going mod a smaller power of p speed things up?
 ---6. Prove that wittVector(n,R) is actually the ring of Witt Vectors of R.
 
+---7. New classes: WittVector(call this WittElement?), WittRing, WittIdeal, WittMap(?).
+--- Put these in WittConstructor
+--- All these should have .element, .ring, etc... to get the gross representations.
+--- Change names of current methods to address this.
+--- Implement methods for WittElement, WittRing, WittIdeal, WittMap, etc...
+
+--- Possible new directions: compute pushout of modules from queasi-F-split. 
+--- Test for quasi-F-split for non complete intersections?
+--- Frobenius lifts (rings are themselves over W_n).
+
 
 wittOverring = method()
 wittOverring(ZZ, Ring) := (n, R) -> (
