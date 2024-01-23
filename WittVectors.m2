@@ -53,9 +53,12 @@ rld = () -> (loadPackage "WittVectors")
 
 
 ---TO DO
----5. fix kernelZZ to be more robust (should be able to get rid of degree check in wittTupleToRing)
----6. implement test for non-defined maps
----7. in wittOverringToTuple, does going mod a smaller power of p speed things up?
+---1. Debug level for addition/multiplication/etc
+---2. Functoriality
+---3. fix kernelZZ to be more robust (should be able to get rid of degree check in wittTupleToRing)
+---4. implement test for non-defined maps
+---5. in wittOverringToTuple, does going mod a smaller power of p speed things up?
+---6. Prove that wittVector(n,R) is actually the ring of Witt Vectors of R.
 
 
 wittOverring = method()

@@ -1,4 +1,15 @@
 
+wittSum = method()
+wittSum(List,List) := (a,b) -> (
+	N := length a;
+	R := ZZ[x_0..x_N,y_0..y_N];
+	p := (factor char ring a_0)#0#0;
+	return {N,R,p};
+)
+
+
+end
+
 p = 5
 N = 2
 R = ZZ[x_0..x_N,y_0..y_N]
