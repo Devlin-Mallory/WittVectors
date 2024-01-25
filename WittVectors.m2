@@ -21,7 +21,7 @@ export {
 "witt",
 "wittOverring",
 "wittVectors",
-"WittVector",
+"WittElement",
 "wittTupleToOverring",
 "wittTupleToRing",
 "wittRingToTuple",
@@ -106,7 +106,7 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 )
 
 wittTupleToOverring = method()
-wittTupleToOverring(WittVector) := (LL) -> (
+wittTupleToOverring(WittElement) := (LL) -> (
     R := ring first LL;
     p := char R;
     n := length LL;
@@ -175,7 +175,7 @@ map(WT,WS,L)
 
 
 wittTupleToRing = method()
-wittTupleToRing(WittVector):=(L)->(
+wittTupleToRing(WittElement):=(L)->(
     if length unique apply(L,i->ring i) > 1 then return "error: all elements of tuple must live in the same ring";
     --if length L !=n then return "error: input tuple must be of length n";
     n:=length L;

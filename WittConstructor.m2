@@ -1,17 +1,16 @@
 --here's where we'll define classes and class operations
 
-WittVector = new Type of List;
+WittElement = new Type of List;
 
 witt = method()
 witt(List) := L0->(
 L:=apply(L0,i->ring i);
 BaseRing:= unique select(L,i-> i =!= ZZ);
 if  length (BaseRing) > 1 then error "expected elements from the same ring";
-W:=new WittVector from apply(L0,i->sub(i, first BaseRing ));
-W
+return new WittElement from apply(L0,i->sub(i, first BaseRing ));
 )
 
-ring(WittVector) := W->(
+ring(WittElement) := W->(
 ring first W
 )
 
@@ -19,7 +18,7 @@ ring first W
 --- OPERATIONS
 ---
 
-WittVector + WittVector := (w1, w2) -> (
+WittElement + WittElement := (w1, w2) -> (
     if length w1 != length w2 then error "expected vectors of the same length";
     if ring w1 =!= ring w2 then error "expected elements of the same ring";
     w1over := wittTupleToOverring w1;
@@ -28,7 +27,7 @@ WittVector + WittVector := (w1, w2) -> (
     wittOverringToTuple outputover
     )
 
-WittVector * WittVector := (w1, w2) -> (
+WittElement * WittElement := (w1, w2) -> (
     if length w1 != length w2 then error "expected vectors of the same length";
     if ring w1 =!= ring w2 then error "expected elements of the same ring";
     w1over := wittTupleToOverring w1;
@@ -40,7 +39,7 @@ WittVector * WittVector := (w1, w2) -> (
 -- Crop Witt vector to have a given length. We want that because that will allow us to add/multiply Witt vectors of different lengths by cropping the longer one.
 
 CropWittVector = method ()
-CropWittVector(WittVector,ZZ):= (w,n)->(
+CropWittVector(WittElement,ZZ):= (w,n)->(
     if length w<n then error "Can't crop to something longer";
     L:={};
     for i from 0 to n-1 do {
@@ -48,3 +47,4 @@ CropWittVector(WittVector,ZZ):= (w,n)->(
     };
     return witt L;
 )
+
