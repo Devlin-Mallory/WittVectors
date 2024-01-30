@@ -3,6 +3,8 @@
 WittElement = new Type of List;
 
 witt = method()
+explicit = method()
+
 witt(List) := L0->(
 L:=apply(L0,i->ring i);
 BaseRing:= unique select(L,i-> i =!= ZZ);
@@ -74,3 +76,6 @@ explicit(WittPolynomialRing) := WPR->(
 	);
 	return WPR.explicit;
 )
+
+-------------WittQuotientRing
+
