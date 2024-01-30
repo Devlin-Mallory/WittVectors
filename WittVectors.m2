@@ -67,7 +67,7 @@ rld = () -> (loadPackage "WittVectors")
 --- Implement methods for WittElement, WittRing, WittIdeal, WittMap, etc...
 
 --- Classes to be implemented:
---- WittPolynomialRing
+--- WittPolynomialRing (in progress)
 --- WittQuotientRing
 --- WittRingElement?
 --- WittRingMap
@@ -75,6 +75,16 @@ rld = () -> (loadPackage "WittVectors")
 --- WittMatrix
 --- WittModule
 ---
+
+--- Methods to implement: (only involve the witt ring if necessary; overring is easier)
+--- ring
+--- map
+--- kernel (??), cokernel
+--- operations on ideals
+--- quotients of rings
+--- trim
+--- gens
+--- 
 
 --- Possible new directions: compute pushout of modules from queasi-F-split. 
 --- Test for quasi-F-split for non complete intersections?
