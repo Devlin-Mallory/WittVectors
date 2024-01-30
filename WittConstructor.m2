@@ -6,25 +6,18 @@ explicit = method()
 ---
 --- WittRingElement
 ---
-
-
 WittRingElement = new Type of List;
 
-
 witt(List) := L0->(
-L:=apply(L0,i->ring i);
-BaseRing:= unique select(L,i-> i =!= ZZ);
-if  length (BaseRing) > 1 then error "expected elements from the same ring";
-return new WittElement from apply(L0,i->sub(i, first BaseRing ));
+    L:=apply(L0,i->ring i);
+    BaseRing:= unique select(L,i-> i =!= ZZ);
+    if  length (BaseRing) > 1 then error "expected elements from the same ring";
+    return new WittRingElement from apply(L0,i->sub(i, first BaseRing ));
 )
 
-ring(WittRingElement) := W->(
-ring first W
+ring(WittRingElement) := W -> (
+    witt(length W, ring(W#0))
 )
-
----
---- OPERATIONS
----
 
 WittRingElement + WittRingElement := (w1, w2) -> (
     if length w1 != length w2 then error "expected vectors of the same length";
