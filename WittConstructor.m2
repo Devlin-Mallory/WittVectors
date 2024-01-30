@@ -38,6 +38,10 @@ WittElement * WittElement := (w1, w2) -> (
     wittOverringToTuple outputover
     )
 
+--ring(WittElement) := w -> (
+--	witt(length w, ring (w#0))
+--)
+
 -- Crop Witt vector to have a given length. We want that because that will allow us to add/multiply Witt vectors of different lengths by cropping the longer one.
 
 CropWittVector = method ()
@@ -77,5 +81,9 @@ explicit(WittPolynomialRing) := WPR->(
 	return WPR.explicit;
 )
 
--------------WittQuotientRing
+-------------WittIdeal
 
+WittIdeal = new Type of MutableHashTable;
+
+witt(Ideal) := I->(
+)
