@@ -16,7 +16,7 @@ newPackage(
     AuxiliaryFiles => true
     )
 
-export {
+export{
 "rld",
 "witt",
 "wittOverring",
@@ -37,7 +37,8 @@ export {
 "wittOverrings",
 "CropWittVector",
 "WittPolynomialRing",
-"explicit"
+"explicit",
+"wittRings"
 }
 
 

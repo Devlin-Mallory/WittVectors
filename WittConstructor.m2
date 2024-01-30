@@ -15,9 +15,25 @@ witt(List) := L0->(
     return new WittRingElement from apply(L0,i->sub(i, first BaseRing ));
 )
 
+--TODO: here I would like R = GF(3)[x]; W = witt(2, R); w = witt({x, x+1}); ring w
+-- to return W instead of Witt_2(R). Tried to do it with caching below but failed. 
+--
+--
 ring(WittRingElement) := W -> (
-    witt(length W, ring(W#0))
-)
+    R := ring(W#0);
+    n := length W;
+    witt(length W, ring(#0));
+    )
+
+--ring(WittRingElement) := W -> (
+--    R := ring(W#0);
+--    n := length W;
+--    if not R.cache.wittRings#n then(
+--	return witt(length W, ring(W#0));
+--	) else (
+--	return R.cache.wittRings#n;
+--	);
+--)
 
 WittRingElement + WittRingElement := (w1, w2) -> (
     if length w1 != length w2 then error "expected vectors of the same length";
@@ -61,11 +77,20 @@ protect wittLength
 protect overring
 
 witt(ZZ,PolynomialRing) := (n,R)->(
+    if not R.?cache then(
+	R.cache = new CacheTable;
+	);
+    if not R.cache.?wittRings then(
+	R.cache.wittRings = new CacheTable;
+	);
+    if not R.cache.wittRings#?n then(
 	W := new WittPolynomialRing from MutableHashTable;
 	W.wittLength = n;
 	W.unWitt = R;
 	W.overring = wittOverring(n,R);
-	W
+	R.cache.wittRings#n = W;
+	);
+    R.cache.wittRings#n
 )
 
 net(WittPolynomialRing) := WPR->(
@@ -79,6 +104,8 @@ explicit(WittPolynomialRing) := WPR->(
 	);
 	return WPR.explicit;
 )
+
+
 
 -------------WittIdeal
 
