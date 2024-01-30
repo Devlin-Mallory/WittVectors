@@ -66,6 +66,16 @@ rld = () -> (loadPackage "WittVectors")
 --- Change names of current methods to address this.
 --- Implement methods for WittElement, WittRing, WittIdeal, WittMap, etc...
 
+--- Classes to be implemented:
+--- WittPolynomialRing
+--- WittQuotientRing
+--- WittRingElement?
+--- WittRingMap
+--- WittIdeal
+--- WittMatrix
+--- WittModule
+---
+
 --- Possible new directions: compute pushout of modules from queasi-F-split. 
 --- Test for quasi-F-split for non complete intersections?
 --- Frobenius lifts (rings are themselves over W_n).
