@@ -7,7 +7,7 @@ newPackage(
 	{Name => "Abhay Goel", Email => "u1421426@utah.edu", HomePage => "https://faculty.utah.edu/u1421426-ABHAY_GOEL/teaching/index.hml"},
 	{Name => "Devlin Mallory", Email => "malloryd@math.utah.edu", HomePage => "https://www.math.utah.edu/~malloryd/"},
 	{Name => "Eamon Quinlan-Gallego", Email => "eamon.quinlan@utah.edu", HomePage => "https://eamonqg.github.io/"},
-    	{Name => "Sandra Rodríguez Villalobos", Email => "rodriguez@math.utah.edu", HomePage => "http://www.math.utah.edu/~rodriguez/"}
+    	{Name => "Sandra Rodriguez Villalobos", Email => "rodriguez@math.utah.edu", HomePage => "http://www.math.utah.edu/~rodriguez/"}
     },
     Headline => "A Macaulay2 package for Witt vectors",
     Keywords => {"Witt Vectors"},
@@ -21,7 +21,7 @@ export {
 "witt",
 "wittOverring",
 "wittVectors",
-"WittElement",
+"WittRingElement",
 "wittTupleToOverring",
 "wittTupleToRing",
 "wittRingToTuple",
@@ -69,11 +69,11 @@ rld = () -> (loadPackage "WittVectors")
 --- Implement methods for WittElement, WittRing, WittIdeal, WittMap, etc...
 
 --- Classes to be implemented:
---- WittPolynomialRing (in progress)
+--- WittPolynomialRing (done)
 --- WittQuotientRing
---- WittRingElement?
+--- WittRingElement (in progress)
 --- WittRingMap
---- WittIdeal
+--- WittIdeal (ideal)
 --- WittMatrix
 --- WittModule
 ---

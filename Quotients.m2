@@ -1,7 +1,3 @@
-
-
-
-
 wittOverringIdeal=method()
 wittOverringIdeal(ZZ,Ideal):=(n,I)->(
 R:=ring I;
