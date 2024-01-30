@@ -53,9 +53,6 @@ WittRingElement * WittRingElement := (w1, w2) -> (
     wittOverringToTuple outputover
     )
 
---ring(WittRingElement) := w -> (
---	witt(length w, ring (w#0))
---)
 
 -- Crop Witt vector to have a given length. We want that because that will allow us to add/multiply Witt vectors of different lengths by cropping the longer one.
 
