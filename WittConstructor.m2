@@ -48,3 +48,18 @@ CropWittVector(WittElement,ZZ):= (w,n)->(
     return witt L;
 )
 
+------------------------
+---WittPolynomialRing---
+------------------------
+
+WittPolynomialRing = new Type of MutableHashTable;
+
+witt(ZZ,PolynomialRing) := (n,R)->(
+	W := new WittPolynomialRing from MutableHashTable;
+	W.wittLength = n;
+	W.unWitt = R;
+	W.overring = wittOverring(n,R);
+	W
+)
+
+
