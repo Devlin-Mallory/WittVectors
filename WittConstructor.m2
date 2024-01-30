@@ -12,9 +12,9 @@ if  length (BaseRing) > 1 then error "expected elements from the same ring";
 return new WittElement from apply(L0,i->sub(i, first BaseRing ));
 )
 
-ring(WittElement) := W->(
-ring first W
-)
+--ring(WittElement) := W->(
+--ring first W
+--)
 
 ---
 --- OPERATIONS
@@ -38,9 +38,9 @@ WittElement * WittElement := (w1, w2) -> (
     wittOverringToTuple outputover
     )
 
---ring(WittElement) := w -> (
---	witt(length w, ring (w#0))
---)
+ring(WittElement) := w -> (
+	witt(length w, ring (w#0))
+)
 
 -- Crop Witt vector to have a given length. We want that because that will allow us to add/multiply Witt vectors of different lengths by cropping the longer one.
 
