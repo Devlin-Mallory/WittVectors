@@ -48,11 +48,12 @@ CropWittVector(WittElement,ZZ):= (w,n)->(
     return witt L;
 )
 
-------------------------
----WittPolynomialRing---
-------------------------
+-------------WittPolynomialRing
 
 WittPolynomialRing = new Type of MutableHashTable;
+
+protect wittLength
+protect overring
 
 witt(ZZ,PolynomialRing) := (n,R)->(
 	W := new WittPolynomialRing from MutableHashTable;
@@ -62,4 +63,14 @@ witt(ZZ,PolynomialRing) := (n,R)->(
 	W
 )
 
+net(WittPolynomialRing) := WPR->(
+	-- TODO: Make the subscript actually a subscript
+	return "Witt_" | WPR.wittLength | "(" | (toString WPR.unWitt) | ")";
+)
 
+explicit(WittPolynomialRing) := WPR->(
+	if (not WPR.?explicit) then(
+		WPR.explicit = wittVectors(WPR.wittLength, WPR.unWitt);
+	);
+	return WPR.explicit;
+)

@@ -35,7 +35,8 @@ export {
 "WittRing",
 "wittSub",
 "wittOverrings",
-"CropWittVector"
+"CropWittVector",
+"WittPolynomialRing"
 }
 
 
