@@ -36,7 +36,8 @@ export {
 "wittSub",
 "wittOverrings",
 "CropWittVector",
-"WittPolynomialRing"
+"WittPolynomialRing",
+"explicit"
 }
 
 
@@ -76,6 +77,7 @@ rld = () -> (loadPackage "WittVectors")
 --- WittMatrix
 --- WittModule
 ---
+--- All custom keys should go in the constructor of the custom class.
 
 --- Methods to implement: (only involve the witt ring if necessary; overring is easier)
 --- ring
@@ -90,6 +92,8 @@ rld = () -> (loadPackage "WittVectors")
 --- Possible new directions: compute pushout of modules from queasi-F-split. 
 --- Test for quasi-F-split for non complete intersections?
 --- Frobenius lifts (rings are themselves over W_n).
+
+--- 8. Implement for all finite fields (not just F_p for prime p)
 
 
 wittOverring = method()
