@@ -1,14 +1,14 @@
 wittOverringIdeal=method()
 wittOverringIdeal(ZZ,Ideal):=(n,I)->(
-R:=ring I;
-d:=dim R;
-if class R =!= PolynomialRing then(
+    R:=ring I;
+    d:=dim R;
+    if class R =!= PolynomialRing then(
 	error "expected an ideal in a polynomial ring";
 	);
-trim ideal flatten for k from 0 to n -1 list (
-for j in I_* list wittTupleToOverring( toList(k:0_R)|{j}|toList(n-k-1:0_R) )
-)
-)
+    trim ideal flatten for k from 0 to n -1 list (
+	for j in I_* list wittTupleToOverring( toList(k:0_R)|{j}|toList(n-k-1:0_R) )
+	)
+    )
 
 
 
