@@ -132,7 +132,7 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 )
 
 wittTupleToOverring = method()
-wittTupleToOverring(WittRingElement) := (LL) -> (
+wittTupleToOverring(List) := (LL) -> (
     R := ring first LL;
     p := char R;
     n := length LL;
@@ -149,7 +149,6 @@ wittTupleToOverring(WittRingElement) := (LL) -> (
 --ww = (xx) -> wittTupleToOverring(xx);
 
 
-wittTupleToOverring(List) := L->wittTupleToOverring(witt L)
 
 wittVectors=method()
 wittVectors(ZZ,Ring):=(n,R)->(
@@ -201,7 +200,7 @@ map(WT,WS,L)
 
 
 wittTupleToRing = method()
-wittTupleToRing(WittRingElement):=(L)->(
+wittTupleToRing(List):=(L)->(
     if length unique apply(L,i->ring i) > 1 then return "error: all elements of tuple must live in the same ring";
     --if length L !=n then return "error: input tuple must be of length n";
     n:=length L;
@@ -229,7 +228,6 @@ wittTupleToRing(WittRingElement):=(L)->(
     --G//Phi(vars source Phi)
     )
 
-wittTupleToRing(List):= L -> wittTupleToRing(witt L)
 
 wittRingToTuple=method()
 wittRingToTuple(RingElement):=(F)->(

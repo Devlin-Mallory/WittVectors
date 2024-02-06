@@ -6,21 +6,28 @@ explicit = method()
 ---
 --- WittRingElement
 ---
-WittRingElement = new Type of List;
+WittRingElement = new Type of MutableHashTable;
 
+protect tuple;
 witt(List) := L0->(
-    L:=apply(L0,i->ring i);
-    BaseRing:= unique select(L,i-> i =!= ZZ);
+    ww := new WittRingElement from MutableHashTable;
+    --check all elements of the list lie in ZZ or same ring
+    L := apply(L0,i->ring i);
+    BaseRing := unique select(L,i-> i =!= ZZ);
     if  length (BaseRing) > 1 then error "expected elements from the same ring";
-    return new WittRingElement from apply(L0,i->sub(i, first BaseRing ));
+    --
+    ww.tuple = apply(L0,i->sub(i, first BaseRing ));
+    return ww
 )
+
+net(WittRingElement) := w -> (w.tuple)
 
 --TODO: here I would like R = GF(3)[x]; W = witt(2, R); w = witt({x, x+1}); ring w
 -- to return W instead of Witt_2(R). Tried to do it with caching below but failed. 
 --
 --
 ring(WittRingElement) := W -> (
-    R := ring(W#0);
+    R := ring(W#0); -- note that witt subs every entry into R so this is good enough
     n := length W;
     witt(n, R)
     )
@@ -54,6 +61,12 @@ WittRingElement * WittRingElement := (w1, w2) -> (
     wittOverringToTuple outputover
     )
 
+explicit(WittRingElement) := w -> (
+    if not w.?explicit then( 
+	w.explicit = wittTupleToRing(w.tuple);
+	);
+    w.explicit
+    )
 
 -- Crop Witt vector to have a given length. We want that because that will allow us to add/multiply Witt vectors of different lengths by cropping the longer one.
 
@@ -109,5 +122,5 @@ explicit(WittPolynomialRing) := WPR->(
 
 WittIdeal = new Type of MutableHashTable;
 
-witt(Ideal) := I->(
+witt(Ideal) := I -> (
 )
