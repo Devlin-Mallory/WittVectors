@@ -22,9 +22,10 @@ witt(List) := L0->(
 ring(WittRingElement) := W -> (
     R := ring(W#0);
     n := length W;
-    witt(length W, ring(#0));
+    witt(n, R)
     )
 
+-- cache version: does not work.
 --ring(WittRingElement) := W -> (
 --    R := ring(W#0);
 --    n := length W;
