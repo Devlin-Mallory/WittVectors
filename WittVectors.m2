@@ -72,7 +72,7 @@ rld = () -> (loadPackage "WittVectors")
 --- Classes to be implemented:
 --- WittPolynomialRing (done)
 --- WittQuotientRing
---- WittRingElement (in progress)
+--- WittRingElement (done)
 --- WittRingMap
 --- WittIdeal (ideal)
 --- WittMatrix
