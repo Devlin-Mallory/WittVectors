@@ -40,6 +40,7 @@ export{
 "explicit",
 "wittRings",
 "WittIdeal",
+"wittGenerators"
 }
 
 

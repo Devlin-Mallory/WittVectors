@@ -117,8 +117,9 @@ explicit(WittPolynomialRing) := WPR->(
 )
 
 
-
+-------------
 -------------WittIdeal
+-------------
 
 WittIdeal = new Type of MutableHashTable;
 
@@ -127,7 +128,7 @@ protect wittGenerators
 ideal(WittRingElement) := w -> (
     print "aaa";
     jj := new WittIdeal from {wittGenerators => "a"};
-    --jj.wittGenerators = w;
+    print jj.wittGenerators;
     return jj;
     )
 
