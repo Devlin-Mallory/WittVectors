@@ -42,7 +42,7 @@ export{
 "WittIdeal",
 "wittIdeal",
 "wittGenerators",
-"tuple"
+"tuple",
 }
 
 

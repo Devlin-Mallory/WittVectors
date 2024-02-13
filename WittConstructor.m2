@@ -121,7 +121,7 @@ explicit(WittPolynomialRing) := WPR->(
 
 
 -------------
--------------WittIdeal
+------------- WittIdeal
 -------------
 
 WittIdeal = new Type of MutableHashTable;
@@ -137,6 +137,14 @@ wittIdeal List := wittIdeal Sequence := LL -> (
     jj := new WittIdeal from {wittGenerators => toSequence(LL)};
     return jj;
   )
+
+--addition
+
+WittIdeal + WittIdeal := (I,J) -> (
+    Igens := I.wittGenerators;
+    Jgens := J.wittGenerators;
+    wittIdeal(Igens | Jgens)
+    )
 
 --WittIdeal display
 
