@@ -38,7 +38,8 @@ export{
 "CropWittVector",
 "WittPolynomialRing",
 "explicit",
-"wittRings"
+"wittRings",
+"WittIdeal",
 }
 
 
