@@ -2,6 +2,7 @@
 
 witt = method()
 explicit = method()
+wittIdeal = method(Dispatch => Thing)
 
 ---
 --- WittRingElement
@@ -20,7 +21,7 @@ witt(List) := L0->(
     return ww
 )
 
-net(WittRingElement) := w -> (w.tuple)
+net(WittRingElement) := w -> net(w.tuple)
 
 toList(WittRingElement) := w -> w.tuple
 
@@ -126,33 +127,60 @@ explicit(WittPolynomialRing) := WPR->(
 WittIdeal = new Type of MutableHashTable;
 
 protect wittGenerators
+
 wittIdeal(WittRingElement) := w -> (
-    jj := new WittIdeal from {wittGenerators => w};
+    jj := new WittIdeal from {wittGenerators => toSequence {w}};
     return jj;
     )
 
-net WittIdeal := WI -> (
-    return "ideal" | "(" | toString(net(WI.wittGenerators)) | ")";
+wittIdeal List := wittIdeal Sequence := LL -> (
+    jj := new WittIdeal from {wittGenerators => toSequence(LL)};
+    return jj;
+  )
+
+--WittIdeal display
+
+addCommas := LL -> (
+    nn := #LL;
+    out := ();
+    for jj in 0..(2*nn-2) do(
+	if jj % 2 == 0 then(
+	    out = append(out, LL#(jj//2))
+	    ) else (
+	    out = append(out, ", ");
+	    );
+	);
+    out
     )
 
-------------WittMatrix
+net WittIdeal := WI -> (
+    wgs := WI.wittGenerators;
+    if #wgs == 1 then(
+	return horizontalJoin("ideal ", net (wgs#0));
+	) else (
+	wgsnet := apply( wgs, net );
+	wgsnet = addCommas(wgsnet);
+	return horizontalJoin("ideal (", wgsnet, ")"  );
+    );
+)
+
+------------ WittMatrix
 
 WittMatrix = new Type of MutableHashTable;
 
--------------WittQuotientRing
+------------- WittQuotientRing
 
 WittQuotientRing = new Type of MutableHashTable;
 
-protect wittIdeal
 protect wittAmbient
 
-WittPolynomialRing / WittIdeal := (WPR, WI) -> (
-    Q := new WittQuotientRing from MutableHashTable;
-    Q.wittAmbient = WPR;
-    Q.wittIdeal = WI;
-    return Q
-    )
+--WittPolynomialRing / WittIdeal := (WPR, WI) -> (
+  --  Q := new WittQuotientRing from MutableHashTable;
+   -- Q.wittAmbient = WPR;
+   -- Q.wittIdeal = WI;
+   -- return Q
+   -- )
 
-net(WittQuotientRing) := QR -> (
-    (expression QR.wittAmbient) / (expression QR.wittIdeal)
-    )
+--net(WittQuotientRing) := QR -> (
+  --  (expression QR.wittAmbient) / (expression QR.wittIdeal)
+   -- )
