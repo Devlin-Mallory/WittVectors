@@ -126,17 +126,14 @@ explicit(WittPolynomialRing) := WPR->(
 WittIdeal = new Type of MutableHashTable;
 
 protect wittGenerators
-
-ideal(WittRingElement) := w -> (
-    print "aaa";
-    jj := new WittIdeal from {wittGenerators => "a"};
-    print jj.wittGenerators;
+wittIdeal(WittRingElement) := w -> (
+    jj := new WittIdeal from {wittGenerators => w};
     return jj;
     )
 
---net WittIdeal := WI -> (
-    --return "ideal" | net(WI.wittGenerators);
-    --)
+net WittIdeal := WI -> (
+    return "ideal" | "(" | toString(net(WI.wittGenerators)) | ")";
+    )
 
 ------------WittMatrix
 
