@@ -22,6 +22,8 @@ witt(List) := L0->(
 
 net(WittRingElement) := w -> (w.tuple)
 
+toList(WittRingElement) := w -> w.tuple
+
 --TODO: here I would like R = GF(3)[x]; W = witt(2, R); w = witt({x, x+1}); ring w
 -- to return W instead of Witt_2(R). Tried to do it with caching below but failed. 
 --

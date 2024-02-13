@@ -40,7 +40,8 @@ export{
 "explicit",
 "wittRings",
 "WittIdeal",
-"wittGenerators"
+"wittGenerators",
+"tuple"
 }
 
 
