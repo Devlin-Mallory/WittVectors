@@ -17,7 +17,7 @@ witt(List) := L0->(
     BaseRing := unique select(L,i-> i =!= ZZ);
     if  length (BaseRing) > 1 then error "expected elements from the same ring";
     --
-    ww.tuple = apply(L0,i->sub(i, first BaseRing ));
+    ww.tuple = apply(L0,i -> sub(i, first BaseRing ));
     return ww
 )
 
@@ -109,7 +109,8 @@ witt(ZZ,PolynomialRing) := (n,R)->(
 
 net(WittPolynomialRing) := WPR->(
 	-- TODO: Make the subscript actually a subscript
-	return "Witt_" | WPR.wittLength | "(" | (toString WPR.unWitt) | ")";
+	return horizontalJoin("Witt", (net(WPR.wittLength))^-1, "(", net WPR.unWitt, ")");
+	--return "Witt_" | WPR.wittLength | "(" | (toString WPR.unWitt) | ")";
 )
 
 explicit(WittPolynomialRing) := WPR->(
