@@ -108,9 +108,7 @@ witt(ZZ,PolynomialRing) := (n,R)->(
 )
 
 net(WittPolynomialRing) := WPR->(
-	-- TODO: Make the subscript actually a subscript
 	return horizontalJoin("Witt", (net(WPR.wittLength))^-1, "(", net WPR.unWitt, ")");
-	--return "Witt_" | WPR.wittLength | "(" | (toString WPR.unWitt) | ")";
 )
 
 explicit(WittPolynomialRing) := WPR->(
