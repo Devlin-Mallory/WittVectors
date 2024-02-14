@@ -12,8 +12,20 @@ fn(ZZ,RingElement):=(n,f)->(
 p:=char ring f;
 if n == 1 then return f^(p-1);
 exponent := sum apply(toList(0..n-2),i->p^i);
-f^(p-1)*Delta1(f^(p-1))^(exponent)
+--D:=Delta1(f^(p-1));
+--De:=D^exponent;
+f^(p-1)*((Delta1(f^(p-1))))^(exponent)
 )
+
+fn2=method()
+fn2(ZZ,RingElement):=(n,f)->(
+p:=char ring f;
+if n == 1 then return f^(p-1);
+D:=Delta1(f^(p-1));
+if n == 2 then return f^(p-1)*D;
+D^(p^(n-2))*fn(n-1,f))
+
+
 
 quasiFSplittingNumber=method()
 quasiFSplittingNumber(Ideal,ZZ):=(I,max)->(
