@@ -7,15 +7,15 @@ last (wittOverringToTuple( wittTupleToOverring({a,0})-sum apply(terms a,i->wittT
 )
 
 
-fn=method()
-fn(ZZ,RingElement):=(n,f)->(
-p:=char ring f;
-if n == 1 then return f^(p-1);
-exponent := sum apply(toList(0..n-2),i->p^i);
---D:=Delta1(f^(p-1));
---De:=D^exponent;
-f^(p-1)*((Delta1(f^(p-1))))^(exponent)
-)
+--fn=method()
+--fn(ZZ,RingElement):=(n,f)->(
+--p:=char ring f;
+--if n == 1 then return f^(p-1);
+--exponent := sum apply(toList(0..n-2),i->p^i);
+----D:=Delta1(f^(p-1));
+----De:=D^exponent;
+--f^(p-1)*((Delta1(f^(p-1))))^(exponent)
+--)
 
 fn2=method()
 fn2(ZZ,RingElement):=(n,f)->(
@@ -23,7 +23,8 @@ p:=char ring f;
 if n == 1 then return f^(p-1);
 D:=Delta1(f^(p-1));
 if n == 2 then return f^(p-1)*D;
-D^(p^(n-2))*fn(n-1,f))
+D^(p^(n-2))*fn2(n-1,f))
+
 
 
 
@@ -33,7 +34,7 @@ f:=product( I_*);
 S:=ring I;
 p:=char S;
 m:=ideal gens S;
-for i from 1 to max do if not isSubset(ideal fn(i,f) ,frobeniusPower(p^i,m)) then return i
+for i from 1 to max do if not isSubset(ideal fn3(i,f) ,frobeniusPower(p^i,m)) then return i
 )
 
 u = method()
