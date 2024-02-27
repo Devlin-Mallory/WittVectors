@@ -83,7 +83,7 @@ explicit(WittRingElement) := w -> (
     )
 
 explicitOver(WittRingElement) := ww -> (
-    if not ww.?explicit then(
+    if not ww.?explicitOver then(
 	ww.explicitOver = wittTupleToOverring(ww.tuple);
 	);
     ww.explicitOver
@@ -161,7 +161,28 @@ wittIdeal List := wittIdeal Sequence := LL -> (
     return jj;
   )
 
---addition
+---
+
+explicit(WittIdeal) := I -> (
+    if not I.?explicit then(
+	Igens := I.wittGenerators;
+	Igensover := apply(Igens, gg -> explicit(gg));
+	I.explicit = ideal(Igensover);
+	);
+    I.explicit
+    )
+
+explicitOver(WittIdeal) := I -> (
+    if not I.?explicitOver then(
+	Igens := I.wittGenerators;
+	Igensover := apply(Igens, gg -> explicitOver(gg));
+	I.explicitOver = ideal(Igensover);
+	);
+    I.explicitOver
+    )
+    
+
+--- addition and multiplication
 
 WittIdeal + WittIdeal := (I,J) -> (
     Igens := I.wittGenerators;
