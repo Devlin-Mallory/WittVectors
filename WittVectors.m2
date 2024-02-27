@@ -242,7 +242,7 @@ return wittOverringToTuple(Phi(F))
 
 wittOverringToTuple = method()
 wittOverringToTuple(RingElement):=(F)->(
-f:=F;
+    f:=F;
     OR := ring f;
     R := OR.cache.unWitt;
     d := numgens R;
