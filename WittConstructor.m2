@@ -69,6 +69,12 @@ WittRingElement * WittRingElement := (w1, w2) -> (
     wittOverringToTuple outputover
     )
 
+WittRingElement ^ ZZ := (ww, nn) -> (
+    wwover := explicitOver(ww);
+    outputover := wwover^nn;
+    wittOverringToTuple outputover
+    )
+
 explicit(WittRingElement) := w -> (
     if not w.?explicit then( 
 	w.explicit = wittTupleToRing(w.tuple);
@@ -145,6 +151,12 @@ wittIdeal(WittRingElement) := ww -> (
     )
 
 wittIdeal List := wittIdeal Sequence := LL -> (
+    if not all(LL, ll -> class(ll) === WittRingElement) then(
+	error "the suggested generators are not WittRingElement";
+	);
+    if not length unique apply(LL, ll -> length(ll)) == 1 then(
+	error "the generators do not have the same length";
+	);
     jj := new WittIdeal from {wittGenerators => toSequence(LL)};
     return jj;
   )
