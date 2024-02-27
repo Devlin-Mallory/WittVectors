@@ -101,6 +101,8 @@ rld = () -> (loadPackage "WittVectors")
 
 --- 8. Implement for all finite fields (not just F_p for prime p)
 
+--- 9. This should throw an error instead of looping forever: R = GF(3)[x,y]; explicit(witt{z,y})
+
 
 wittOverring = method()
 wittOverring(ZZ, Ring) := (n, R) -> (
@@ -236,9 +238,9 @@ wittTupleToRing(List):=(L)->(
 
 wittRingToTuple=method()
 wittRingToTuple(RingElement):=(F)->(
-WR:=ring F;
-Phi:=WR.cache.overringMap;
-return wittOverringToTuple(Phi(F))
+    WR:=ring F;
+    Phi:=WR.cache.overringMap;
+    return wittOverringToTuple(Phi(F))
 )
 
 wittOverringToTuple = method()
@@ -270,6 +272,13 @@ wittOverringToTuple(RingElement):=(F)->(
     );
     return witt(answer);
 )
+
+wittRingToTuple(Ideal) := I -> (
+    Igens := flatten entries gens I;
+    wittgens := apply(Igens, wittRingToTuple);
+    wittIdeal(wittgens)
+    )
+
 
 
 ---
