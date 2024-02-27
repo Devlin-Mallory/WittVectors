@@ -169,6 +169,13 @@ WittIdeal + WittIdeal := (I,J) -> (
     wittIdeal(Igens | Jgens)
     )
 
+WittIdeal * WittIdeal := (I, J) -> (
+    Igens := I.wittGenerators;
+    Jgens := J.wittGenerators;
+    outputGens := flatten (for gg in Igens list (for xx in Jgens list( gg*xx ) ));
+    wittIdeal(outputGens)
+    )
+
 --WittIdeal display
 
 addCommas := LL -> (
