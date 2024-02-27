@@ -139,8 +139,8 @@ WittIdeal = new Type of MutableHashTable;
 
 protect wittGenerators
 
-wittIdeal(WittRingElement) := w -> (
-    jj := new WittIdeal from {wittGenerators => toSequence {w}};
+wittIdeal(WittRingElement) := ww -> (
+    jj := new WittIdeal from {wittGenerators => toSequence{ww}};
     return jj;
     )
 
