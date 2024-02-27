@@ -7,16 +7,18 @@ last (wittOverringToTuple( wittTupleToOverring({a,0})-sum apply(terms a,i->wittT
 )
 
 
---fn=method()
---fn(ZZ,RingElement):=(n,f)->(
---p:=char ring f;
---if n == 1 then return f^(p-1);
---exponent := sum apply(toList(0..n-2),i->p^i);
-----D:=Delta1(f^(p-1));
-----De:=D^exponent;
---f^(p-1)*((Delta1(f^(p-1))))^(exponent)
---)
+fn=method()
+fn(ZZ,RingElement):=(n,f)->(
+p:=char ring f;
+m:=ideal gens ring f;
+if n == 1 then return f^(p-1);
+  D:=Delta1(f^(p-1));
+exponentList := apply(toList(0..n-2),i->D^(p^i) % frobeniusPower(p^n,m));
+  De:=(product exponentList) % frobeniusPower(p^n , m);
+(f^(p-1)*De) % frobeniusPower(p^n , m)
+)
 
+---fn2 returns actual value, not modulo anything
 fn2=method()
 fn2(ZZ,RingElement):=(n,f)->(
 p:=char ring f;
@@ -24,6 +26,17 @@ if n == 1 then return f^(p-1);
 D:=Delta1(f^(p-1));
 if n == 2 then return f^(p-1)*D;
 D^(p^(n-2))*fn2(n-1,f))
+
+fn3=method()
+fn3(ZZ,RingElement,ZZ):=(n,f,t)->(
+p:=char ring f;
+m:=ideal gens ring f;
+if n == 1 then return f^(p-1);
+D:=Delta1(f^(p-1));
+if n == 2 then return f^(p-1)*(D % frobeniusPower(p^t,m));
+(D^(p^(n-2)) % frobeniusPower(p^t,m))*fn3(n-1,f,t))
+
+
 
 
 
@@ -34,7 +47,7 @@ f:=product( I_*);
 S:=ring I;
 p:=char S;
 m:=ideal gens S;
-for i from 1 to max do if not isSubset(ideal fn3(i,f) ,frobeniusPower(p^i,m)) then return i
+ for i from 1 to max do if not isSubset(ideal fn3(i,f,i) ,frobeniusPower(p^i,m)) then return i
 )
 
 u = method()
@@ -74,3 +87,7 @@ I#10=x^4 + 2*x^2*y*z + x^2*y*w + x*y^2*w + y^4 + y^3*w + y^2*z^2 +2*y^2*z*w + y^
 I#11=x^4 + y^4 + z^4 + w^4;
 if n>10 then return I#11 else return I#n
 )
+
+artinMazur60 = () -> (
+S:=(ZZ/2)[x,y,z,w,u];
+ x^5 + y^5 + z^5 + w^5 + u^5 + x*z^3*w + y*z*w^3 + x^2*z*u^2 + y^2*z^2*w + x*y^2*w*u + y*z*w*u^2)
