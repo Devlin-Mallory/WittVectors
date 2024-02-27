@@ -100,6 +100,7 @@ rld = () -> (loadPackage "WittVectors")
 --- Frobenius lifts (rings are themselves over W_n).
 
 --- 8. Implement for all finite fields (not just F_p for prime p)
+--- 9. subtract witt vectors
 
 --- 9. This should throw an error instead of looping forever: R = GF(3)[x,y]; explicit(witt{z,y})
 

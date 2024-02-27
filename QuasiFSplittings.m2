@@ -91,3 +91,7 @@ if n>10 then return I#11 else return I#n
 artinMazur60 = () -> (
 S:=(ZZ/2)[x,y,z,w,u];
  x^5 + y^5 + z^5 + w^5 + u^5 + x*z^3*w + y*z*w^3 + x^2*z*u^2 + y^2*z^2*w + x*y^2*w*u + y*z*w*u^2)
+
+
+
+-------TODO: add "dummy variable" calculations to find possible lifts of frobenius; for example, take k[x,y,c,d], calculate f({x,c},{y,d}) and set equal to 0. for example, when S=(ZZ/2)[x,y,c,d] and I = x^2+y^3, we get c arbitrary and d= y^2
