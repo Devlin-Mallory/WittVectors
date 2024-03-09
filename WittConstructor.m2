@@ -76,6 +76,11 @@ ZZ * WittRingElement := (nn, ww) -> (
     wittOverringToTuple(nn*wwover)
     )
 
+WittRingElement * ZZ := (ww, nn) -> (
+    wwover := explicitOver(ww);
+    wittOverringToTuple(nn*wwover)
+    )
+
 WittRingElement * WittRingElement := (w1, w2) -> (
     if length w1 != length w2 then error "expected vectors of the same length";
     if ring w1 =!= ring w2 then error "expected elements of the same ring";
@@ -89,6 +94,10 @@ WittRingElement ^ ZZ := (ww, nn) -> (
     wwover := explicitOver(ww);
     outputover := wwover^nn;
     wittOverringToTuple outputover
+    )
+
+WittRingElement | WittRingElement := (w1, w2) -> (
+    witt(w1.tuple | w2.tuple)
     )
 
 explicit(WittRingElement) := w -> (
