@@ -100,6 +100,10 @@ WittRingElement | WittRingElement := (w1, w2) -> (
     witt(w1.tuple | w2.tuple)
     )
 
+WittRingElement == WittRingElement := (w1, w2) -> (
+    w1.tuple == w2.tuple
+    )
+
 explicit(WittRingElement) := w -> (
     if not w.?explicit then( 
 	w.explicit = wittTupleToRing(w.tuple);

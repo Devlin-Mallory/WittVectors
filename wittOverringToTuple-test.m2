@@ -15,11 +15,11 @@ wott(RingElement) := (F)->(
     for e from 0 to n-1 do (
         phi := map(RY, OR, for i from 0 to d-1 list y_i^(p^e));
         g := f%p;
-        g0 :=elapsedTime sub(phi(g),R);
+        g0 := sub(phi(g),R);
         answer = answer | {g0};
         --f = f - wittTupleToOverring(toList (e:0_R) | {g0} | toList (n-e-1:0_R));
         --the above line was giving the wrong answer for n > 2, while the below line seems to work
-        f = elapsedTime( F - wittTupleToOverring(answer|toList(n-e-1:0_R)) );
+        f = ( F - wittTupleToOverring(answer|toList(n-e-1:0_R)) );
         if (f%(p^(e+1)))!=0 then (
             error "Element of overring is not in the witt ring";
         );
@@ -42,8 +42,8 @@ takeRoot = (f, n) -> (
     R := ring f;
     p := char R;
     d := numgens R;
-    RY := R[y_0 .. y_(d-1)] / ideal( for i from 0 to d-1 list y_i^(p^n) - R_i );
-    Rsub := map( RY, R, toList( y_0..y_(d-1)) );
+    RY := R[yy_0 .. yy_(d-1)] / ideal( for i from 0 to d-1 list yy_i^(p^n) - R_i );
+    Rsub := map( RY, R, toList( yy_0..yy_(d-1)) );
     sub(Rsub(f), R)
     )
 	    
@@ -52,6 +52,7 @@ wott2(RingElement) := F -> (
     OR := ring F;
     R := OR.cache.unWitt;
     unWittSub := map(R, OR, vars R);
+    wittSub := OR.cache.wittSub;
     (p, n) := toSequence (factor(char OR))#0;
     
     if n == 1 then(
@@ -63,6 +64,34 @@ wott2(RingElement) := F -> (
     F0 := F % ideal(sub(p, OR));
     f0 := takeRoot( unWittSub(F0), n-1 );
     
-    witt{f0} | wott2( wittReduce( (F - F0)//p ) )
+    nextF := wittReduce( ( F - (wittSub f0)^(p^(n-1)) ) // p);
+    witt{f0} | wott2( nextF )
     )
+
+end 
+
+R = GF(5)[x,y,z]
+WR = witt(3, R)
+
+ww = witt{x+y, y}
+wwover = wittTupleToOverring(ww.tuple)
+wott2(wwover)
+
+--accuracy test
+for xx in 1..100 do(
+    ww := random(4, WR);
+    wwover := wittTupleToOverring(ww.tuple);
+    print (ww == wott2(wwover))
+    )
+
+--wott vs wott2 test
+for xx in 1..100 do(
+    ww := random(4, WR);
+    wwover := wittTupleToOverring(ww.tuple);
+    print "--------------";
+    elapsedTime(wott(wwover); );
+    elapsedTime(wott2(wwover); );
+    print "--------------";
+    )
+    
     
