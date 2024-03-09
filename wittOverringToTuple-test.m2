@@ -1,5 +1,5 @@
 wott = method()
-wott(RingElement) = (F)->(
+wott(RingElement) := (F)->(
     f:=F;
     OR := ring f;
     R := OR.cache.unWitt;
@@ -48,11 +48,21 @@ takeRoot = (f, n) -> (
     )
 	    
 wott2 = method()
-wott2(RingElement) = F -> (
+wott2(RingElement) := F -> (
     OR := ring F;
     R := OR.cache.unWitt;
     unWittSub := map(R, OR, vars R);
-    (p, n) := (factor(char OR))#0;
+    (p, n) := toSequence (factor(char OR))#0;
+    
     if n == 1 then(
-	return witt{ unWittSub
+	return witt{ unWittSub(F) });
+    
+    OR1 := wittOverring(n-1, R);
+    wittReduce := map( OR1, OR, vars OR1);
+    
+    F0 := F % ideal(sub(p, OR));
+    f0 := takeRoot( unWittSub(F0), n-1 );
+    
+    witt{f0} | wott2( wittReduce( (F - F0)//p ) )
+    )
     
