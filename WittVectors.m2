@@ -274,6 +274,7 @@ wittOverringToTuple(RingElement):=(F)->(
     return witt(answer);
 )
 
+
 wittRingToTuple(Ideal) := I -> (
     Igens := flatten entries gens I;
     wittgens := apply(Igens, wittRingToTuple);

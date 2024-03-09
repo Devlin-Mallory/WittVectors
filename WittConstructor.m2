@@ -126,7 +126,12 @@ CropWittVector(WittRingElement,ZZ):= (w,n)->(
     return witt L;
 )
 
+
+
+
+-------------------------------
 -------------WittPolynomialRing
+-------------------------------
 
 WittPolynomialRing = new Type of MutableHashTable;
 
@@ -160,6 +165,14 @@ explicit(WittPolynomialRing) := WPR->(
 	);
 	return WPR.explicit;
 )
+
+random(ZZ, WittPolynomialRing) := opts -> (nn, WPR) -> (
+    R := WPR.unWitt;
+    ll := WPR.wittLength;
+    witt apply(toList(1..ll), xx -> random(nn, R))
+    )
+
+
 
 
 -------------
