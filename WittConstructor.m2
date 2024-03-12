@@ -208,7 +208,7 @@ wittIdeal List := wittIdeal Sequence := LL -> (
 explicit(WittIdeal) := I -> (
     if not I.?explicit then(
 	Igens := I.wittGenerators;
-	Igensover := apply(Igens, explicit );
+	Igensover := apply(Igens, explicit);
 	I.explicit = ideal(Igensover);
 	);
     I.explicit
