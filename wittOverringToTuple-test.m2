@@ -29,14 +29,6 @@ wott(RingElement) := (F)->(
 )
 
 
-takeRoot = (f,n) -> (
-    ---in a ring of char p, takes the (1/p^n) root of a polynomial f
-    p := char ring f;
-    mons := (coefficients f)#0;
-    coeffs := (coefficients f)#1;
-    --newmons := apply( flatten entries mons, xx -> 
-)
-
 takeRoot = (f, n) -> (
     --- in a ring of char p , takes the (1/p^n) root of a polynomial f
     R := ring f;
@@ -76,6 +68,7 @@ WR = witt(3, R)
 ww = witt{x+y, y}
 wwover = wittTupleToOverring(ww.tuple)
 wott2(wwover)
+wott2 = (f) -> wittOverringToTuple(f)
 
 --accuracy test
 for xx in 1..100 do(
@@ -89,8 +82,8 @@ for xx in 1..100 do(
     ww := random(4, WR);
     wwover := wittTupleToOverring(ww.tuple);
     print "--------------";
+    elapsedTime(wott2(wwover));
     elapsedTime(wott(wwover); );
-    elapsedTime(wott2(wwover); );
     print "--------------";
     )
     
