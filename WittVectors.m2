@@ -43,7 +43,8 @@ export{
 "wittIdeal",
 "wittGenerators",
 "tuple",
-"explicitOver"
+"explicitOver",
+"MaxHeight",
 }
 
 

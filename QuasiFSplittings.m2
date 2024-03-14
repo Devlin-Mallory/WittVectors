@@ -1,5 +1,6 @@
 needsPackage "TestIdeals"
 needsPackage "WittVectors"
+needsPackage "PushForward"
 
 Delta1=method()
 Delta1(RingElement):=a->(
@@ -66,6 +67,64 @@ theta(RingElement,RingElement):= (f,a) ->(
 p:=char ring f;
 u(1,Delta1(f^(p-1))*a)
 )
+
+
+fSplittingHeight=method(Options=>{MaxHeight=>100})
+fSplittingHeight(Ideal) := ZZ => opts-> I0->(
+S:=ring I0;
+p:=char S;
+A:=dim S-1;
+ff:=product I0_*;
+Frob := map(S,S,matrix{apply(gens S,u->u^p)});
+(FS,GS,transformS) := pushFwd(Frob);
+
+M := ideal (gens S);
+MP := frobenius(1,M);
+v := product(A+1, i -> (S_i)^(p-1));
+u0:= map(S^1 ,FS,transpose(transformS(v)));
+
+
+I:= ideal ff^(p-1);
+if not isSubset(I,MP) then return 1;
+
+del:=Delta1(ff^(p-1));
+K := pushmultiple(del,GS,transformS);
+II:=I;
+
+for i from 2 to opts.MaxHeight do
+(
+FI = image(pushideal(I,GS,transformS));
+u:=map(S^1,ambient FI,u0);
+FS:=source u;
+J = intersect(FI, kernel(u));
+JJ = inducedMap(FS,J);
+KK = image(u*(K*JJ));
+II = ideal(mingens KK) + ideal(ff^(p-1));
+if not isSubset(II, MP) then break return i;
+I=II;
+);
+)
+
+pushmultiple = (r,GS,transformS)->(
+A:=dim ring r - 1;
+p:=char ring r;
+FS:=source GS;
+S:=target GS;
+C:=transformS(r*GS_(0,(0)));
+for j from 2 to p^(A+1) do
+(
+D:=transformS(r*GS_(0,(j-1)));
+E:=C|D;
+C=E;
+);
+map(FS, S^(p^(A+1)), C)
+);
+
+pushideal = (I,GS,transformS)->(
+matrix{for i in I_* list pushmultiple(i,GS,transformS)}
+)
+
+
 
 
 
