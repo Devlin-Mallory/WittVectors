@@ -102,6 +102,8 @@ JJ := inducedMap(FS,J);
 KK := image(u*K*JJ);
 II := ideal(mingens KK) + ideal(ff^(p-1));
 if not isSubset(II, MP) then break return i;
+if I == II then break return infinity;
+if(i==20) then assert(I==II);
 I=II;
 );
 )
@@ -153,12 +155,13 @@ S:=(ZZ/2)[x,y,z,w,u];
  x^5 + y^5 + z^5 + w^5 + u^5 + x*z^3*w + y*z*w^3 + x^2*z*u^2 + y^2*z^2*w + x*y^2*w*u + y*z*w*u^2)
 
 sampleCY=(p,n,N)->(
-S:=(ZZ/p)[x_1..x_n];
+x:=symbol x;
+S:=(ZZ/p)[x_0..x_(n+1)];
 m:=ideal gens S;
 for i from 1 to N list(
 print "---------";
-I:=ideal (x^2);
-while( dim radical(I+ ideal jacobian I) > 0 or isFPure(I)) do I=ideal(random(n,S));
+I:=ideal (x_0^2);
+while( dim radical(I+ ideal jacobian I) > 0 or isFPure(I)) do I=ideal(random(n+2,S));
 print("sample number "|i);
 (fSplittingHeight(I),I)
 )
