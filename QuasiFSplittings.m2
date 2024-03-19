@@ -73,7 +73,7 @@ fSplittingHeight=method(Options=>{MaxHeight=>100})
 fSplittingHeight(Ideal) := ZZ => opts-> I0->(
 S:=ring I0;
 if class S =!= PolynomialRing then return "error: expected ambient ring to be a polynomial ring";
-if codim(I0) < numgens I then return "error: expected ideal to be a complete intersection";
+if codim(I0) < numgens I0 then return "error: expected ideal to be a complete intersection";
 p:=char S;
 if p == 0 then return "error: expected a ring of characteristic p";
 A:=dim S-1;
