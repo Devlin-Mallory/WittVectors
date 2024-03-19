@@ -222,7 +222,18 @@ explicitOver(WittIdeal) := I -> (
 	);
     I.explicitOver
     )
+
+trim (WittIdeal) := opts -> I -> (
+    Iexp := trim(explicit(I));
+    ggs := apply( flatten entries gens Iexp, wittRingToTuple);
+    wittIdeal(ggs)
+    )
     
+--- equality
+
+WittIdeal == WittIdeal := (I, J) -> (
+    explicit(I) == explicit(J)
+    )
 
 --- addition and multiplication
 
