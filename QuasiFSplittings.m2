@@ -72,7 +72,10 @@ u(1,Delta1(f^(p-1))*a)
 fSplittingHeight=method(Options=>{MaxHeight=>100})
 fSplittingHeight(Ideal) := ZZ => opts-> I0->(
 S:=ring I0;
+if class S =!= PolynomialRing then return "error: expected ambient ring to be a polynomial ring";
+if codim(I0) < numgens I then return "error: expected ideal to be a complete intersection";
 p:=char S;
+if p == 0 then return "error: expected a ring of characteristic p";
 A:=dim S-1;
 ff:=product I0_*;
 Frob := map(S,S,matrix{apply(gens S,u->u^p)});
@@ -86,6 +89,8 @@ u0:= map(S^1 ,FS,transpose(transformS(v)));
 
 I:= ideal ff^(p-1);
 if not isSubset(I,MP) then return 1;
+elapsedTime if isSubset(ideal ff^(p-2),MP) then return infinity;
+elapsedTime if isSubset((ideal( ff^(p-2))+frobenius(1,I0))*ff^(p*(p-2))*Delta1(ff),frobenius(2,M)) then return infinity;
 
 del:=Delta1(ff^(p-1));
 K := pushmultiple(del,GS,transformS);
@@ -103,7 +108,6 @@ KK := image(u*K*JJ);
 II := ideal(mingens KK) + ideal(ff^(p-1));
 if not isSubset(II, MP) then break return i;
 if I == II then break return infinity;
-if(i==20) then assert(I==II);
 I=II;
 );
 )
