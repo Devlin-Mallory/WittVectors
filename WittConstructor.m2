@@ -4,6 +4,7 @@ witt = method()
 explicit = method()
 explicitOver = method()
 wittIdeal = method(Dispatch => Thing)
+frobenius = method()
 
 ---
 --- WittRingElement
@@ -102,6 +103,18 @@ WittRingElement | WittRingElement := (w1, w2) -> (
 
 WittRingElement == WittRingElement := (w1, w2) -> (
     w1.tuple == w2.tuple
+    )
+
+frobenius(WittRingElement) := ww -> (
+    witt frobeniusOnWitt(1,ww.tuple)
+    )
+
+frobenius(ZZ, WittRingElement) := (nn,ww) -> (
+    witt frobeniusOnWitt(nn, ww.tuple)
+    )
+
+verschiebung(WittRingElement) := ww -> (
+    witt verschiebung(ww.tuple)
     )
 
 explicit(WittRingElement) := w -> (
