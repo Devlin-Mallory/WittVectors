@@ -1,10 +1,10 @@
 --here's where we'll define classes and class operations
 
+needsPackage "TestIdeals"
 witt = method()
 explicit = method()
 explicitOver = method()
 wittIdeal = method(Dispatch => Thing)
-frobenius = method()
 
 ---
 --- WittRingElement
