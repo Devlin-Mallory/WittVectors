@@ -183,14 +183,16 @@ explicit(WittPolynomialRing) := WPR->(
 	return WPR.explicit;
 )
 
+explicitOver(WittPolynomialRing) := WPR -> (
+    -- make cache!
+    WPR.explicitOver
+    )
+
 random(ZZ, WittPolynomialRing) := opts -> (nn, WPR) -> (
     R := WPR.unWitt;
     ll := WPR.wittLength;
     witt apply(toList(1..ll), xx -> random(nn, R))
     )
-
-
-
 
 -------------
 ------------- WittIdeal
@@ -240,6 +242,10 @@ trim (WittIdeal) := opts -> I -> (
     Iexp := trim(explicit(I));
     ggs := apply( flatten entries gens Iexp, wittRingToTuple);
     wittIdeal(ggs)
+    )
+
+generators (WittIdeal) := opts -> I -> (
+    toSequence I.wittGenerators
     )
     
 --- equality
