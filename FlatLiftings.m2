@@ -128,7 +128,7 @@ Cflatmap:=inverse last flattenRing(C);
 Cflat :=source Cflatmap;
 J:=(inverse Cflatmap)( ideal last coefficients Cflatmap sub(constraint, Cflat));
 elimList := (for i in gens Bcc list sub(i,Cflat))|(for i in gens S list sub(i,Cflat));
-eliminate(elimList,J)
+sub(eliminate(elimList,J),(ZZ/p)[gens T])
 )
 
 
