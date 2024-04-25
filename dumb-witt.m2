@@ -13,49 +13,44 @@ dumbWitt = (n, R) -> (
     p := char R;
     d := numgens R;
     Rvars := flatten entries vars R;
-    
-    ---
-    cubes0 := for i in 0..(d-1) list ((0,toList((i:0)|(1:1)|((d-i-1):0))));
-    cubes := for i in 1..(n-1) list (
-	--print "hola";
-	ind := (toList (0..(p^i-1)))^d;
-	ind = delete(toList(d:0) , ind);
-	{i}**ind
-	--{k,every tuple of length d with values 0..p^k-1}
-	);
-    cubes = cubes0 | (flatten cubes);
-    
+    --- create indeces for variables:
+    baseIndeces := apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
+    otherIndeces := {};
+    for i in 1..(n-1) do(
+	newIndeces := (toList(0..(p^i-1)))^d;
+	newIndeces = drop(newIndeces, {0,0});
+	newIndeces = apply(newIndeces, ind -> {i}|{ind});
+	otherIndeces = otherIndeces | newIndeces;
+	    );
+    allIndeces := baseIndeces | otherIndeces;
+    --- make ambient rings
     T := symbol T;
-    A := ZZ[for i in cubes list T_i, Degrees => for i in cubes list i#0];
-    B := QQ[for i in cubes list T_i, Degrees => for i in cubes list i#0];
-    
-    --goodvarsA := apply(select(cubes, ik -> ik#0 > 0), i -> T_i);
-    
-
-    --varsA := flatten entries vars A;
-    dg := flatten entries basis(n, B);
+    A := ZZ[for i in allIndeces list T_i, Degrees => for i in allIndeces list i#0];
+    B := QQ[for i in allIndeces list T_i, Degrees => for i in allIndeces list i#0];
+    --- relations of Type 1
+    --- note: the rings A and B get modified at each step. Is this actually faster?
     for aa in n..(2*n-2) do(
-	dg := flatten entries basis (aa,B);
-	B = (flattenRing(B / (ideal dg)))#0;
-	dga := apply(dg, xx -> sub(xx, A));
-	A = (flattenRing(A / (ideal dga)))#0;
+	relsB := flatten entries basis(aa, B);
+	relsA := apply(relsB, xx -> sub(xx, A));
+	B = (flattenRing(B / ideal(relsB)))#0;
+	A = (flattenRing(A / ideal(relsA)))#0;
 	);
-        
+    for aa in 1..(n-1) do(
+	basisB := flatten entries basis(aa, B);
+	relsB := apply(basisB, xx -> p^(n-aa)*xx);
+	relsA := apply(relsB, xx -> sub(xx, A));
+	B = (flattenRing(B / ideal(relsB)))#0;
+	A = (flattenRing(A / ideal(relsA)))#0;
+	);
+    A = (flattenRing( (A / ideal(sub(p^n, A))) ))#0;
+    -- relations of Type 2
     use A;
-    --for aa from 0 to n do(
---	biglist := apply(goodvarsA^(n-aa), product);
---	biglist = unique biglist;
---	biglist = apply(biglist, xx -> p^aa*xx);
---	dg = dg | biglist;
---	);
-    --dg;
-    
-    -- 
-    dg2 := apply(select(cubes, ik -> (0 < ik#0) and (ik#0 <= n-2)), ik ->
-	p*T_ik - T_( ik#0 + 1 , apply(ik#1 , xx -> xx*p )) )  ;
-
-    A = (flattenRing(A / ideal(dg2)))#0;
-    
+    relsGens := apply( select(otherIndeces, indx -> indx#0 <= n-2),
+	xx -> p*T_xx - T_{xx#0 + 1, apply(xx#1, yy -> p*yy)}
+	);
+    rels = ideal(relsGens);
+    A = (flattenRing(A / rels))#0;
+    --- output
     A
     )
 --S := ZZ[T
@@ -77,3 +72,28 @@ for xx in 0..19 do(
     print (flatten entries vars D)#xx;
     --print (phi((flatten entries vars D)#xx) - (flatten entries vars W)#xx);
     )
+
+---
+
+phi = map(Da, Wa, first entries vars Da)
+psi = map(Wa, Da, first entries vars Wa)
+
+for ff in first entries gens ideal W do(
+    print "------------------";
+    print phi(ff);
+    print (phi(ff) % ideal D == 0);
+    )
+
+for gg in first entries gens ideal D do(
+    print "------------------";
+    print psi(gg);
+    print (psi(gg) % ideal W == 0);
+    )
+
+---
+p = 3
+n = 3
+d = 2
+R = GF(p)[x_1 .. x_d]
+elapsedTime( dumbWitt(n, R) );
+elapsedTime( explicit witt(n, R) );
