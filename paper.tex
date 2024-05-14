@@ -1,0 +1,195 @@
+\documentclass{article}
+%
+\usepackage{amsmath,amssymb,amsthm, tikz-cd}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[margin=1in]{geometry}
+\usepackage{dutchcal}
+\usepackage{colonequals}
+%
+\usepackage[colorlinks,  citecolor=black, linkcolor = black, urlcolor = black]{hyperref} 
+%
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{recall}[theorem]{Recall}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{solution}{}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{setup}[theorem]{Setup}
+%
+\setlength\parindent{5pt}
+\setlength{\parskip}{5pt}
+%
+\setlist[enumerate]{label = (\roman*), topsep=0pt, itemsep=0pt}
+
+\newlist{enuroman}{enumerate}{1}
+\setlist[enuroman]{
+	label = (\roman*),
+	topsep = 0pt,
+	labelindent = \parindent}
+	
+\newlist{enualph}{enumerate}{2}
+\setlist[enualph]{
+	label = (\alph*),
+	topsep = 0pt,
+	labelindent = \parindent}
+
+\newlist{enuarabic}{enumerate}{3}
+\setlist[enuarabic]{
+	label = (\arabic*),
+	topsep = 0pt,
+	labelindent = \parindent}
+
+\setlist[itemize]{label = $\diamond$, topsep=0pt, itemsep=0pt, labelindent=0pt}
+
+\newcommand{\comment}[1]{ \begin{center}
+		\fcolorbox{red}{white}{
+		\begin{minipage}{0.95\textwidth}
+			{\color{red} #1}
+		\end{minipage}}}
+
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\KK}{\mathbb{K}}
+\newcommand{\bP}{\mathbb{P}}
+\newcommand{\cO}{\mathcal{O}}
+\newcommand{\cC}{\mathcal{C}}
+\newcommand{\cJ}{\mathcal{J}}
+\newcommand{\cM}{\mathcal{M}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\cF}{\mathcal{F}}
+\newcommand{\cG}{\mathcal{G}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cB}{\mathcal{B}}
+\newcommand{\cQ}{\mathcal{Q}}
+\newcommand{\cP}{\mathcal{P}}
+\newcommand{\cD}{\mathcal{D}}
+\newcommand{\cU}{\mathcal{U}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\sq}{\subseteq}
+\newcommand{\ds}{\dots}
+\newcommand{\cds}{\cdots}
+\newcommand{\arrow}{arrow}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\fp}{\mathfrak{p}}
+\newcommand{\fq}{\mathfrak{q}}
+\newcommand{\fm}{\mathfrak{m}}
+\newcommand{\fa}{\mathfrak{a}}
+\newcommand{\fb}{\mathfrak{b}}
+\newcommand{\fc}{\mathfrak{c}}
+\newcommand{\fA}{\mathfrak{A}}
+\newcommand{\fP}{\mathfrak{P}}
+\newcommand{\fn}{\mathfrak{n}}
+\newcommand{\bld}[1]{\textbf{#1}}
+\newcommand{\raw}{\rightarrow}
+\newcommand{\vphi}{\varphi}
+\newcommand{\spq}{\supseteq}
+\renewcommand{\t}[1]{\widetilde{#1}}
+\renewcommand{\b}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\renewcommand{\hat}{\widehat}
+\newcommand{\ehat}{\hat{ \ }}
+\newcommand{\Mustata}{Musta\c{t}\u{a}}
+\newcommand{\ceq}{\colonequals}
+
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\PGL}{PGL}
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Frac}{Frac}
+\DeclareMathOperator{\Mor}{Mor}
+\DeclareMathOperator{\cl}{cl}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\image}{image}
+\DeclareMathOperator{\Ann}{Ann}
+\DeclareMathOperator{\Ass}{Ass}
+\DeclareMathOperator{\Supp}{Supp}
+\DeclareMathOperator{\ini}{in}
+\DeclareMathOperator{\Span}{Span}
+\DeclareMathOperator{\res}{res}
+\DeclareMathOperator{\Proj}{Proj}
+\DeclareMathOperator{\rad}{rad}
+\DeclareMathOperator{\rank}{rank}
+\let\div \relax
+\DeclareMathOperator{\div}{div}
+\DeclareMathOperator{\val}{val}
+\DeclareMathOperator{\gr}{gr}
+\DeclareMathOperator{\Syz}{Syz}
+\DeclareMathOperator{\Tor}{Tor}
+\DeclareMathOperator{\Ext}{Ext}
+\DeclareMathOperator{\minpoly}{minpoly}
+\DeclareMathOperator{\Fun}{Fun}
+\DeclareMathOperator{\FJN}{FJN}
+\DeclareMathOperator{\Max}{Max}
+\DeclareMathOperator{\coh}{coh}
+\DeclareMathOperator{\CD}{CD}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\Irr}{Irr}
+\DeclareMathOperator{\Mod}{Mod}
+\DeclareMathOperator{\mmod}{-mod}
+\DeclareMathOperator{\modm}{mod-}
+\DeclareMathOperator{\mumod}{-umod}
+\DeclareMathOperator{\mfgumod}{-fgumod}
+\DeclareMathOperator{\fpt}{fpt}
+\DeclareMathOperator{\Jac}{Jac}
+\DeclareMathOperator{\Bl}{Bl}
+\DeclareMathOperator{\ac}{ac}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\Char}{char}
+\DeclareMathOperator{\Cont}{Cont}
+\DeclareMathOperator{\BSR}{BSR}
+\DeclareMathOperator{\str}{str}
+\DeclareMathOperator{\lct}{lct}
+\DeclareMathOperator{\Ten}{Ten}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\Kos}{Kos}
+\DeclareMathOperator{\RHom}{RHom}
+\DeclareMathOperator{\coker}{coker}
+
+\renewcommand{\phi}{\varphi}
+\renewcommand{\to}{\longrightarrow}
+\newcommand{\from}{\longleftarrow}
+
+	
+
+\begin{document}
+
+\title{Witt vector computations in Macaulay2}
+\author{Anne Fayolle, Abhay Goel, Devlin Mallory, Eamon Quinlan-Gallego}
+\maketitle
+
+\begin{abstract}
+	
+\end{abstract}
+
+
+\bibliography{/home/eamon/rclone-GDrive/Math/biblio.bib}
+\bibliographystyle{alpha}
+
+\end{document}
