@@ -96,17 +96,18 @@ dumbWitt2 = (n, R) -> (
 	newRelsB := apply(basisB, xx -> p^(n-aa)*xx);
 	relsB = relsB | newRelsB;
 	);
+
+    relsA1 := apply(relsB, xx -> BtoA(xx));
     -- relations of Type 2
     if n <= 2 then( return A ) else(
 	use A;
-	relsGens := apply( select(otherIndeces, indx -> indx#0 <= n-2),
+	relsA2 := apply( select(otherIndeces, indx -> indx#0 <= n-2),
 	    xx -> p*T_xx - T_{xx#0 + 1, apply(xx#1, yy -> p*yy)}
 	    );
-	rels = ideal(relsGens);
-	A = (flattenRing(A / rels) )#0;
 	);
     --- output
-    A
+    relsA := relsA1 | relsA2;
+    A / ideal(relsA);
     )
 --S := ZZ[T
 
@@ -149,9 +150,11 @@ for gg in first entries gens ideal D do(
     )
 
 ---
-p = 2
-n = 4
-d = 2
+p = 3
+n = 3
+d = 3
 R = GF(p)[x_1 .. x_d]
+
 elapsedTime( dumbWitt(n, R) );
+elapsedTime( dumbWitt2(n,R) );
 elapsedTime( explicit witt(n, R) );
