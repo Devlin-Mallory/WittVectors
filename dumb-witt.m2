@@ -60,6 +60,59 @@ dumbWitt = (n, R) -> (
     )
 --S := ZZ[T
 
+
+
+
+--- dumbWitt2: does not change rings A,B in each loop
+dumbWitt2 = (n, R) -> (
+    p := char R;
+    d := numgens R;
+    Rvars := flatten entries vars R;
+    --- create indeces for variables:
+    baseIndeces := apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
+    otherIndeces := {};
+    for i in 1..(n-1) do(
+	newIndeces := (toList(0..(p^i-1)))^d;
+	newIndeces = drop(newIndeces, {0,0});
+	newIndeces = apply(newIndeces, ind -> {i}|{ind});
+	otherIndeces = otherIndeces | newIndeces;
+	    );
+    allIndeces := baseIndeces | otherIndeces;
+    --- make ambient rings
+    T := symbol T;
+    A := ZZ[for i in allIndeces list T_i, Degrees => for i in allIndeces list i#0];
+    B := QQ[for i in allIndeces list T_i, Degrees => for i in allIndeces list i#0];
+    BtoA := map(A,B,vars A);
+    --- relations of Type 1
+    --- now A and B are not redefine
+    relsB := {};
+    for aa in n..(2*n-2) do(
+	newRelsB := flatten entries basis(aa, B);
+	relsB = relsB|newRelsB;
+	);
+    
+    for aa in 1..(n-1) do(
+	basisB := flatten entries basis(aa, B);
+	newRelsB := apply(basisB, xx -> p^(n-aa)*xx);
+	relsB = relsB | newRelsB;
+	);
+    -- relations of Type 2
+    if n <= 2 then( return A ) else(
+	use A;
+	relsGens := apply( select(otherIndeces, indx -> indx#0 <= n-2),
+	    xx -> p*T_xx - T_{xx#0 + 1, apply(xx#1, yy -> p*yy)}
+	    );
+	rels = ideal(relsGens);
+	A = (flattenRing(A / rels) )#0;
+	);
+    --- output
+    A
+    )
+--S := ZZ[T
+
+
+
+
 end
 
 loadPackage "WittVectors"

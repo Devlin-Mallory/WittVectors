@@ -60,6 +60,9 @@ needsPackage "SLPexpressions"
 needsPackage "MinimalPrimes"
 rld = () -> (loadPackage "WittVectors")
 
+---NEW TO DO
+---1. 
+
 
 ---TO DO
 ---1. Debug level for addition/multiplication/etc
