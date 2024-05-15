@@ -52,7 +52,7 @@ export{
 
 load "Kernels.m2"
 load "Verschiebung.m2"
-load "Frobenius.m2"
+load "FrobeniusWitt.m2"
 load "Quotients.m2"
 load "WittConstructor.m2"
 needsPackage "Polyhedra"
