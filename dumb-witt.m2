@@ -13,20 +13,20 @@ dumbWitt = (n, R) -> (
     p := char R;
     d := numgens R;
     Rvars := flatten entries vars R;
-    --- create indeces for variables:
-    baseIndeces := apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
-    otherIndeces := {};
+    --- create indices for variables:
+    baseIndices := apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
+    otherIndices := {};
     for i in 1..(n-1) do(
-	newIndeces := (toList(0..(p^i-1)))^d;
-	newIndeces = drop(newIndeces, {0,0});
-	newIndeces = apply(newIndeces, ind -> {i}|{ind});
-	otherIndeces = otherIndeces | newIndeces;
+	newIndices := (toList(0..(p^i-1)))^d;
+	newIndices = drop(newIndices, {0,0});
+	newIndices = apply(newIndices, ind -> {i}|{ind});
+	otherIndices = otherIndices | newIndices;
 	    );
-    allIndeces := baseIndeces | otherIndeces;
+    allIndices := baseIndices | otherIndices;
     --- make ambient rings
     T := symbol T;
-    A := ZZ[for i in allIndeces list T_i, Degrees => for i in allIndeces list i#0];
-    B := QQ[for i in allIndeces list T_i, Degrees => for i in allIndeces list i#0];
+    A := ZZ[for i in allIndices list T_i, Degrees => for i in allIndices list i#0];
+    B := QQ[for i in allIndices list T_i, Degrees => for i in allIndices list i#0];
     --- relations of Type 1
     --- note: the rings A and B get modified at each step. Is this actually faster? 
     for aa in n..(2*n-2) do(
@@ -49,7 +49,7 @@ dumbWitt = (n, R) -> (
     -- relations of Type 2
     if n <= 2 then( return A ) else(
 	use A;
-	relsGens := apply( select(otherIndeces, indx -> indx#0 <= n-2),
+	relsGens := apply( select(otherIndices, indx -> indx#0 <= n-2),
 	    xx -> p*T_xx - T_{xx#0 + 1, apply(xx#1, yy -> p*yy)}
 	    );
 	rels = ideal(relsGens);
