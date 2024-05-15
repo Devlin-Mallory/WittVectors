@@ -28,28 +28,33 @@ dumbWitt = (n, R) -> (
     A := ZZ[for i in allIndeces list T_i, Degrees => for i in allIndeces list i#0];
     B := QQ[for i in allIndeces list T_i, Degrees => for i in allIndeces list i#0];
     --- relations of Type 1
-    --- note: the rings A and B get modified at each step. Is this actually faster?
+    --- note: the rings A and B get modified at each step. Is this actually faster? 
     for aa in n..(2*n-2) do(
+	BtoA := map(A,B, vars A);
 	relsB := flatten entries basis(aa, B);
-	relsA := apply(relsB, xx -> sub(xx, A));
+	relsA := apply(relsB, xx -> BtoA(xx) );
 	B = (flattenRing(B / ideal(relsB)))#0;
 	A = (flattenRing(A / ideal(relsA)))#0;
 	);
     for aa in 1..(n-1) do(
+	BtoA := map(A,B, vars A);
 	basisB := flatten entries basis(aa, B);
 	relsB := apply(basisB, xx -> p^(n-aa)*xx);
-	relsA := apply(relsB, xx -> sub(xx, A));
+	relsA := apply(relsB, xx -> BtoA(xx) );
 	B = (flattenRing(B / ideal(relsB)))#0;
 	A = (flattenRing(A / ideal(relsA)))#0;
 	);
-    A = (flattenRing( (A / ideal(sub(p^n, A))) ))#0;
+    BtoA := map(A,B, vars A);
+    A = (flattenRing( (A / ideal( BtoA(p^n) )) ))#0;
     -- relations of Type 2
-    use A;
-    relsGens := apply( select(otherIndeces, indx -> indx#0 <= n-2),
-	xx -> p*T_xx - T_{xx#0 + 1, apply(xx#1, yy -> p*yy)}
+    if n <= 2 then( return A ) else(
+	use A;
+	relsGens := apply( select(otherIndeces, indx -> indx#0 <= n-2),
+	    xx -> p*T_xx - T_{xx#0 + 1, apply(xx#1, yy -> p*yy)}
+	    );
+	rels = ideal(relsGens);
+	A = (flattenRing(A / rels) )#0;
 	);
-    rels = ideal(relsGens);
-    A = (flattenRing(A / rels))#0;
     --- output
     A
     )
@@ -91,8 +96,8 @@ for gg in first entries gens ideal D do(
     )
 
 ---
-p = 3
-n = 3
+p = 2
+n = 4
 d = 2
 R = GF(p)[x_1 .. x_d]
 elapsedTime( dumbWitt(n, R) );
