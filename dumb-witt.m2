@@ -69,19 +69,19 @@ dumbWitt2 = (n, R) -> (
     d := numgens R;
     Rvars := flatten entries vars R;
     --- create indeces for variables:
-    baseIndeces := apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
-    otherIndeces := {};
+    baseIndices := apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
+    otherIndices := {};
     for i in 1..(n-1) do(
-	newIndeces := (toList(0..(p^i-1)))^d;
-	newIndeces = drop(newIndeces, {0,0});
-	newIndeces = apply(newIndeces, ind -> {i}|{ind});
-	otherIndeces = otherIndeces | newIndeces;
+	newIndices := (toList(0..(p^i-1)))^d;
+	newIndices = drop(newIndices, {0,0});
+	newIndices = apply(newIndices, ind -> {i}|{ind});
+	otherIndices = otherIndices | newIndices;
 	    );
-    allIndeces := baseIndeces | otherIndeces;
+    allIndices := baseIndices | otherIndices;
     --- make ambient rings
     T := symbol T;
-    A := ZZ[for i in allIndeces list T_i, Degrees => for i in allIndeces list i#0];
-    B := QQ[for i in allIndeces list T_i, Degrees => for i in allIndeces list i#0];
+    A := ZZ[for i in allIndices list T_i, Degrees => for i in allIndices list i#0];
+    B := QQ[for i in allIndices list T_i, Degrees => for i in allIndices list i#0];
     BtoA := map(A,B,vars A);
     --- relations of Type 1
     --- now A and B are not redefine
@@ -99,15 +99,15 @@ dumbWitt2 = (n, R) -> (
 
     relsA1 := apply(relsB, xx -> BtoA(xx));
     -- relations of Type 2
-    if n <= 2 then( return A ) else(
+    if n <= 2 then( return A/(ideal(relsA1)+p^n) ) else(
 	use A;
-	relsA2 := apply( select(otherIndeces, indx -> indx#0 <= n-2),
+	relsA2 := apply( select(otherIndices, indx -> indx#0 <= n-2),
 	    xx -> p*T_xx - T_{xx#0 + 1, apply(xx#1, yy -> p*yy)}
 	    );
 	);
     --- output
     relsA := relsA1 | relsA2;
-    A / ideal(relsA);
+    A / (p^n+ideal(relsA));
     )
 --S := ZZ[T
 
