@@ -107,7 +107,7 @@ dumbWitt2 = (n, R) -> (
 	);
     --- output
     relsA := relsA1 | relsA2;
-    A / (p^n+ideal(relsA));
+    A / (p^n+ideal(relsA))
     )
 --S := ZZ[T
 
