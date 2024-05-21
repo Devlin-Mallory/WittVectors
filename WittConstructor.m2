@@ -144,6 +144,13 @@ CropWittVector(WittRingElement,ZZ):= (w,n)->(
 )
 
 
+subInWittRing = method()
+subInWittRing(List,RingElement) := (L,f) -> (
+Lrings := unique apply(L,ring);
+if length Lrings > 1 then error "expected all WittRingElements to live in the same ring";
+Lexplicit := apply(L,explicitOver);
+wittOverringToTuple(sub(f, matrix{Lexplicit}))
+)
 
 
 -------------------------------
