@@ -113,6 +113,7 @@
 \newcommand{\ehat}{\hat{ \ }}
 \newcommand{\Mustata}{Musta\c{t}\u{a}}
 \newcommand{\ceq}{\colonequals}
+\newcommand{\coloneqq}{\colonequals}
 
 \DeclareMathOperator{\GL}{GL}
 \DeclareMathOperator{\SL}{SL}
@@ -187,7 +188,8 @@
 \maketitle
 
 \begin{abstract}
-We develop an algorithm for performing arithmetic operations in rings of finite length $p$-typical Witt vectors over finitely generated $\F_p$-algebras. We them implement this algorithm as a package in the computer algebra system Macaulay2.
+We develop an algorithm for performing arithmetic operations in rings of finite length $p$-typical Witt vectors over finitely generated $\F_p$-algebras. We use this to find delta structures on quotients of polynomial rings. 
+We them implement these algorithm as a package in the computer algebra system Macaulay2. 
 \end{abstract}
 
 \comment{
@@ -216,7 +218,7 @@ is a ring homomorphism.
 \comment{Emphasize computations are hard, maybe point to references? Talk about some history? Mention $W(R)$ is the ``universal $\delta$-ring mapping to $R$"? Talk about quasi-$F$-splitting stuff in the abstract?}
 
 \subsection*{Acknowledgements}
-We would like to thank Karl Schwede for putting our team together and showing us how to work with Macaulay2. We would also like to thank Kevin Tucker and Jakub Witaszek for useful conversations on this topic
+We would like to thank Karl Schwede for putting our team together and showing us how to work with Macaulay2. We would also like to thank Kevin Tucker, Jakub Witaszek, and Nawaj KC for useful conversations on this topic
 
 \section{Finite length Witt vectors as finitely generated algebras}
 
@@ -267,6 +269,41 @@ Next, we apply Proposition \ref{prop-witt-presentation-general} to the special c
 \begin{remark}
 	In the context of Theorem \ref{thm-witt-presentation-poly}, it is useful to think of the variables $Y_k$ as $x_k^{1/p^{n-1}}$.
 \end{remark}
+
+
+\section{$\delta$-rings and $p$-derivations}
+In this section, we explain how we can compute the set of possible $\delta$ structures on a given ring $A$.
+
+It is well known that giving a $\delta$-structure on a ring $A$ is the same as giving a ring map $\phi\colon A\to W_2(A)$ such that $\pi\circ \phi=\id_A$ where $\pi\colon W_2(A)\to A$ is the projection onto the first coordinate. See e.g. \cite[Construction 2.1]{BhattPrismaticLectures2}.
+
+Based on this, we are able to find equations that the $\delta$-structures on a given ring $A$ must solve. \comment{I don't think solve is the right word...}
+
+If $A$ is a polynomial ring, say $A=\F_p[x_1,\ldots, x_n]$ then any map $\phi\colon A\to W_2(A)$ as above must send $f(x_1,\ldots, x_n)$ to $(f(x_1,\ldots, x_n),\delta(f(x_1,\ldots, x_n)))$. Note that this implies that $\delta(x_i)$ can be chosen arbitrarily for each i since 
+\[
+f((x_1,\delta(x_1)),\ldots, (x_n,\delta(x_n)))= (f(x_1,\ldots, x_n),\delta(f(x_1,\ldots, x_n))).
+\]
+Now, if $A$ is instead a quotient of a polynomial ring, say $A=k[x_1,\ldots,x_n]/(g_1,\ldots, g_r)$, then we again have that any map $\phi\colon A\to W_2(A)$ as above must send $f(x_1,\ldots, x_n)$ to $(f(x_1,\ldots, x_n),\delta(f(x_1,\ldots, x_n)))$ and that 
+\[
+f((x_1,\delta(x_1)),\ldots, (x_n,\delta(x_n)))= (f(x_1,\ldots, x_n),\delta(f(x_1,\ldots, x_n))).
+\]
+But in this case, this implies that the $(x_i,\delta(x_i))$ must satisfy the equations defined by the $f_j$s. Note that these are just equations in $W_2(A)$. So if we let $B\coloneqq A[y_1,\ldots,y_n]$ and consider the equations 
+\begin{equation}\label{eqn delta is 0}
+f_j((x_1,y_1),\ldots, (x_n,y_n))= (f_j(x_1,\ldots, x_n),\delta(f_j(x_1,\ldots, x_n)))=(0,0)
+\end{equation}
+then the solutions of the $y_j$s in terms of $x_i$s are precisely the possible values of the $\delta(x_i)$s.
+
+If the field over which we are working isn't $\F_p$ but rather $\F_q$ for $q$ some power of $p$, we can still pretend we are working in over $\F_p$ by adding variables and having a bigger quotient so \autoref{eqn delta is 0} still holds. 
+
+This is exactly what our findFrobeniusLiftConstraints method does. 
+
+\comment{insert example.}
+
+
+Based on this, we are able to find Frobenius liftings ...
+
+
+\section{Quasi $F$-splittings}
+
 
 \bibliography{biblio}
 \bibliographystyle{alpha}
