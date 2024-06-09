@@ -294,15 +294,41 @@ then the solutions of the $y_j$s in terms of $x_i$s are precisely the possible v
 
 If the field over which we are working isn't $\F_p$ but rather $\F_q$ for $q$ some power of $p$, we can still pretend we are working in over $\F_p$ by adding variables and having a bigger quotient so \autoref{eqn delta is 0} still holds. 
 
-This is exactly what our findFrobeniusLiftConstraints method does. 
+This is exactly what our \texttt{findFrobeniusLiftConstraints} method does. One can then use it to find examples of Frobenius lifts in different degrees using the \texttt{findFrobeniusLift} method. 
 
-\comment{insert example.}
+\begin{example} Here is what happens with the cusp for $p=2$.
+    \begin{verbatim}
+        i1: S=ZZ/2[x,y];
+        i2: f=x^2-y^3;
+        i3: findFrobeniusLiftConstraints (f)
+                     3    2      2     4
+        o3 = ideal (y  + x , aa x y + x )
+                               1
+                               
+                       ZZ
+        o3 : Ideal of  --[aa ..aa , x..y]
+        
+                        2   0    1
 
+        i4 : findFrobeniusLift(f,2)
 
-Based on this, we are able to find Frobenius liftings ...
+                 2
+        o4 = {x*y + y, y }
 
+        o4 : List
+        i5 : findFrobeniusLift(f,3)
 
+               3    2       2    3    2                 3    2    2
+        o5 = {x  + x y + x*y  + y  + x  + x*y + x + y, y  + x  + y }
+    \end{verbatim}
+\end{example}
+This tells us that $aa_0=\delta(x)$ can be anything but $aa_1=\delta(y)$ must be such that $\delta(y)x^2y+x^4=0$. Replacing $x^2$ by $y^3$ gives $\delta(y)y^4+y^6=0$ so $\delta(y)\in y^2 +(f)$. This is exactly what \texttt{findFrobeniusLift(f,2)} returns. Trying for solutions with higher degrees will simply add elements of $(f)$ to the solution as one can see when trying \texttt{findFrobeniusLift(f,3)}.
 \section{Quasi $F$-splittings}
+We now explain how to use our code to detect whether or not a given variety is quasi $F$-split. We first recall a Fedder-type criterion for quasi-$F$-splitting. 
+
+\begin{theorem}[{\cite{KawakamiTakamatsuYoshikawaFedderQuasi}}]
+    
+\end{theorem}
 
 
 \bibliography{biblio}
