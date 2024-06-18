@@ -9,51 +9,6 @@ needsPackage "Polyhedra"
 --TODO: remove duplicated lines
 
 --TODO: make this work for a nonprincipal ideal
-findFrobeniusLift=method()
-findFrobeniusLift(RingElement,ZZ) := (f,d) ->(
-I:=ideal f;
-S:=ring I;
-n:=numgens S;
-J := findFrobeniusLiftConstraints(f);
-T := ring J;
-L :=toList((n):0);
-while (evalMap(L,I,T))(J) != 0 do (L=for i from 0 to n-1 list sum for i from 0 to d list random(i,S) );
-L
-)
-
-findFrobeniusLiftConstraints=method()
-findFrobeniusLiftConstraints(RingElement) := (f) ->(
-S:=ring f;
-d:=numgens S;
-T:=prune(S[aa_0..aa_(d-1)]);
-Cf:=flatten entries first coefficients f;
-trim ideal (sum for i in exponents f list product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j)).tuple
-)
-
-findFrobeniusLiftConstraints=method()
-findFrobeniusLiftConstraints(RingElement) := (f) ->(
-S:=ring f;
-d:=numgens S;
-T:=prune(S[aa_0..aa_(d-1)]);
---Cf:=flatten entries first coefficients f;
---Ef :=flatten( exponents\ flatten entries first coefficients f) ;
---WCf:=(apply(Ef,i->product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j)));
---sum flatten (for i from 0 to length Cf - 1 list WCf_i*Ef_i)
-l:=length exponents f;
-trim ideal (sum for i from 0 to l-1 list (flatten entries last coefficients f)_i product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(exponents(i)_j)).tuple
-)
-
-
-
-
-
---isFlatLift
-
-
-
---isFrobeniusLift = method()
-
-
 
 findFrobeniusLift=method()
 findFrobeniusLift(RingElement,ZZ) := (f,d) ->(
@@ -67,26 +22,21 @@ while (evalMap(L,I,T))(J) != 0 do (L=for i from 0 to n-1 list sum for i from 0 t
 L
 )
 
-findFrobeniusLiftConstraints=method()
-findFrobeniusLiftConstraints(RingElement) := (f) ->(
-S:=ring f;
-d:=numgens S;
-T:=prune(S[aa_0..aa_(d-1)]);
-Cf:=flatten entries first coefficients f;
-trim ideal (sum for i in exponents f list product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j)).tuple
-)
+
 
 findFrobeniusLiftConstraints=method()
 findFrobeniusLiftConstraints(RingElement) := (f) ->(
 S:=ring f;
 d:=numgens S;
+aa:=symbol aa;
 T:=prune(S[aa_0..aa_(d-1)]);
---Cf:=flatten entries first coefficients f;
---Ef :=flatten( exponents\ flatten entries first coefficients f) ;
---WCf:=(apply(Ef,i->product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j)));
---sum flatten (for i from 0 to length Cf - 1 list WCf_i*Ef_i)
-trim ideal (sum for i in exponents f list product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j)).tuple
+Cf:=flatten entries last coefficients f;
+Mf:=flatten entries first coefficients f;
+l := length Cf;
+ideal (sum for i from 0 to l-1 list (sub(Cf_i,ZZ)*(product for j from 0 to d-1 list (witt{T_(d+j),T_j})^((flatten exponents(Mf_i))_j))).tuple)
 )
+
+
 
 
 expandFrobeniusConstraints=method()

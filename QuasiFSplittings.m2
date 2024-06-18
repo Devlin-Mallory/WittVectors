@@ -160,8 +160,13 @@ if n>10 then return I#11 else return I#n
 )
 
 artinMazur60 = () -> (
+x:=symbol x;
+y:=symbol y;
+z:=symbol z;
+w:=symbol w;
+u:=symbol u;
 S:=(ZZ/2)[x,y,z,w,u];
- x^5 + y^5 + z^5 + w^5 + u^5 + x*z^3*w + y*z*w^3 + x^2*z*u^2 + y^2*z^2*w + x*y^2*w*u + y*z*w*u^2)
+x^5 + y^5 + z^5 + w^5 + u^5 + x*z^3*w + y*z*w^3 + x^2*z*u^2 + y^2*z^2*w + x*y^2*w*u + y*z*w*u^2)
 
 sampleCY=(p,n,N)->(
 x:=symbol x;
