@@ -326,13 +326,12 @@ This tells us that $aa_0=\delta(x)$ can be anything but $aa_1=\delta(y)$ must be
 \section{Quasi $F$-splittings}
 We now explain how to use our code to detect whether or not a given variety is quasi $F$-split. %We first recall a Fedder-type criterion for quasi-$F$-splitting as in \cite[Theorem 5.8]{KawakamiTakamatsuYoshikawaFedderQuasi}. 
 \begin{example} [\cite{KawakamiTakamatsuYoshikawaFedderQuasi}, Example 7.4] A Calabi-Yau surface of quasi $F$-splitting height $5$.
-
 \begin{verbatim}
 i1 : R=ZZ/3[x,y,z,w];
 
 i2 : I=ideal(x^4 + y^4 + z^4 + w^4 + x^3*z + z^3*w + y*z^2*w + y*z*w^2)
 
-             4    4    3     4      2     3         2    4
+            4    4    3     4      2     3         2    4
 o2 = ideal(x  + y  + x z + z  + y*z w + z w + y*z*w  + w )
 
 o2 : Ideal of R
