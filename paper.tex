@@ -324,11 +324,28 @@ This is exactly what our \texttt{findFrobeniusLiftConstraints} method does. One 
 \end{example}
 This tells us that $aa_0=\delta(x)$ can be anything but $aa_1=\delta(y)$ must be such that $\delta(y)x^2y+x^4=0$. Replacing $x^2$ by $y^3$ gives $\delta(y)y^4+y^6=0$ so $\delta(y)\in y^2 +(f)$. This is exactly what \texttt{findFrobeniusLift(f,2)} returns. Trying for solutions with higher degrees will simply add elements of $(f)$ to the solution as one can see when trying \texttt{findFrobeniusLift(f,3)}.
 \section{Quasi $F$-splittings}
-We now explain how to use our code to detect whether or not a given variety is quasi $F$-split. We first recall a Fedder-type criterion for quasi-$F$-splitting. 
+We now explain how to use our code to detect whether or not a given variety is quasi $F$-split. %We first recall a Fedder-type criterion for quasi-$F$-splitting as in \cite[Theorem 5.8]{KawakamiTakamatsuYoshikawaFedderQuasi}. 
+\begin{example} [\cite{KawakamiTakamatsuYoshikawaFedderQuasi}, Example 7.4] A Calabi-Yau surface of quasi $F$-splitting height $5$.
 
-\begin{theorem}[{\cite{KawakamiTakamatsuYoshikawaFedderQuasi}}]
-    
-\end{theorem}
+\begin{verbatim}
+i1 : R=ZZ/3[x,y,z,w];
+
+i2 : I=ideal(x^4 + y^4 + z^4 + w^4 + x^3*z + z^3*w + y*z^2*w + y*z*w^2)
+
+             4    4    3     4      2     3         2    4
+o2 = ideal(x  + y  + x z + z  + y*z w + z w + y*z*w  + w )
+
+o2 : Ideal of R
+
+i3 : quasiFSplittingNumber(I,1)
+
+i4 : quasiFSplittingNumber(I,7)
+
+o4 = 5
+\end{verbatim}
+\end{example}
+
+The method \texttt{quasiFSplittingNumber} takes an ideal $I\subset R$ and a number $n$ and will return nothing in the case the quasi $F$-splitting number of $R/I$ is less than $n$, and the quasi $F$-splitting number of $R/I$ otherwise. 
 
 
 \bibliography{biblio}
