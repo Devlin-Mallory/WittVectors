@@ -69,6 +69,7 @@ u(1,Delta1(f^(p-1))*a)
 )
 
 
+--TODO: make this and quasiFSplittingNumber more clearly defined 
 fSplittingHeight=method(Options=>{MaxHeight=>100})
 fSplittingHeight(Ideal) := ZZ => opts-> I0->(
 S:=ring I0;
@@ -138,7 +139,11 @@ matrix{for i in I_* list pushmultiple(i,GS,transformS)}
 
 table2=method()
 table2(ZZ):=n->(
-S=(ZZ/3)[x,y,z,w];
+x:=symbol x;
+y:=symbol y;
+z:=symbol z;
+w:=symbol w;
+S:=(ZZ/3)[x,y,z,w];
 I:=new MutableHashTable from {};
 I#1=x^4 + y^4 + z^4 + 2*w^4 + x^2* y*w + y*z^2*w;
 I#2=x^4 + 2*y^4 + 2*z^4 + 2*w^4 + x*y*z^2;

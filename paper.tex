@@ -258,7 +258,6 @@ Next, we apply Proposition \ref{prop-witt-presentation-general} to the special c
 	$$ \biggl\{ p^j Y_1^{i_1} Y_2^{i_2} \dots Y_d^{i_d} \ \bigg| \ {{0 \leq j \leq n-1} \atop { 0 \leq i_k \leq p^j}} \biggr\}.$$
 \end{theorem}
 
-\comment{LaTex question: is there a way of substacking the two conditions on the right of the above set?}
 
 \begin{proof}
 	Applying Proposition \ref{prop-witt-presentation-general} to $\tilde R \ceq \Z [Y_1, \dots , Y_d]$, and identifying $R \cong \tilde R / p \tilde R$ by $X_k = [Y_k \mod p \tilde R]$, we see that it suffices to show that
@@ -270,13 +269,15 @@ Next, we apply Proposition \ref{prop-witt-presentation-general} to the special c
 	In the context of Theorem \ref{thm-witt-presentation-poly}, it is useful to think of the variables $Y_k$ as $x_k^{1/p^{n-1}}$.
 \end{remark}
 
+\section{Basic examples}
+
 
 \section{$\delta$-rings and $p$-derivations}
 In this section, we explain how we can compute the set of possible $\delta$ structures on a given ring $A$.
 
 It is well known that giving a $\delta$-structure on a ring $A$ is the same as giving a ring map $\phi\colon A\to W_2(A)$ such that $\pi\circ \phi=\id_A$ where $\pi\colon W_2(A)\to A$ is the projection onto the first coordinate. See e.g. \cite[Construction 2.1]{BhattPrismaticLectures2}.
 
-Based on this, we are able to find equations that the $\delta$-structures on a given ring $A$ must solve. \comment{I don't think solve is the right word...}
+Based on this, we are able to find equations that the $\delta$-structures on a given ring $A$ must satisfy.
 
 If $A$ is a polynomial ring, say $A=\F_p[x_1,\ldots, x_n]$ then any map $\phi\colon A\to W_2(A)$ as above must send $f(x_1,\ldots, x_n)$ to $(f(x_1,\ldots, x_n),\delta(f(x_1,\ldots, x_n)))$. Note that this implies that $\delta(x_i)$ can be chosen arbitrarily for each i since 
 \[

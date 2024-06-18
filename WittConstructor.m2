@@ -157,6 +157,9 @@ wittOverringToTuple(sub(f, matrix{Lexplicit}))
 -------------WittPolynomialRing
 -------------------------------
 
+
+--TODO: add type for Witt ring of non polynomial ring
+
 WittPolynomialRing = new Type of MutableHashTable;
 
 protect wittLength

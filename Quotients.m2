@@ -24,6 +24,7 @@ kernelZZ((flattenRing(B))_1*map(B,ring J)*Phi)
 
 
 
+--TODO: move to the tests
 testWittIdeal=method()
 testWittIdeal(ZZ,ZZ,Ideal):=(d,n,I)->(
 J := wittOverringIdeal(n,I);

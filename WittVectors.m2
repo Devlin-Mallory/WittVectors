@@ -45,6 +45,12 @@ export{
 "tuple",
 "explicitOver",
 "MaxHeight",
+"findFrobeniusLiftConstraints",
+"findFrobeniusLift",
+"createEquations",
+"table2", --MAYBE
+"quasiFSplittingNumber",
+"fSplittingHeight",
 }
 
 
@@ -55,6 +61,10 @@ load "Verschiebung.m2"
 load "FrobeniusWitt.m2"
 load "Quotients.m2"
 load "WittConstructor.m2"
+load "FlatLiftings.m2"
+load "QuasiFSplittings.m2"
+load "tests.m2"
+
 needsPackage "Polyhedra"
 needsPackage "SLPexpressions"
 needsPackage "MinimalPrimes"
@@ -401,4 +411,5 @@ if R.?WittRing==false then R.WittRing = new MutableHashTable ;
 WR
 )
 
+beginDocumentation()
 load "Documentation.m2"
