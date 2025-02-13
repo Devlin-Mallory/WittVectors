@@ -54,3 +54,31 @@ document {
     ///
     }
 
+
+doc ///
+	Key
+	 findFrobeniusLiftConstraints
+	Headline
+	 Finds the restrictions of the delta structures on a ring R
+	Usage
+	 findFrobeniusLiftConstraints (f)
+	Inputs
+	 f: ringElement
+     R: ring f
+	Outputs
+	 : (g_1,...,g_n)
+	Description
+	 Text
+	 Example
+	  
+	 Text
+	 Example
+	 
+	 Text
+	 Example
+	 Text
+	 Example
+	 Text	  
+	SeeAlso
+	
+///
