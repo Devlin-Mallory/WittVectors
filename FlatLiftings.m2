@@ -27,15 +27,16 @@ L
 findFrobeniusLiftConstraints=method()
 findFrobeniusLiftConstraints(RingElement) := (f) ->(
 S:=ring f;
+R:=S/f;
 d:=numgens S;
 aa:=symbol aa;
 T:=prune(S[aa_0..aa_(d-1)]);
-Cf:=flatten entries last coefficients f;
-Mf:=flatten entries first coefficients f;
-l := length Cf;
-ideal (sum for i from 0 to l-1 list (sub(Cf_i,ZZ)*(product for j from 0 to d-1 list (witt{T_(d+j),T_j})^((flatten exponents(Mf_i))_j))).tuple)
+TR:=prune(R[aa_0..aa_(d-1)]);
+Cf:=apply(flatten entries last coefficients f, i->sub(i,ZZ));
+Ef :=flatten( exponents\ flatten entries first coefficients f);
+WCf:=(apply(Ef,i->product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j)));
+sub(trim ideal last (sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tuple, TR)
 )
-
 
 
 
