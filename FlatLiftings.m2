@@ -23,6 +23,17 @@ L
 )
 
 
+findFrobeniusLift(Ideal,ZZ) := (I,d) ->(
+S:=ring I;
+R:=S/I;
+n:=numgens S;
+J := findFrobeniusLiftConstraints(I);
+T := ring J;
+L :=toList((n):0);
+while (evalMap(L,I,T))(J) != 0 do (L=for i from 0 to n-1 list sum for i from 0 to d list random(i,S) );
+apply(L,i->sub(i,R))
+)
+
 
 findFrobeniusLiftConstraints=method()
 findFrobeniusLiftConstraints(RingElement) := (f) ->(
@@ -35,7 +46,21 @@ TR:=prune(R[aa_0..aa_(d-1)]);
 Cf:=apply(flatten entries last coefficients f, i->sub(i,ZZ));
 Ef :=flatten( exponents\ flatten entries first coefficients f);
 WCf:=(apply(Ef,i->product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j)));
-sub(trim ideal last (sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tuple, TR)
+trim sub(ideal last (sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tuple, TR)
+)
+
+findFrobeniusLiftConstraints(Ideal) := (I) ->(
+S:=ring I;
+R:=S/I;
+d:=numgens S;
+aa:=symbol aa;
+T:=prune(S[aa_0..aa_(d-1)]);
+TR:=T/sub(I,T);
+trim sum for f in I_* list(
+Cf:=apply(flatten entries last coefficients f, i->sub(i,ZZ));
+Ef :=flatten( exponents\ flatten entries first coefficients f);
+WCf:=(apply(Ef,i->product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j)));
+sub(ideal last (sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tuple, TR))
 )
 
 
