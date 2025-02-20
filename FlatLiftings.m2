@@ -1,6 +1,3 @@
---needsPackage "WittVectors"
-needsPackage "Polyhedra"
-
 --TODO: add methods to check flatness of families over W(n,k), and to find liftings to these rings
 --TODO: try to write down equations for Raynaud's example
 
@@ -10,44 +7,28 @@ needsPackage "Polyhedra"
 
 --TODO: make this work for a nonprincipal ideal
 
-findFrobeniusLift=method()
-findFrobeniusLift(RingElement,ZZ) := (f,d) ->(
-I:=ideal f;
-S:=ring I;
-n:=numgens S;
-J := findFrobeniusLiftConstraints(f);
-T := ring J;
-L :=toList((n):0);
-while (evalMap(L,I,T))(J) != 0 do (L=for i from 0 to n-1 list sum for i from 0 to d list random(i,S) );
-L
-)
+
+findFrobeniusLift=method(Options=>{Nontrivial=>false})
+
+findFrobeniusLift(ZZ,RingElement) := opts -> (d,f) -> findFrobeniusLift(d, ideal f)
 
 
-findFrobeniusLift(Ideal,ZZ) := (I,d) ->(
+
+findFrobeniusLift(ZZ,Ideal) := opts -> (d,I) ->(
 S:=ring I;
 R:=S/I;
 n:=numgens S;
 J := findFrobeniusLiftConstraints(I);
 T := ring J;
-L :=toList((n):0);
+if not opts.Nontrivial then L :=toList((n):0) else L = for i from 0 to n-1 list sum for i from 0 to d list random(i,S);
 while (evalMap(L,I,T))(J) != 0 do (L=for i from 0 to n-1 list sum for i from 0 to d list random(i,S) );
 apply(L,i->sub(i,R))
 )
 
 
 findFrobeniusLiftConstraints=method()
-findFrobeniusLiftConstraints(RingElement) := (f) ->(
-S:=ring f;
-R:=S/f;
-d:=numgens S;
-aa:=symbol aa;
-T:=prune(S[aa_0..aa_(d-1)]);
-TR:=prune(R[aa_0..aa_(d-1)]);
-Cf:=apply(flatten entries last coefficients f, i->sub(i,ZZ));
-Ef :=flatten( exponents\ flatten entries first coefficients f);
-WCf:=(apply(Ef,i->product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j)));
-trim sub(ideal last (sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tuple, TR)
-)
+findFrobeniusLiftConstraints(RingElement) := (f) -> findFrobeniusLiftConstraints(ideal f)
+
 
 findFrobeniusLiftConstraints(Ideal) := (I) ->(
 S:=ring I;
@@ -66,7 +47,7 @@ sub(ideal last (sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tup
 
 
 expandFrobeniusConstraints=method()
-expandFrobeniusConstraints(RingElement,ZZ) := (f,d)->(
+expandFrobeniusConstraints(ZZ,RingElement) := (d,f)->(
 S := ring f;
 I := findFrobeniusLiftConstraints(f);
 A := ring I;
@@ -80,8 +61,8 @@ expand I
 )
 
 createEquations = method()
-createEquations(RingElement,ZZ):=(f,d)->(
-G:=expandFrobeniusConstraints(f,d);
+createEquations(ZZ,RingElement):=(d,f)->(
+G:=expandFrobeniusConstraints(d,f);
 n:=dim ring f;
 S:=ring f;
 p:=char S;
