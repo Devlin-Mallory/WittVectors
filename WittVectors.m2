@@ -45,6 +45,7 @@ export{
 "tuple",
 "explicitOver",
 "MaxHeight",
+"Nontrivial",
 "findFrobeniusLiftConstraints",
 "findFrobeniusLift",
 "createEquations",
