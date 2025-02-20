@@ -157,9 +157,6 @@ wittOverringToTuple(sub(f, matrix{Lexplicit}))
 -------------WittPolynomialRing
 -------------------------------
 
-
---TODO: add type for Witt ring of non polynomial ring
-
 WittPolynomialRing = new Type of MutableHashTable;
 
 protect wittLength
@@ -203,6 +200,58 @@ random(ZZ, WittPolynomialRing) := opts -> (nn, WPR) -> (
     ll := WPR.wittLength;
     witt apply(toList(1..ll), xx -> random(nn, R))
     )
+
+
+-------------------------------
+-------------WittQuotientRing
+-------------------------------
+
+--TODO: finish here. Net is not working for some reason! Very confusing..
+
+WittQuotientRing = new Type of MutableHashTable;
+
+protect wittLength
+protect overring
+
+witt(ZZ, QuotientRing) := (n,R)->(
+    if not R.?cache then(
+	R.cache = new CacheTable;
+	);
+    if not R.cache.?wittRings then(
+	R.cache.wittRings = new CacheTable;
+	);
+    if not R.cache.wittRings#?n then(
+	W := new WittQuotientRing from MutableHashTable;
+	W.wittLength = n;
+	W.unWitt = R;
+	W.overring = wittOverring(n,R);
+	R.cache.wittRings#n = W;
+	);
+    R.cache.wittRings#n
+)
+
+net(WittQuotientRing) := WQR->(
+	return horizontalJoin("Witt", (net(WQR.wittLength))^-1, "(", net WQR.unWitt, ")");
+)
+
+explicit(WittQuotientRing) := WQR->(
+	if (not WQR.?explicit) then(
+		WQR.explicit = wittVectors(WQR.wittLength, WQR.unWitt);
+	);
+	return WQR.explicit;
+)
+
+explicitOver(WittQuotientRing) := WQR -> (
+    -- make cache!
+    WQR.explicitOver
+    )
+
+random(ZZ, WittQuotientRing) := opts -> (nn, WQR) -> (
+    R := WQR.unWitt;
+    ll := WQR.wittLength;
+    witt apply(toList(1..ll), xx -> random(nn, R))
+    )
+
 
 -------------
 ------------- WittIdeal

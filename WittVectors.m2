@@ -164,21 +164,15 @@ wittTupleToOverring(List) := (LL) -> (
     OR := wittOverring(n, R);
     WittSub := OR.cache.wittSub;
     WittLL := apply(LL, ff -> WittSub(ff));
-    
-    --for j from 0 to n-1 do ( declareVariable inp_j; );
-    --outp := sum (for j from 0 to n-1 list p^j*((inp_j)^(p^(n-1-j))));
-    --slp = makeInterpretedSLProgram(for j from 0 to n-1 list inp_j, {outp});
-    --return (evaluate(slp,matrix{WittLL}))_0_0;
     sum toList apply(0..(n-1), j -> p^j*(WittLL#j)^(p^(n-1-j)) )
     )
---ww = (xx) -> wittTupleToOverring(xx);
 
 
 
 wittVectors=method()
 wittVectors(ZZ,Ring):=(n,R)->(
     --if n == 1 then return R;
-    -- check if R is polynomial ring
+    --check if R is polynomial ring
     if class R =!= PolynomialRing then( 
     	--error "wittVectors currently only implemented for polynomial rings";
         S := ambient R; 
@@ -299,37 +293,6 @@ wittRingToTuple(Ideal) := I -> (
     wittgens := apply(Igens, wittRingToTuple);
     wittIdeal(wittgens)
     )
-
-
-
----
---- Eamon: note that when variables are indexed, like in R = GF(3)[x_1, x_2], wittVectors does
---- not work. I tried to implement the function addIndex below, but I am stuck...
---- The goal would be that, e.g., for R = GF(3)[x_1, x_2], the function addIndex(3, x_2)
---- would return x_(2,3). So far it works for R = GF(3)[x, y]...
----
-
-addIndex = method() 
-
-addIndex(ZZ, IndexedVariable) := (n, x) -> (
-    inputSymbol := x#0;
-    inputIndex := x#1;
-    if ((class inputIndex) === ZZ) then (inputIndex = toSequence{inputIndex});
-    newIndex := append(inputIndex, n);
-    inputSymbol_newIndex
-    )
-
-addIndex(ZZ, Symbol) := (n, x) -> (
-    x_n
-    )
-
-addIndex(ZZ, RingElement) := (n, x) -> (
-    (varName, varIndex) := breakString(toString x);
-    varIndex = value varIndex;
-    addIndex(n, (getSymbol varName)_varIndex)   
-    )
-    
----
 
 breakString = method()
 breakString(String) := s -> (
