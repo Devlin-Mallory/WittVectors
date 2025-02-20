@@ -7,7 +7,7 @@ newPackage(
 	{Name => "Abhay Goel", Email => "u1421426@utah.edu", HomePage => "https://faculty.utah.edu/u1421426-ABHAY_GOEL/teaching/index.hml"},
 	{Name => "Devlin Mallory", Email => "malloryd@math.utah.edu", HomePage => "https://www.math.utah.edu/~malloryd/"},
 	{Name => "Eamon Quinlan-Gallego", Email => "eamon.quinlan@utah.edu", HomePage => "https://eamonqg.github.io/"},
-    	{Name => "Sandra Rodriguez Villalobos", Email => "rodriguez@math.utah.edu", HomePage => "http://www.math.utah.edu/~rodriguez/"}
+    	{Name => "Teppei Takamatsu", Email => "teppeitakamatsu.math@gmail.com", HomePage => "https://sites.google.com/view/teppei-takamatsu/home"}
     },
     Headline => "A Macaulay2 package for Witt vectors",
     Keywords => {"Witt Vectors"},
