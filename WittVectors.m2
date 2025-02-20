@@ -56,6 +56,13 @@ export{
 
 
 
+
+needsPackage "Polyhedra"
+needsPackage "SLPexpressions"
+needsPackage "MinimalPrimes"
+needsPackage "Elimination"
+rld = () -> (loadPackage "WittVectors")
+
 load "Kernels.m2"
 load "Verschiebung.m2"
 load "FrobeniusWitt.m2"
@@ -65,10 +72,6 @@ load "FlatLiftings.m2"
 load "QuasiFSplittings.m2"
 load "tests.m2"
 
-needsPackage "Polyhedra"
-needsPackage "SLPexpressions"
-needsPackage "MinimalPrimes"
-rld = () -> (loadPackage "WittVectors")
 
 ---NEW TO DO
 ---1. 
