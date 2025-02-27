@@ -20,8 +20,9 @@ R:=S/I;
 n:=numgens S;
 J := findFrobeniusLiftConstraints(I);
 T := ring J;
+j := 0;
 if not opts.Nontrivial then L :=toList((n):0) else L = for i from 0 to n-1 list sum for i from 0 to d list random(i,S);
-while (evalMap(L,I,T))(J) != 0 do (L=for i from 0 to n-1 list sum for i from 0 to d list random(i,S) );
+while (evalMap(L,I,T))(J) != 0 do (print j; j = j +1 ;  print L; L=for i from 0 to n-1 list sum for i from 0 to d list random(i,S) );
 apply(L,i->sub(i,R))
 )
 
@@ -57,6 +58,7 @@ B := S[c_(toList(n:0),{1})..c_(toList(n:d),{n})];
 monomials := apply(select( latticePoints hypercube(n, 0, d),i->sum entries i <= {d}),j->entries j) ;
 mapList := for i from 1 to n list sum apply(monomials,j->S_(flatten j)*c_(toSequence({flatten j}|{{i}})));
 expand:=map(B,A,mapList|gens S);
+--move the resulting ideal to B/fB?
 expand I
 )
 
@@ -71,7 +73,7 @@ cc:=symbol cc;
 Bcc := T[cc_(toList(n:0))..cc_(toList(n:d))];
 monomials := apply(select( latticePoints hypercube(n, 0, d),i->sum entries i <= {d}),j->entries j) ;
 genericElement:=sum apply(monomials,j->S_(flatten j)*cc_(flatten j));
-constraint:=f*(genericElement)-sub(G_1,Bcc);
+constraint:=f*(genericElement)-sub(G_0,Bcc);
 --Bflatmap:=last flattenRing(Bcc);
 C := ((ZZ/p)[gens T|gens Bcc])[gens S];
 Cflatmap:=inverse last flattenRing(C);
