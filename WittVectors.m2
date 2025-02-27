@@ -37,6 +37,7 @@ export{
 "wittOverrings",
 "CropWittVector",
 "WittPolynomialRing",
+"WittQuotientRing",
 "explicit",
 "wittRings",
 "WittIdeal",
@@ -124,14 +125,33 @@ load "tests.m2"
 
 
 wittOverring = method()
+
 wittOverring(ZZ, Ring) := (n, R) -> (
+    --TODO: for a quotient ring R, test wittSub of its overring.
     if class R =!= PolynomialRing then(
-	--error "wittOverring currently only implemented for polynomial rings";
         S := ambient R; 
         --TODO: flattenRing S before checking its polynomial?
-        if class S =!= PolynomialRing then( error "wittVectors currently only implemented for quotients of polynomial rings");
-        I:=ideal R; 
-        return quotient wittOverringIdeal(n,I)
+        if class S =!= PolynomialRing then(
+	    error "wittVectors currently only implemented for quotients of polynomial rings"
+	    );
+        I:=ideal R;
+
+	if not R.?cache then(
+	    R.cache = new CacheTable
+	    );
+	if not R.cache.?wittOverrings then(
+	    R.cache.wittOverrings = new MutableHashTable;
+	    );
+	if not R.cache.wittOverrings#?n then(
+	    OR := quotient wittOverringIdeal(n, I);
+	    OR.cache = new CacheTable;
+	    ORvars := flatten entries vars OR;
+	    WittSub := map (OR, R, ORvars); -- WARNING: not a real map!
+	    OR.cache.wittSub = WittSub;
+	    OR.cache.unWitt = R;
+	    R.cache.wittOverrings#n = OR;
+	    );
+	R.cache.wittOverrings#n
 	);
     Rvars := flatten entries vars R;
     p := char R;

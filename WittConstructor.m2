@@ -206,12 +206,9 @@ random(ZZ, WittPolynomialRing) := opts -> (nn, WPR) -> (
 -------------WittQuotientRing
 -------------------------------
 
---TODO: finish here. Net is not working for some reason! Very confusing..
+--TODO: make sure arithmetic of witt vectors in WittQuotientRing work fine.
 
 WittQuotientRing = new Type of MutableHashTable;
-
-protect wittLength
-protect overring
 
 witt(ZZ, QuotientRing) := (n,R)->(
     if not R.?cache then(
@@ -230,16 +227,16 @@ witt(ZZ, QuotientRing) := (n,R)->(
     R.cache.wittRings#n
 )
 
-net(WittQuotientRing) := WQR->(
-	return horizontalJoin("Witt", (net(WQR.wittLength))^-1, "(", net WQR.unWitt, ")");
-)
+net(WittQuotientRing) := WQR -> (
+    return horizontalJoin("Witt", (net(WQR.wittLength))^-1, "(", net WQR.unWitt, ")")
+    )
 
 explicit(WittQuotientRing) := WQR->(
 	if (not WQR.?explicit) then(
 		WQR.explicit = wittVectors(WQR.wittLength, WQR.unWitt);
 	);
 	return WQR.explicit;
-)
+	)
 
 explicitOver(WittQuotientRing) := WQR -> (
     -- make cache!
@@ -357,20 +354,3 @@ net WittIdeal := WI -> (
 ------------ WittMatrix
 
 WittMatrix = new Type of MutableHashTable;
-
-------------- WittQuotientRing
-
-WittQuotientRing = new Type of MutableHashTable;
-
-protect wittAmbient
-
---WittPolynomialRing / WittIdeal := (WPR, WI) -> (
-  --  Q := new WittQuotientRing from MutableHashTable;
-   -- Q.wittAmbient = WPR;
-   -- Q.wittIdeal = WI;
-   -- return Q
-   -- )
-
---net(WittQuotientRing) := QR -> (
-  --  (expression QR.wittAmbient) / (expression QR.wittIdeal)
-   -- )
