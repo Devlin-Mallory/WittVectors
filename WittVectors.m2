@@ -20,7 +20,7 @@ export{
 "rld",
 "witt",
 "wittOverring",
-"wittVectors",
+--"wittVectors",
 "WittRingElement",
 "wittTupleToOverring",
 "wittTupleToRing",
@@ -186,8 +186,6 @@ wittVectors(ZZ,Ring):=(n,R)->(
         return quotient wittRingIdeal(n,I)
     );
     --
-    if R.?cache==true and R.cache.?WittRing==true and R.cache.WittRing#?n==true then return R.cache.WittRing#n else
-    --replace by caching witt(n,R).explicit? or don't cache at all, and cache only via explicit function?
     p := char R;
     d := numgens R; -- number of variables
     baseVariables := apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
@@ -208,12 +206,9 @@ wittVectors(ZZ,Ring):=(n,R)->(
     aK := sub(K, aA);
     WR := quotient (iA + aK);
     Phi := map(B,WR,L);
-    --this is all caching stuff
+    --cache overringMap and unWitt
     WR.cache.overringMap=Phi;
     WR.cache.unWitt = R;
-    if R.?cache==false then R.cache= new CacheTable;
-    if R.cache.?WittRing==false then R.cache.WittRing = new MutableHashTable ;
-    (R.cache.WittRing)#n = WR;
     WR
     )
 

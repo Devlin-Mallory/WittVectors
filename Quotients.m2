@@ -15,9 +15,10 @@ wittOverringIdeal(ZZ,Ideal):=(n,I)->(
 wittRingIdeal=method()
 wittRingIdeal(ZZ,Ideal):=(n,I)->(
 J:=wittOverringIdeal(n,I);
-WR:=wittVectors(n,ring I);
+WittR := witt(n, ring I);
+WR:=explicit WittR;
 Phi := WR.cache.overringMap;
- OR:=target Phi;
+OR:=target Phi;
 B:=quotient J;
 kernelZZ((flattenRing(B))_1*map(B,ring J)*Phi)
 )
