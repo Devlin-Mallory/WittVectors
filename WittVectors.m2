@@ -166,10 +166,10 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 	);
     if not R.cache.wittOverrings#?n then(
 	T := symbol T;
-	OR := ZZ[T_1 .. T_d] / p^n;
+	OR = ZZ[T_1 .. T_d] / p^n;
 	OR.cache = new CacheTable;
-	ORvars := flatten entries vars OR;
-	WittSub := map(OR, R, ORvars); -- WARNING: this is not a "real" map!
+	ORvars = flatten entries vars OR;
+	WittSub = map(OR, R, ORvars); -- WARNING: this is not a "real" map!
 	OR.cache.wittSub = WittSub;
 	OR.cache.unWitt = R;
 	R.cache.wittOverrings#n = OR;
