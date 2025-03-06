@@ -143,7 +143,6 @@ CropWittVector(WittRingElement,ZZ):= (w,n)->(
     return witt L;
 )
 
-
 subInWittRing = method()
 subInWittRing(List,RingElement) := (L,f) -> (
 Lrings := unique apply(L,ring);

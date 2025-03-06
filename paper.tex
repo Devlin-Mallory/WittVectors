@@ -8,6 +8,7 @@
 \usepackage{colonequals}
 %
 \usepackage[colorlinks,  citecolor=black, linkcolor = black, urlcolor = black]{hyperref} 
+\usepackage{forest}
 %
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
@@ -179,6 +180,9 @@
 \renewcommand{\to}{\longrightarrow}
 \newcommand{\from}{\longleftarrow}
 
+%%%%%%
+
+\newcommand{\code}{\texttt}
 	
 
 \begin{document}
@@ -346,6 +350,57 @@ o4 = 5
 \end{example}
 
 The method \texttt{quasiFSplittingNumber} takes an ideal $I\subset R$ and a number $n$ and will return nothing in the case the quasi $F$-splitting number of $R/I$ is less than $n$, and the quasi $F$-splitting number of $R/I$ otherwise. 
+
+\section{Details on the \texttt{Macaulay2} package}
+
+\subsection{The \code{WittPolynomialRing} class}
+
+Given a \code{PolynomialRing} object, say $R$, and an integer $n \geq 0$, running \code{witt(n, R)} creates an object of the new class \code{WittPolynomialRing}, which is a \code{MutableHashTable} with special entries as follows:
+
+
+\begin{forest}
+  for tree={
+    font=\ttfamily,
+    grow'=0,
+    child anchor=west,
+    parent anchor=south,
+    anchor=west,
+    calign=first,
+    edge path={
+      \noexpand\path [draw, \forestoption{edge}]
+      (!u.south west) +(7.5pt,0) |- node[fill,inner sep=1.25pt] {} (.child anchor)\forestoption{edge label};
+    },
+    before typesetting nodes={
+      if n=1
+        {insert before={[,phantom]}}
+        {}
+    },
+    fit=band,
+    before computing xy={l=15pt},
+  }
+[WittPolynomialRing
+  [wittLength]
+  [unWitt]
+  [overring
+    [wittSub]
+    [unWitt]
+  ]
+  [explicit]
+]
+\end{forest}
+
+\comment{Do we need unWitts on both overrings and WittPolynomialRings?}
+
+
+
+\subsection{Caching}
+
+The \code{PolynomialRing} and \code{QuotientRing} classes in \code{Macaulay2} have a \code{cache} key, which is used to store data like Grobner bases, etc... 
+
+For a \code{PolynomialRing} or \code{QuotientRing}, say \code{R}, our package (when called appropriately) creates keys \code{R.cache.wittVectors.n} (where $n$ is an integer), and keys within as follows:
+
+
+
 
 
 \bibliography{biblio}
