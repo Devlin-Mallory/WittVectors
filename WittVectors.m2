@@ -53,6 +53,7 @@ export{
 "table2", --MAYBE
 "quasiFSplittingNumber",
 "fSplittingHeight",
+"overring"
 }
 
 
@@ -135,46 +136,26 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 	    error "wittVectors currently only implemented for quotients of polynomial rings"
 	    );
         I:=ideal R;
-
-	if not R.?cache then(
-	    R.cache = new CacheTable
-	    );
-	if not R.cache.?wittOverrings then(
-	    R.cache.wittOverrings = new MutableHashTable;
-	    );
-	if not R.cache.wittOverrings#?n then(
-	    OR := quotient wittOverringIdeal(n, I);
-	    OR.cache = new CacheTable;
-	    ORvars := flatten entries vars OR;
-	    WittSub := map (OR, R, ORvars); -- WARNING: not a real map!
-	    OR.cache.wittSub = WittSub;
-	    OR.cache.unWitt = R;
-	    R.cache.wittOverrings#n = OR;
-	    );
-	R.cache.wittOverrings#n
-	);
-    Rvars := flatten entries vars R;
-    p := char R;
-    d := length Rvars;
-    -- we create the WittOverring; called so because the n-th Witt ring of R
-    -- will be a subring of this WittOverring.
-    if not R.?cache then(
-	R.cache = new CacheTable
-	);
-    if not R.cache.?wittOverrings then(
-	R.cache.wittOverrings = new MutableHashTable;
-	);
-    if not R.cache.wittOverrings#?n then(
-	T := symbol T;
+	OR := quotient wittOverringIdeal(n, I);
+	OR.cache = new CacheTable;
+	ORvars := flatten entries vars OR;
+	WittSub := map (OR, R, ORvars); -- WARNING: not a real map!
+	OR.cache.wittSub = WittSub;
+        OR.cache.unWitt = R;);
+    if class R === PolynomialRing then(
+        Rvars := flatten entries vars R;
+        p := char R;
+        d := length Rvars;
+        -- we create the WittOverring; called so because the n-th Witt ring of R
+        -- will be a subring of this WittOverring.
+        T := symbol T;
 	OR = ZZ[T_1 .. T_d] / p^n;
 	OR.cache = new CacheTable;
 	ORvars = flatten entries vars OR;
 	WittSub = map(OR, R, ORvars); -- WARNING: this is not a "real" map!
 	OR.cache.wittSub = WittSub;
-	OR.cache.unWitt = R;
-	R.cache.wittOverrings#n = OR;
-	);
-    R.cache.wittOverrings#n
+	OR.cache.unWitt = R;);
+    OR
 )
 
 wittTupleToOverring = method()
@@ -182,7 +163,9 @@ wittTupleToOverring(List) := (LL) -> (
     R := ring first LL;
     p := char R;
     n := length LL;
-    OR := wittOverring(n, R);
+    W := witt(n, R);
+    --OR := wittOverring(n, R);
+    OR := W.overring;
     WittSub := OR.cache.wittSub;
     WittLL := apply(LL, ff -> WittSub(ff));
     sum toList apply(0..(n-1), j -> p^j*(WittLL#j)^(p^(n-1-j)) )
@@ -190,12 +173,12 @@ wittTupleToOverring(List) := (LL) -> (
 
 
 
+--calculates the explicit Witt ring of a polynomial ring
 wittVectors=method()
 wittVectors(ZZ,Ring):=(n,R)->(
     --if n == 1 then return R;
     --check if R is polynomial ring
     if class R =!= PolynomialRing then( 
-    	--error "wittVectors currently only implemented for polynomial rings";
         S := ambient R; 
         --TODO: flattenRing S before checking its polynomial?
         if class S =!= PolynomialRing then( error "wittVectors currently only implemented for quotients of polynomial rings");
@@ -204,6 +187,7 @@ wittVectors(ZZ,Ring):=(n,R)->(
     );
     --
     if R.?cache==true and R.cache.?WittRing==true and R.cache.WittRing#?n==true then return R.cache.WittRing#n else
+    --replace by caching witt(n,R).explicit? or don't cache at all, and cache only via explicit function?
     p := char R;
     d := numgens R; -- number of variables
     baseVariables := apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
@@ -215,7 +199,8 @@ wittVectors(ZZ,Ring):=(n,R)->(
     t := symbol t;
     --t_i is x_i^(1/p^n)
     --B := ZZ[t_0..t_(d-1)]/p^n;
-    B:=wittOverring(n,R);
+    wittR := witt(n,R);
+    B:=wittR.overring;
     L := for i in cubes list p^(first i)*(product for j from 0 to d - 1 list B_j^((last i)_j*p^(n-first i -1)));
     aA := ambient A;
     iA := ideal A;
@@ -298,8 +283,8 @@ wittOverringToTuple(RingElement) := F -> (
     
     if n == 1 then(
 	return witt{ unWittSub(F) });
-    
-    OR1 := wittOverring(n-1, R);
+    WR1 := witt(n-1, R); 
+    OR1 := WR1.overring;
     wittReduce := map( OR1, OR, vars OR1);
     
     F0 := F % ideal(sub(p, OR));
