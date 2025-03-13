@@ -302,7 +302,9 @@ trim (WittIdeal) := opts -> I -> (
 generators (WittIdeal) := opts -> I -> (
     toSequence I.wittGenerators
     )
-    
+
+---- containment: TODO
+
 --- equality
 
 WittIdeal == WittIdeal := (I, J) -> (
