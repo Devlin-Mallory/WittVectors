@@ -22,13 +22,3 @@ OR:=target Phi;
 B:=quotient J;
 kernelZZ((flattenRing(B))_1*map(B,ring J)*Phi)
 )
-
-
-
---TODO: move to the tests
-testWittIdeal=method()
-testWittIdeal(ZZ,ZZ,Ideal):=(d,n,I)->(
-J := wittOverringIdeal(n,I);
-f:=for i from 0 to n-1 list random(d,I);
-isSubset(ideal wittTupleToOverring f,J)
-)

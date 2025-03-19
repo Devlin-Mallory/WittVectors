@@ -1,10 +1,12 @@
 --here's where we'll define classes and class operations
 
-needsPackage "TestIdeals"
+
+
 witt = method()
 explicit = method()
 explicitOver = method()
 wittIdeal = method(Dispatch => Thing)
+verschiebung = method()
 
 ---
 --- WittRingElement
@@ -110,11 +112,13 @@ frobenius(WittRingElement) := ww -> (
     )
 
 frobenius(ZZ, WittRingElement) := (nn,ww) -> (
-    witt frobeniusOnWitt(nn, ww.tuple)
+    p := char (ring ww).unWitt;
+    witt apply(ww.tuple, i-> i^(p^nn))
     )
 
 verschiebung(WittRingElement) := ww -> (
-    witt verschiebung(ww.tuple)
+    R := (ring ww).unWitt;
+    witt({0_R}|ww.tuple)
     )
 
 explicit(WittRingElement) := w -> (

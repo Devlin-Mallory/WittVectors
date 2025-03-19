@@ -27,6 +27,7 @@ export{
 "wittRingToTuple",
 "wittOverringToTuple",
 "verschiebung",
+"frobenius",
 "frobeniusOnWitt",
 "wittOverringIdeal",
 "wittRingIdeal",
@@ -62,17 +63,19 @@ export{
 
 
 
+needsPackage "TestIdeals"
+importFrom_TestIdeals { "frobenius" }
 needsPackage "Polyhedra"
 needsPackage "SLPexpressions"
 needsPackage "MinimalPrimes"
 needsPackage "Elimination"
 rld = () -> (loadPackage "WittVectors")
 
+load "WittConstructor.m2"
 load "Kernels.m2"
 load "Verschiebung.m2"
 load "FrobeniusWitt.m2"
 load "Quotients.m2"
-load "WittConstructor.m2"
 load "FlatLiftings.m2"
 load "QuasiFSplittings.m2"
 load "WittRingMap.m2"
@@ -80,7 +83,12 @@ load "tests.m2"
 
 
 ---NEW TO DO
----1. 
+---1. witt of ring map
+---2. once we have Verschiebung and frobenius for overring elements, delete the m2 files defining them
+---3. move all package imports to this file
+---4. change R.cache.wittRings to R.cache.wittVectors
+---5.  decide about explicit witt ring class
+---6. fix frobenius method issue
 
 
 ---TO DO
@@ -89,7 +97,6 @@ load "tests.m2"
 ---3. fix kernelZZ to be more robust (should be able to get rid of degree check in wittTupleToRing)
 ---4. implement test for non-defined maps
 ---5. in wittOverringToTuple, does going mod a smaller power of p speed things up?
----6. Prove that wittVector(n,R) is actually the ring of Witt Vectors of R.
 
 ---7. New classes: WittVector(call this WittElement?), WittRing, WittIdeal, WittMap(?).
 --- Put these in WittConstructor
@@ -123,9 +130,7 @@ load "tests.m2"
 --- Frobenius lifts (rings are themselves over W_n).
 
 --- 8. Implement for all finite fields (not just F_p for prime p)
---- 9. subtract witt vectors
 
---- 9. This should throw an error instead of looping forever: R = GF(3)[x,y]; explicit(witt{z,y})
 
 
 wittOverring = method()

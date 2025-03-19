@@ -1,5 +1,3 @@
-needsPackage "TestIdeals"
---needsPackage "WittVectors"
 needsPackage "PushForward"
 
 Delta1=method()
