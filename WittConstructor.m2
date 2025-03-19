@@ -164,6 +164,7 @@ WittPolynomialRing = new Type of MutableHashTable;
 
 protect wittLength
 protect overring
+protect unWitt 
 
 witt(ZZ,PolynomialRing) := (n,R)->(
     if not R.?cache then(
@@ -229,6 +230,9 @@ witt(ZZ, QuotientRing) := (n,R)->(
 	);
     R.cache.wittRings#n
 )
+
+length(WittQuotientRing) := W -> W.wittLength
+length(WittPolynomialRing) := W -> W.wittLength
 
 net(WittQuotientRing) := WQR -> (
     return horizontalJoin("Witt", (net(WQR.wittLength))^-1, "(", net WQR.unWitt, ")")

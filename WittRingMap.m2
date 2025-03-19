@@ -28,9 +28,10 @@ WittRingMap * WittRingMap :=  WittRingMap => (f,g) -> (
 )
 
 explicit(WittRingMap) := Wf -> (
-Wse := explicit source Wf;
-Wte := explicit target Wf;
-for i in gens Wse list wittTupleToRing( apply((wittRingToTuple i).tuple, j->(baseMap Wf)(j) ))
+    Wse := explicit source Wf;
+    Wte := explicit target Wf;
+    mapList := for i in gens Wse list wittTupleToRing( witt apply((wittRingToTuple i).tuple, j->(baseMap Wf)(j) ));
+    map(Wte, Wse, mapList)
 )
 
 --todo: add ^
@@ -38,5 +39,5 @@ for i in gens Wse list wittTupleToRing( apply((wittRingToTuple i).tuple, j->(bas
 target(WittRingMap) := W -> W.target
 source(WittRingMap) := W -> W.source
 
-baseMap := method()
+baseMap = method()
 baseMap(WittRingMap) := W -> W.baseMap

@@ -86,9 +86,9 @@ load "tests.m2"
 ---1. witt of ring map
 ---2. once we have Verschiebung and frobenius for overring elements, delete the m2 files defining them
 ---3. move all package imports to this file
----4. change R.cache.wittRings to R.cache.wittVectors
----5.  decide about explicit witt ring class
+---5. decide about explicit witt ring class
 ---6. fix frobenius method issue
+---7. method for WR -> R? (currently available as WR.unWitt) likewise wittLength
 
 
 ---TO DO
@@ -179,6 +179,19 @@ wittTupleToOverring(List) := (LL) -> (
     sum toList apply(0..(n-1), j -> p^j*(WittLL#j)^(p^(n-1-j)) )
     )
 
+wittTupleToOverring(WittRingElement) := w -> (
+    W := ring w;
+    R := W.unWitt;
+    n := W.wittLength;
+    p := char R;
+    OR := W.overring;
+    WittSub := OR.cache.wittSub;
+    WittLL := apply(w.tuple, ff -> WittSub(ff));
+    sum toList apply(0..(n-1), j -> p^j*(WittLL#j)^(p^(n-1-j)) )
+    )
+
+
+
 
 
 --calculates the explicit Witt ring of a polynomial ring
@@ -255,6 +268,32 @@ wittTupleToRing(List):=(L)->(
 	)
     --G//Phi(vars source Phi)
     )
+
+wittTupleToRing(WittRingElement):= w-> (
+    W := ring w;
+    n := W.wittLength;
+    --if n == 1 then return first L;
+    L := w.tuple;
+    R := W.unWitt;
+    p := char R;
+    WR := explicit W;
+    use R;
+    G:=wittTupleToOverring(w);
+    Phi := WR.cache.overringMap;
+    --print G;
+    sum for m in terms G list(
+	if degree m == {0} then sub(m,source Phi) else(
+	    (B,pi):=flattenRing quotient ideal m;
+	    --the below method doesn't always work to find a preimage... we should figure out a better way    
+	    preimages := (kernelZZ(pi*map(source pi,WR,Phi)))_*;
+	    multiplied:=flatten for i in preimages list for j from 1 to p^n-1 list i*j;
+	    first select(multiplied,i->Phi(i)==m)
+	    )    
+	)
+    --G//Phi(vars source Phi)
+    )
+
+
 
 
 wittRingToTuple=method()
