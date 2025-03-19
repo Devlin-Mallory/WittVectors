@@ -37,6 +37,8 @@ export{
 "wittOverrings",
 "CropWittVector",
 "WittPolynomialRing",
+"WittRingMap",
+"baseMap",
 "WittQuotientRing",
 "explicit",
 "wittRings",
@@ -73,6 +75,7 @@ load "Quotients.m2"
 load "WittConstructor.m2"
 load "FlatLiftings.m2"
 load "QuasiFSplittings.m2"
+load "WittRingMap.m2"
 load "tests.m2"
 
 
