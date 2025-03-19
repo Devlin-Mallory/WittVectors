@@ -27,8 +27,6 @@ export{
 "wittRingToTuple",
 "wittOverringToTuple",
 "verschiebung",
-"frobenius",
-"frobeniusOnWitt",
 "wittOverringIdeal",
 "wittRingIdeal",
 "unWitt",
@@ -56,16 +54,16 @@ export{
 "table2", --MAYBE
 "quasiFSplittingNumber",
 "fSplittingHeight",
-"overring"
+"overring",
+"wittFrobenius"
 }
 
 
 
 
-
 needsPackage "TestIdeals"
-importFrom_TestIdeals { "frobenius" }
 needsPackage "Polyhedra"
+needsPackage "PushForward"
 needsPackage "SLPexpressions"
 needsPackage "MinimalPrimes"
 needsPackage "Elimination"
@@ -74,7 +72,6 @@ rld = () -> (loadPackage "WittVectors")
 load "WittConstructor.m2"
 load "Kernels.m2"
 load "Verschiebung.m2"
-load "FrobeniusWitt.m2"
 load "Quotients.m2"
 load "FlatLiftings.m2"
 load "QuasiFSplittings.m2"
@@ -82,12 +79,13 @@ load "WittRingMap.m2"
 load "tests.m2"
 
 
+
 ---NEW TO DO
----1. witt of ring map
+---1. witt of ring map (DONE) and have it act on elements
 ---2. once we have Verschiebung and frobenius for overring elements, delete the m2 files defining them
 ---3. move all package imports to this file
+---4. change all wittTupleTo(Over)ring(List) to WittRingElement version
 ---5. decide about explicit witt ring class
----6. fix frobenius method issue
 ---7. method for WR -> R? (currently available as WR.unWitt) likewise wittLength
 
 

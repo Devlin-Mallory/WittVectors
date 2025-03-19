@@ -1,4 +1,3 @@
-needsPackage "PushForward"
 
 Delta1=method()
 Delta1(RingElement):=a->(

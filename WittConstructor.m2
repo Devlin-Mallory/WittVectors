@@ -107,11 +107,10 @@ WittRingElement == WittRingElement := (w1, w2) -> (
     w1.tuple == w2.tuple
     )
 
-frobenius(WittRingElement) := ww -> (
-    witt frobeniusOnWitt(1,ww.tuple)
-    )
+wittFrobenius = method()
+wittFrobenius(WittRingElement) := ww -> wittFrobenius(1, ww)
 
-frobenius(ZZ, WittRingElement) := (nn,ww) -> (
+wittFrobenius(ZZ, WittRingElement) := (nn,ww) -> (
     p := char (ring ww).unWitt;
     witt apply(ww.tuple, i-> i^(p^nn))
     )
