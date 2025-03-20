@@ -53,3 +53,12 @@ TEST ///
     use ring J
     J == ideal(c*x^2*y+x^4)
 ///
+
+
+TEST ///
+    S = (ZZ/2)[x,y]
+    f = x^2 + y^3
+    I = ideal(f)
+    L = findFrobeniusLift(2,I)
+    L#1 == y^2
+//
