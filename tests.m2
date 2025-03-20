@@ -42,3 +42,11 @@ TEST ///
     w1 = witt{x_1,x_2,x_3}
     frobenius(1,w1) == witt{x_1^5,x_2^5,x_3^5}    
 ///
+
+
+TEST ///
+    S = (ZZ/2)[x,y]
+    f = x^2 + y^3
+    I = ideal(f)
+    findFrobeniusLiftConstraints(I) == ideal(aa_1 x^2y+x^4)
+///
