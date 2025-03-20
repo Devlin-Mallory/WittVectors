@@ -13,6 +13,8 @@ net(WittRingMap) := Wf->(
 	return horizontalJoin("WittRingMap ", net(Wf.target), " <-- ", net(Wf.source));
 )
 
+witt(ZZ, ZZ, RingMap) := WittRingMap => (mm, nn, ff) -> (ff)
+
 witt(ZZ, RingMap) := WittRingMap => (n, f) -> (
     R := source f;
     S := target f;
