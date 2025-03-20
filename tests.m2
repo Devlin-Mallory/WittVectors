@@ -48,5 +48,5 @@ TEST ///
     S = (ZZ/2)[x,y]
     f = x^2 + y^3
     I = ideal(f)
-    findFrobeniusLiftConstraints(I) == ideal(aa_1 x^2y+x^4)
+    findFrobeniusLiftConstraints(I) == ideal(aa_1*x^2*y+x^4)
 ///
