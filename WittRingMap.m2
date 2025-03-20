@@ -7,30 +7,40 @@
 -- where the last map is truncation. Would still like to keep syntax witt(n, f) = witt((n,n), f).
 -- This would allow truncation maps to also be considered WittRingMaps.
 
+-- Do we want to allow syntax map(WittRing, WittRing, {...})?
+
 WittRingMap = new Type of MutableHashTable;
 
 net(WittRingMap) := Wf->(
 	return horizontalJoin("WittRingMap ", net(Wf.target), " <-- ", net(Wf.source));
 )
 
-witt(ZZ, ZZ, RingMap) := WittRingMap => (mm, nn, ff) -> (ff)
-
-witt(ZZ, RingMap) := WittRingMap => (n, f) -> (
-    R := source f;
-    S := target f;
-    WR := witt(n,R);
-    WS := witt(n,S);
+witt(ZZ, ZZ , RingMap) := WittRingMap => (mm, nn, ff) -> (
+    if mm > nn then error "wittLength of target is bigger than wittLength of source";
+    R := source ff;
+    S := target ff;
+    WR := witt(nn, R);
+    WS := witt(mm, S);
     Wf := new WittRingMap from MutableHashTable;
     Wf.source = WR;
     Wf.target = WS;
-    Wf.baseMap = f;
-    Wf.wittLength = n;
+    Wf.baseMap = ff;
     Wf
-)
+    )
 
-WittRingMap * WittRingMap :=  WittRingMap => (f,g) -> (
-    if source g =!= target f then error "ring maps not composable";
-    witt(f.wittLength, f.baseMap*g.baseMap)
+witt(ZZ, RingMap) := WittRingMap => (n, f) -> (
+    witt(n,n,f)
+    )
+
+
+---
+--- TODO: need a function wittLength(WittPolynomialRing) that returns the wittLength; then finish the function below.
+--- Same for WittQuotientRing.
+---
+
+WittRingMap * WittRingMap :=  WittRingMap => (gg, ff) -> (
+    if source gg =!= target ff then error "WittRingMap's given are not composable";
+    witt( target(gg).wittLength, source(ff).wittLength , ff.baseMap*gg.baseMap)
 )
 
 explicit(WittRingMap) := Wf -> (
