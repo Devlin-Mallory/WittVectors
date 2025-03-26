@@ -3,6 +3,7 @@
 
 
 witt = method()
+wittLength = method()
 explicit = method()
 explicitOver = method()
 wittIdeal = method(Dispatch => Thing)
@@ -161,7 +162,6 @@ wittOverringToTuple(sub(f, matrix{Lexplicit}))
 
 WittPolynomialRing = new Type of MutableHashTable;
 
-protect wittLength
 protect overring
 protect unWitt 
 
@@ -231,8 +231,8 @@ witt(ZZ, QuotientRing) := (n,R)->(
     R.cache.wittRings#n
 )
 
-length(WittQuotientRing) := W -> W.wittLength
-length(WittPolynomialRing) := W -> W.wittLength
+wittLength(WittQuotientRing) := W -> W.wittLength
+wittLength(WittPolynomialRing) := W -> W.wittLength
 
 net(WittQuotientRing) := WQR -> (
     return horizontalJoin("Witt", (net(WQR.wittLength))^-1, "(", net WQR.unWitt, ")")

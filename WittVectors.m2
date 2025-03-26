@@ -40,6 +40,7 @@ export{
 "baseMap",
 "WittQuotientRing",
 "explicit",
+"wittLength",
 "wittRings",
 "WittIdeal",
 "wittIdeal",
