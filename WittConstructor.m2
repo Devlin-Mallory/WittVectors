@@ -20,6 +20,7 @@ witt(List) := L0->(
     --check all elements of the list lie in ZZ or same ring
     L := apply(L0,i->ring i);
     BaseRing := unique select(L,i-> i =!= ZZ);
+    if length (BaseRing) == 0 then error "must specify ring; e.g., use sub";
     if  length (BaseRing) > 1 then error "expected elements from the same ring";
     --
     ww.tuple = apply(L0,i -> sub(i, first BaseRing ));
