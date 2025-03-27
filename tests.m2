@@ -62,3 +62,22 @@ TEST ///
     L = findFrobeniusLift(2,I)
     L#1 == y^2
 ///
+
+
+
+TEST ///
+    S = (ZZ/3)[x,y]
+    w = witt{x,x^2}
+    R = S/x
+    p = map(R,S)
+    Wp = witt(2,p)
+    Wp(w) == witt{0_R,0_R}
+    w21 = witt(1,2,id_S) 
+    assert((try w21^2) == null)
+    assert((try w21*w21) == null)
+    use S
+    f = map(S,S,{x^2,y})
+    Wf = witt(1,2,f)
+    explicit Wf
+///
+
