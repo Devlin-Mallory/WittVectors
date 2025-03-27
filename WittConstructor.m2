@@ -131,15 +131,11 @@ explicitOver(WittRingElement) := ww -> (
 
 -- Crop Witt vector to have a given length. We want that because that will allow us to add/multiply Witt vectors of different lengths by cropping the longer one.
 
-CropWittVector = method ()
-CropWittVector(WittRingElement,ZZ):= (w,n)->(
-    if length w<n then error "Can't crop to something longer";
-    L:={};
-    for i from 0 to n-1 do {
-        L_i:=w_i;-- there is an issue here with lists being unmutable
-    };
-    return witt L;
-)
+wittTruncate = method()
+wittTruncate(ZZ, WittRingElement) :=  (n, w) -> (
+    if length w<n then error "Can't truncate to something longer";
+    witt drop(w.tuple, -length w + n)
+    ) 
 
 --should this be WittRingElement?
 subInWittRing = method()
@@ -389,21 +385,23 @@ witt(ZZ, RingMap) := WittRingMap => (n, f) -> (
     )
 
 WittRingMap * WittRingMap :=  WittRingMap => (gg, ff) -> (
-    if source gg =!= target ff then error "WittRingMap's given are not composable";
+    if source gg =!= target ff then error "the WittRingMaps given are not composable";
     witt( target(gg).wittLength, source(ff).wittLength , ff.baseMap*gg.baseMap)
 )
 
 explicit(WittRingMap) := Wf -> (
     Wse := explicit source Wf;
     Wte := explicit target Wf;
-    mapList := for i in gens Wse list wittTupleToRing( witt apply((wittRingToTuple i).tuple, j->(baseMap Wf)(j) ));
+    l := wittLength target Wf;
+    mapList := for i in gens Wse list wittTupleToRing(wittTruncate(l, witt apply((wittRingToTuple i).tuple, j->(baseMap Wf)(j) )));
     map(Wte, Wse, mapList)
 )
 
 
 WittRingMap ^ ZZ := (Wf, mm) -> (
+    if source Wf =!= target Wf then error "the WittRingMaps are not composable";
     f := baseMap(Wf);
-    ll := Wf.wittLength;
+    ll := wittLength source Wf;
     fm := f^mm;
     witt(ll, fm)
     )
