@@ -373,13 +373,7 @@ WittMatrix = new Type of MutableHashTable;
 ---------------------------------
 
 -- currently the implementation is for maps witt(n,R) -> witt(n,S) arising from maps R -> S
--- we could at least expand also to the truncation maps witt(n,R) -> witt(m, R) for m < n
 -- but it's less clear how to represent a general map WR -> WS
-
--- Here is one thing we could do: given a map f: R --> S, type witt((m,n), f) with m<=n to get the induced
--- map Wf: W_n(R) --> W_m(S), which results from the composition W_n(R) --> W_n(S) --> W_m(S),
--- where the last map is truncation. Would still like to keep syntax witt(n, f) = witt((n,n), f).
--- This would allow truncation maps to also be considered WittRingMaps.
 
 -- Do we want to allow syntax map(WittRing, WittRing, {...})?
 
