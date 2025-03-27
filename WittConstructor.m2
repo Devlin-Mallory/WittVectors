@@ -8,6 +8,7 @@ explicit = method()
 explicitOver = method()
 wittIdeal = method(Dispatch => Thing)
 verschiebung = method()
+wittFrobenius = method()
 
 ---
 --- WittRingElement
@@ -107,14 +108,6 @@ WittRingElement | WittRingElement := (w1, w2) -> (
 
 WittRingElement == WittRingElement := (w1, w2) -> (
     w1.tuple == w2.tuple
-    )
-
-wittFrobenius = method()
-wittFrobenius(WittRingElement) := ww -> wittFrobenius(1, ww)
-
-wittFrobenius(ZZ, WittRingElement) := (nn,ww) -> (
-    p := char (ring ww).unWitt;
-    witt apply(ww.tuple, i-> i^(p^nn))
     )
 
 verschiebung(WittRingElement) := ww -> (
@@ -362,12 +355,6 @@ net WittIdeal := WI -> (
     );
 )
 
------------- WittMatrix
-
-WittMatrix = new Type of MutableHashTable;
-
-
-
 
 ----------------------------------
 ---------------- WittRingMap
@@ -434,3 +421,18 @@ WittRingMap WittRingElement := WittRingElement => (Wf, w) -> (
     outputList := apply(wList, xx -> f(xx));
     witt(outputList)
     )
+
+---
+
+wittFrobenius(WittPolynomialRing) := WittRingMap => WPR -> (
+    R := WPR.unWitt;
+    nn := wittLength(WPR);
+    pp := char (R);
+    Rvars := gens R;
+    Rvarsp := apply(Rvars, xx -> xx^pp);
+    frob := map(R, R, Rvarsp);
+    witt(nn, frob)
+    )
+
+--TODO: implement wittFrobenius(n, R) = wittFrobenius(witt(n,R)), wittFrobenius(wittRingElement)
+    
