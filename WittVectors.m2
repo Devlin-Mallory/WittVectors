@@ -72,7 +72,6 @@ rld = () -> (loadPackage "WittVectors")
 
 load "WittConstructor.m2"
 load "Kernels.m2"
-load "Verschiebung.m2"
 load "Quotients.m2"
 load "FlatLiftings.m2"
 load "QuasiFSplittings.m2"
