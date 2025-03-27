@@ -32,12 +32,6 @@ witt(ZZ, RingMap) := WittRingMap => (n, f) -> (
     witt(n,n,f)
     )
 
-
----
---- TODO: need a function wittLength(WittPolynomialRing) that returns the wittLength; then finish the function below.
---- Same for WittQuotientRing.
----
-
 WittRingMap * WittRingMap :=  WittRingMap => (gg, ff) -> (
     if source gg =!= target ff then error "WittRingMap's given are not composable";
     witt( target(gg).wittLength, source(ff).wittLength , ff.baseMap*gg.baseMap)
@@ -65,6 +59,7 @@ baseMap = method()
 baseMap(WittRingMap) := W -> W.baseMap
 
 WittRingMap WittRingElement := WittRingElement => (Wf, w) -> (
+    --TODO: impliement with witt(n,m,f)
     f := baseMap(Wf);
     wList := toList(w);
     outputList := apply(wList, xx -> f(xx));
