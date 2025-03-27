@@ -40,7 +40,7 @@ TEST ///
     S = (ZZ/5)[x_1,x_2,x_3,y_1,y_2,y_3]
     W3S = witt(3,S)
     w1 = witt{x_1,x_2,x_3}
-    frobenius(1,w1) == witt{x_1^5,x_2^5,x_3^5}    
+    wittFrobenius(1,w1) == witt{x_1^5,x_2^5,x_3^5}    
 ///
 
 
