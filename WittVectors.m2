@@ -76,7 +76,6 @@ load "Verschiebung.m2"
 load "Quotients.m2"
 load "FlatLiftings.m2"
 load "QuasiFSplittings.m2"
-load "WittRingMap.m2"
 load "tests.m2"
 
 
