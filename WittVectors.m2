@@ -20,7 +20,6 @@ export{
 "rld",
 "witt",
 "wittOverring",
-"wittTruncate",
 --"wittVectors",
 "WittRingElement",
 "wittTupleToOverring",

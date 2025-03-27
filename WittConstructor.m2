@@ -131,8 +131,7 @@ explicitOver(WittRingElement) := ww -> (
 
 -- Crop Witt vector to have a given length. We want that because that will allow us to add/multiply Witt vectors of different lengths by cropping the longer one.
 
-wittTruncate = method()
-wittTruncate(ZZ, WittRingElement) :=  (n, w) -> (
+truncate(ZZ, WittRingElement) := {} -> opts -> (n, w) -> (
     if length w<n then error "Can't truncate to something longer";
     witt drop(w.tuple, -length w + n)
     ) 
@@ -393,7 +392,7 @@ explicit(WittRingMap) := Wf -> (
     Wse := explicit source Wf;
     Wte := explicit target Wf;
     l := wittLength target Wf;
-    mapList := for i in gens Wse list wittTupleToRing(wittTruncate(l, witt apply((wittRingToTuple i).tuple, j->(baseMap Wf)(j) )));
+    mapList := for i in gens Wse list wittTupleToRing(truncate(l, witt apply((wittRingToTuple i).tuple, j->(baseMap Wf)(j) )));
     map(Wte, Wse, mapList)
 )
 
