@@ -131,9 +131,9 @@ explicitOver(WittRingElement) := ww -> (
 
 -- Crop Witt vector to have a given length. We want that because that will allow us to add/multiply Witt vectors of different lengths by cropping the longer one.
 
-truncate(ZZ, WittRingElement) := {} -> opts -> (n, w) -> (
+truncate(ZZ, WittRingElement) := {} >> opts -> (n, w) -> (
     if length w<n then error "Can't truncate to something longer";
-    witt drop(w.tuple, -length w + n)
+    witt drop(w.tuple, n-length w)
     ) 
 
 --should this be WittRingElement?
