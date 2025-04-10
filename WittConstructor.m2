@@ -122,6 +122,8 @@ explicit(WittRingElement) := w -> (
     w.explicit
     )
 
+
+--TODO: redo explicitOver
 explicitOver(WittRingElement) := ww -> (
     if not ww.?explicitOver then(
 	ww.explicitOver = wittTupleToOverring(ww.tuple);
@@ -396,7 +398,6 @@ explicit(WittRingMap) := Wf -> (
     map(Wte, Wse, mapList)
 )
 
-
 WittRingMap ^ ZZ := (Wf, mm) -> (
     if source Wf =!= target Wf then error "the WittRingMaps are not composable";
     f := baseMap(Wf);
@@ -412,10 +413,13 @@ baseMap = method()
 baseMap(WittRingMap) := W -> W.baseMap
 
 WittRingMap WittRingElement := WittRingElement => (Wf, w) -> (
-    --TODO: impliement with witt(n,m,f)
+    if ring w =!= source(Wf) then(
+	error "the input is not an element of the source";
+	);
     f := baseMap(Wf);
+    outputLength := wittLength(target(Wf));
     wList := toList(w);
-    outputList := apply(wList, xx -> f(xx));
+    outputList := toList apply(1..outputLength, xx -> f( (w.tuple)#xx ) );
     witt(outputList)
     )
 
@@ -431,5 +435,11 @@ wittFrobenius(WittPolynomialRing) := WittRingMap => WPR -> (
     witt(nn, frob)
     )
 
---TODO: implement wittFrobenius(n, R) = wittFrobenius(witt(n,R)), wittFrobenius(wittRingElement)
-    
+wittFrobenius(ZZ, Ring) := WittRingMap => (n, R) -> (
+    wittFrobenius(witt(n, R))
+    )
+
+wittFrobenius(WittRingElement) := WittRingMap => ww -> (
+    wF := wittFrobenius(ring(ww));
+    wF(ww)
+    )

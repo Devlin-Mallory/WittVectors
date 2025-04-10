@@ -85,7 +85,8 @@ load "tests.m2"
 ---4. change all wittTupleTo(Over)ring(List) to WittRingElement version
 ---5. decide about explicit witt ring class
 ---7. method for WR -> R? (currently available as WR.unWitt) likewise wittLength
----8. finish wittFrobenius in wittConstructor.m2
+---8. finish wittFrobenius in wittConstructor.m2 (DONE)
+---9. make everything work over (finite) non prime fields.
 
 
 ---TO DO
