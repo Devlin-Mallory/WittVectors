@@ -74,6 +74,7 @@ if class S =!= PolynomialRing then return "error: expected ambient ring to be a 
 if codim(I0) < numgens I0 then return "error: expected ideal to be a complete intersection";
 p:=char S;
 if p == 0 then return "error: expected a ring of characteristic p";
+if (coefficientRing S)#order != p then return "error: expected a field with p elements";
 A:=dim S-1;
 ff:=product I0_*;
 Frob := map(S,S,matrix{apply(gens S,u->u^p)});
