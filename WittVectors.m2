@@ -79,13 +79,11 @@ load "tests.m2"
 
 
 ---NEW TO DO
----1. witt of ring map (DONE) and have it act on elements (DONE)
 ---2. once we have Verschiebung and frobenius for overring elements, delete the m2 files defining them
 ---3. move all package imports to this file
 ---4. change all wittTupleTo(Over)ring(List) to WittRingElement version
 ---5. decide about explicit witt ring class
 ---7. method for WR -> R? (currently available as WR.unWitt) likewise wittLength
----8. finish wittFrobenius in wittConstructor.m2 (DONE)
 ---9. make everything work over (finite) non prime fields.
 
 
