@@ -119,7 +119,7 @@ verschiebung(WittRingElement) := ww -> (
 
 explicit(WittRingElement) := w -> (
     if not w.?explicit then( 
-	w.explicit = wittTupleToRing(w.tuple);
+	w.explicit = wittTupleToRing(w);
 	);
     w.explicit
     )
@@ -128,7 +128,7 @@ explicit(WittRingElement) := w -> (
 --TODO: redo explicitOver
 explicitOver(WittRingElement) := ww -> (
     if not ww.?explicitOver then(
-	ww.explicitOver = wittTupleToOverring(ww.tuple);
+	ww.explicitOver = wittTupleToOverring(ww);
 	);
     ww.explicitOver
     )
@@ -397,7 +397,7 @@ explicit(WittRingMap) := Wf -> (
     Wse := explicit source Wf;
     Wte := explicit target Wf;
     l := wittLength target Wf;
-    mapList := for i in gens Wse list wittTupleToRing(truncate(l, witt apply((wittRingToTuple i).tuple, j->(baseMap Wf)(j) )));
+    mapList := for i in gens Wse list wittTupleToRing (truncate(l, witt apply((wittRingToTuple i).tuple, j->(baseMap Wf)(j) )));
     map(Wte, Wse, mapList)
 )
 

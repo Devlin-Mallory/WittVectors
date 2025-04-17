@@ -33,7 +33,7 @@ TEST ///
     d = 3
     J = wittOverringIdeal(n, I)
     f = for i from 0 to n-1 list random(d, I)
-    assert isSubset(ideal wittTupleToOverring f, J)
+    assert isSubset(ideal wittTupleToOverring witt f, J)
 ///
 
 TEST /// 
@@ -87,6 +87,6 @@ R = GF(5)[x,y,z]
     f2 = random(2, R)
     f3 = random(4, R)
     tt = {f1, f2, f3}
-    assert tt == wittOverringToTuple wittTupleToOverring tt
+    assert witt tt == wittOverringToTuple wittTupleToOverring witt tt
 ///
 
