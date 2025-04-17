@@ -113,3 +113,11 @@ R = GF(5)[x,y,z]
     assert witt tt == wittOverringToTuple wittTupleToOverring witt tt
 ///
 
+TEST ///
+    R = GF(7)[x,y,z]
+    WR = witt(3, R)
+    w = witt{x,y,z}
+    t = truncation(2, WR)
+    assert t(w) == witt{x,y}
+///
+
