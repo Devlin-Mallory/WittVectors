@@ -44,7 +44,6 @@ export{
 "WittIdeal",
 "wittIdeal",
 "wittGenerators",
-"tuple",
 "explicitOver",
 "MaxHeight",
 "Nontrivial",
@@ -204,7 +203,7 @@ wittVectors(ZZ,Ring):=(n,R)->(
         --TODO: flattenRing S before checking its polynomial?
         if class S =!= PolynomialRing then( error "wittVectors currently only implemented for quotients of polynomial rings");
         I:=ideal R; 
-        return quotient wittRingIdeal(n,I)
+        quotient wittRingIdeal(n,I)
     );
     --
     p := char R;
@@ -300,7 +299,7 @@ wittRingToTuple=method()
 wittRingToTuple(RingElement):=(F)->(
     WR:=ring F;
     Phi:=WR.cache.overringMap;
-    return wittOverringToTuple(Phi(F))
+    wittOverringToTuple(Phi(F))
 )
 
 wittOverringToTuple = method()
@@ -350,80 +349,11 @@ breakString(String) := s -> (
     (substring(s, 0, usLocation), substring(s, usLocation + 1, length s - 1))
 	)
 
-timingTest = () -> (
-    x := symbol x;
-    y := symbol y;
-    R := GF(7)[x,y];
-for n from 1 to 5 do(
-    elapsedTime wittTupleToOverring( for i from 0 to n-1 list random(3, R));
-);
-);    
-
 end -- loading stops here
 
 ---
 --- TESTS
 ---
 
-R = GF(5)[x,y,z]
-for xx in 0..0 do(
-    f1 = random(3, R);
-    f2 = random(2, R);
-    f3 = random(4, R);
-    
-    tt = {f1, f2, f3};
-    if not elapsedTime ( (tt == wittOverringToTuple wittTupleToOverring tt) ) then(
-	print "NOOOOOOO!!!!!!";
-	print tt;
-	);
-    )
 
-R = GF(7)[x,y]
-for n from 1 to 5 do(
-    print "-----";
-    print n;
-    elapsedTime wittTupleToOverring( for i from 0 to n-1 list random(3, R));
-)
-    
----
---- GARBAGE:
----
 
-R = GF(3)[x,y]
-
-p = char R;
-d = numgens R; -- number of variables
-baseVariables = apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j})
---cubes is the list of indices; 
---T_{n,{a_1..a_d}} corresponds to p^n * x_1^{a_1/p^n}..x_d^{a_n/p^n}
-
-cubes = baseVariables| 
-sort select( 
-    flatten for i from 1 to n-1 list apply(
-	flatten \ entries \ latticePoints 
-	hypercube(d, 0, p^(i) - 1),j->{i}|{j}), i->last i != toList(d:0)
-    );
-
-cubes = baseVariables| sort select( flatten for i from 1 to n-1 list apply(flatten \ entries \ latticePoints hypercube(d, 0, p^(i) - 1),j->{i}|{j}), i->last i != toList(d:0));
-T:=symbol T;
-A:=ZZ[for i in cubes list T_i]/p^n;
-t:=symbol t;
---t_i is x_i^(1/p^n)
-B:=ZZ[t_0..t_(d-1)]/p^n;
-L:= for i in cubes list p^(first i)*(product for j from 0 to d - 1 list B_j^((last i)_j*p^(n-first i -1)));
-aA := ambient A;
-iA := ideal A;
-K := kernelZZ map(B, A, L);
-aK := sub(K, aA);
-WR:=quotient (iA + aK);
-Phi:=map(B,WR,L);
---this is all caching stuff
-WR.cache.overringMap=Phi;
-if R.?WittRing==false then R.WittRing = new MutableHashTable ;
-(R.WittRing)#n = WR;
---R.WittRing=WR;
-WR
-)
-
-beginDocumentation()
-load "Documentation.m2"
