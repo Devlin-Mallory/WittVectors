@@ -44,7 +44,6 @@ export{
 "WittIdeal",
 "wittIdeal",
 "wittGenerators",
-"tuple",
 "explicitOver",
 "MaxHeight",
 "Nontrivial",
@@ -79,8 +78,9 @@ load "tests.m2"
 
 
 ---NEW TO DO
----2. once we have Verschiebung and frobenius for overring elements, delete the m2 files defining them
----3. move all package imports to this file
+---1. witt of ring map (DONE) and have it act on elements (DONE)
+---2. once we have Verschiebung and frobenius for overring elements, delete the m2 files defining them (DONE)
+---3. move all package imports to this file (DONE)
 ---4. change all wittTupleTo(Over)ring(List) to WittRingElement version
 ---5. decide about explicit witt ring class
 ---7. method for WR -> R? (currently available as WR.unWitt) likewise wittLength
@@ -200,7 +200,7 @@ wittVectors(ZZ,Ring):=(n,R)->(
         --TODO: flattenRing S before checking its polynomial?
         if class S =!= PolynomialRing then( error "wittVectors currently only implemented for quotients of polynomial rings");
         I:=ideal R; 
-        return quotient wittRingIdeal(n,I)
+        quotient wittRingIdeal(n,I)
     );
     --
     p := char R;
@@ -296,7 +296,7 @@ wittRingToTuple=method()
 wittRingToTuple(RingElement):=(F)->(
     WR:=ring F;
     Phi:=WR.cache.overringMap;
-    return wittOverringToTuple(Phi(F))
+    wittOverringToTuple(Phi(F))
 )
 
 wittOverringToTuple = method()
