@@ -1,7 +1,7 @@
 
 Delta1=method()
 Delta1(RingElement):=a->(
-last (wittOverringToTuple( wittTupleToOverring({a,0})-sum apply(terms a,i->wittTupleToOverring({i,0})))).tuple
+last (wittOverringToTuple( wittTupleToOverring(witt{a,0})-sum apply(terms a,i->wittTupleToOverring(witt{i,0})))).tuple
 )
 
 
