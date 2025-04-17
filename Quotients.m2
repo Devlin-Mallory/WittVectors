@@ -6,7 +6,7 @@ wittOverringIdeal(ZZ,Ideal):=(n,I)->(
 	error "expected an ideal in a polynomial ring";
 	);
     trim ideal flatten for k from 0 to n -1 list (
-	for j in I_* list wittTupleToOverring( toList(k:0_R)|{j}|toList(n-k-1:0_R) )
+	for j in I_* list wittTupleToOverring witt( toList(k:0_R)|{j}|toList(n-k-1:0_R) )
 	)
     )
 

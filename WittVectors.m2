@@ -57,7 +57,7 @@ export{
 "wittFrobenius"
 }
 
-
+protect tuple
 
 
 needsPackage "TestIdeals"
@@ -163,18 +163,6 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 )
 
 wittTupleToOverring = method()
-wittTupleToOverring(List) := (LL) -> (
-    R := ring first LL;
-    p := char R;
-    n := length LL;
-    W := witt(n, R);
-    --OR := wittOverring(n, R);
-    OR := W.overring;
-    WittSub := OR.cache.wittSub;
-    WittLL := apply(LL, ff -> WittSub(ff));
-    sum toList apply(0..(n-1), j -> p^j*(WittLL#j)^(p^(n-1-j)) )
-    )
-
 wittTupleToOverring(WittRingElement) := w -> (
     W := ring w;
     R := W.unWitt;
@@ -231,40 +219,11 @@ wittVectors(ZZ,Ring):=(n,R)->(
 
 wittVectors(ZZ,RingMap) := (n,f)->(
 (WT,WS):=(wittVectors(n,target f),wittVectors(n, source f));
-L:= for i in gens WS list wittTupleToRing(f \ (wittRingToTuple(i)));
+L:= for i in gens WS list wittTupleToRing witt(f \ (wittRingToTuple(i)));
 map(WT,WS,L)
 )
 
-
 wittTupleToRing = method()
-wittTupleToRing(List):=(L)->(
-    if length unique apply(L,i->ring i) > 1 then return "error: all elements of tuple must live in the same ring";
-    --if length L !=n then return "error: input tuple must be of length n";
-    n:=length L;
-    --if n == 1 then return first L;
-    R := ring first L;
-    p:=char R;
-    WR := if R.?WittRing == true then (if R.WittRing#?n == true then R.WittRing#n else wittVectors(n,R)) else  wittVectors(n,R);
-    --Phi := WR.cache.overringMap;
-    --OR := target Phi;
-    use R;
-    --G takes the tuple to its image in the overring
-    --G:=sum for i from 0 to n-1 list p^i*((map(OR,R,for j from 0 to numgens R-1 list OR_j^(1)))(L_i))^(p^(n-1-i));
-    G:=wittTupleToOverring(L);
-    Phi := (((ring G).cache.unWitt).cache.WittRing#n).cache.overringMap;
-    --print G;
-    sum for m in terms G list(
-	if degree m == {0} then sub(m,source Phi) else(
-	    (B,pi):=flattenRing quotient ideal m;
-	    --the below method doesn't always work to find a preimage... we should figure out a better way    
-	    preimages := (kernelZZ(pi*map(source pi,WR,Phi)))_*;
-	    multiplied:=flatten for i in preimages list for j from 1 to p^n-1 list i*j;
-	    first select(multiplied,i->Phi(i)==m)
-	    )    
-	)
-    --G//Phi(vars source Phi)
-    )
-
 wittTupleToRing(WittRingElement):= w-> (
     W := ring w;
     n := W.wittLength;
