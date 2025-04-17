@@ -81,3 +81,12 @@ TEST ///
     explicit Wf
 ///
 
+TEST ///
+R = GF(5)[x,y,z]
+    f1 = random(3, R)
+    f2 = random(2, R)
+    f3 = random(4, R)
+    tt = {f1, f2, f3}
+    assert tt == wittOverringToTuple wittTupleToOverring tt
+///
+
