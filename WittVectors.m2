@@ -80,7 +80,11 @@ load "tests.m2"
 
 ---NEW TO DO
 ---2. once we have Verschiebung and frobenius for overring elements, delete the m2 files defining them
----3. move all package imports to this file
+---3. move all package imports to this file. File hierarchy:
+	--WittVectors: imports, exports, authors, etc...
+	--Conversion: 
+	--WittConstructor:
+	
 ---4. change all wittTupleTo(Over)ring(List) to WittRingElement version
 ---5. decide about explicit witt ring class
 ---7. method for WR -> R? (currently available as WR.unWitt) likewise wittLength
