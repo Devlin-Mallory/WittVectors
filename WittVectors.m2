@@ -83,7 +83,7 @@ load "tests.m2"
 	--WittConversion: all methods that are currently in WittVectors, also add Quotients and remove Quotients.m2 from directory and load.
 	--WittConstructor: as is.
 ---5. decide about explicit witt ring class
----7. method for WR -> R? (currently available as WR.unWitt) likewise wittLength
+---7. method for WR -> R? (currently available as WR.unWitt) likewise wittLength (DONE; but unprotected unWitt!!)
 ---9. make everything work over (finite) non prime fields.
 
 
