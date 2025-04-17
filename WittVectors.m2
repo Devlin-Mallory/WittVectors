@@ -86,6 +86,7 @@ load "tests.m2"
 ---5. decide about explicit witt ring class
 ---7. method for WR -> R? (currently available as WR.unWitt) likewise wittLength (DONE; but unprotected unWitt!!)
 ---9. make everything work over (finite) non prime fields.
+---10. decide what to do about defunct files in directory
 
 
 ---TO DO
