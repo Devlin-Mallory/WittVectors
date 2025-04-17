@@ -15,8 +15,7 @@ wittFrobenius = method()
 ---
 WittRingElement = new Type of MutableHashTable;
 
-protect tuple;
-witt(List) := L0->(
+witt(List) := L0 -> (
     ww := new WittRingElement from MutableHashTable;
     --check all elements of the list lie in ZZ or same ring
     L := apply(L0,i->ring i);
@@ -25,7 +24,10 @@ witt(List) := L0->(
     if  length (BaseRing) > 1 then error "expected elements from the same ring";
     --
     ww.tuple = apply(L0,i -> sub(i, first BaseRing ));
-    return ww
+    for nn from 0 to (length L0)-1 do(
+	ww#nn = L0#nn;
+	);
+    ww
 )
 
 net(WittRingElement) := w -> net(w.tuple)
@@ -131,7 +133,8 @@ explicitOver(WittRingElement) := ww -> (
     ww.explicitOver
     )
 
--- Crop Witt vector to have a given length. We want that because that will allow us to add/multiply Witt vectors of different lengths by cropping the longer one.
+-- Crop Witt vector to have a given length. We want that because that will allow us to
+-- add/multiply Witt vectors of different lengths by cropping the longer one.
 
 truncate(ZZ, WittRingElement) := {} >> opts -> (n, w) -> (
     if length w<n then error "Can't truncate to something longer";
