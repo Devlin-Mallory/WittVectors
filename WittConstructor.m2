@@ -10,6 +10,7 @@ explicitOver = method()
 wittIdeal = method(Dispatch => Thing)
 verschiebung = method()
 wittFrobenius = method()
+truncation = method()
 
 ---
 --- WittRingElement
@@ -430,7 +431,7 @@ WittRingMap WittRingElement := WittRingElement => (Wf, w) -> (
     f := baseMap(Wf);
     outputLength := wittLength(target(Wf));
     wList := toList(w);
-    outputList := toList apply(1..outputLength, xx -> f( (w.tuple)#xx ) );
+    outputList := toList apply(0..outputLength-1, xx -> f( w#xx ) );
     witt(outputList)
     )
 
@@ -454,3 +455,8 @@ wittFrobenius(WittRingElement) := WittRingMap => ww -> (
     wF := wittFrobenius(ring(ww));
     wF(ww)
     )
+
+truncation(ZZ, WittPolynomialRing) := (n, W) -> (
+    if n > wittLength W then error "can't truncate to something longer";
+    witt(n, wittLength W, map(unWitt W, unWitt W))
+)
