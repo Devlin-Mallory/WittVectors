@@ -11,6 +11,7 @@ wittIdeal = method(Dispatch => Thing)
 verschiebung = method()
 wittFrobenius = method()
 
+
 ---
 --- WittRingElement
 ---
@@ -454,3 +455,4 @@ wittFrobenius(WittRingElement) := WittRingMap => ww -> (
     wF := wittFrobenius(ring(ww));
     wF(ww)
     )
+
