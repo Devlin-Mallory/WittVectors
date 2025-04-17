@@ -23,7 +23,7 @@ TEST /// -- Check that the fSplittingHeight method gives back the correct number
         I=ideal table2(i);
         j=i;
         if i==6 or i==11 then j=infinity;
-        print(fSplittingHeight(I)==j) 
+        assert(fSplittingHeight(I)==j) 
     )
     ///
 
