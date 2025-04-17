@@ -54,7 +54,8 @@ export{
 "quasiFSplittingNumber",
 "fSplittingHeight",
 "overring",
-"wittFrobenius"
+"wittFrobenius",
+"truncation"
 }
 
 protect tuple
