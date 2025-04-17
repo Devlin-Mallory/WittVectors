@@ -461,3 +461,8 @@ truncation(ZZ, WittPolynomialRing) := (n, W) -> (
     if n > wittLength W then error "can't truncate to something longer";
     witt(n, wittLength W, map(unWitt W, unWitt W))
 )
+
+truncation(ZZ, WittQuotientRing) := (n, W) -> (
+    if n > wittLength W then error "can't truncate to something longer";
+    witt(n, wittLength W, map(unWitt W, unWitt W))
+)
