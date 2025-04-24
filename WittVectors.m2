@@ -84,6 +84,7 @@ load "tests.m2"
 ---9. make everything work over (finite) non prime fields.
 ---10. decide what to do about defunct files in directory
 ---11. where does breakString belong?
+---12. Joyal coordinates?
 
 
 ---TO DO
