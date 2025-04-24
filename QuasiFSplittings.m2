@@ -5,48 +5,6 @@ last (wittOverringToTuple( wittTupleToOverring(witt{a,0})-sum apply(terms a,i->w
 )
 
 
-fn=method()
-fn(ZZ,RingElement):=(n,f)->(
-p:=char ring f;
-m:=ideal gens ring f;
-if n == 1 then return f^(p-1);
-  D:=Delta1(f^(p-1));
-exponentList := apply(toList(0..n-2),i->D^(p^i) % frobeniusPower(p^n,m));
-  De:=(product exponentList) % frobeniusPower(p^n , m);
-(f^(p-1)*De) % frobeniusPower(p^n , m)
-)
-
----fn2 returns actual value, not modulo anything
-fn2=method()
-fn2(ZZ,RingElement):=(n,f)->(
-p:=char ring f;
-if n == 1 then return f^(p-1);
-D:=Delta1(f^(p-1));
-if n == 2 then return f^(p-1)*D;
-D^(p^(n-2))*fn2(n-1,f))
-
-fn3=method()
-fn3(ZZ,RingElement,ZZ):=(n,f,t)->(
-p:=char ring f;
-m:=ideal gens ring f;
-if n == 1 then return f^(p-1);
-D:=Delta1(f^(p-1));
-if n == 2 then return f^(p-1)*(D % frobeniusPower(p^t,m));
-(D^(p^(n-2)) % frobeniusPower(p^t,m))*fn3(n-1,f,t))
-
-
-
-
-
-
-quasiFSplittingNumber=method()
-quasiFSplittingNumber(Ideal,ZZ):=(I,max)->(
-f:=product( I_*);
-S:=ring I;
-p:=char S;
-m:=ideal gens S;
- for i from 1 to max do if not isSubset(ideal fn3(i,f,i) ,frobeniusPower(p^i,m)) then return i
-)
 
 u = method()
 u(ZZ,RingElement) :=(e,f)->(
@@ -59,15 +17,8 @@ termsf := terms f;
 sum apply( select(termsf, i-> ((flatten exponents i) % p^e) == toList(n:p^e-1)), i-> (last coefficients(i)  ) * S_(flatten exponents(i)//p^e))
 )
 
-theta=method()
-theta(RingElement,RingElement):= (f,a) ->(
-p:=char ring f;
-u(1,Delta1(f^(p-1))*a)
-)
 
-
---TODO: make this and quasiFSplittingNumber more clearly defined 
-fSplittingHeight=method(Options=>{MaxHeight=>100})
+fSplittingHeight=method(Options=>{MaxHeight=>100})--We arbitraly chose to stop the computations at a height higher than 100 because it gets quite slow. The code does work for higher quasi F Splitting height so a user can change this if they wishes. 
 fSplittingHeight(Ideal) := ZZ => opts-> I0->(
 S:=ring I0;
 if class S =!= PolynomialRing then return "error: expected ambient ring to be a polynomial ring";
@@ -132,9 +83,6 @@ matrix{for i in I_* list pushmultiple(i,GS,transformS)}
 
 
 
-
-
-
 table2=method()
 table2(ZZ):=n->(
 x:=symbol x;
@@ -165,19 +113,6 @@ w:=symbol w;
 u:=symbol u;
 S:=(ZZ/2)[x,y,z,w,u];
 x^5 + y^5 + z^5 + w^5 + u^5 + x*z^3*w + y*z*w^3 + x^2*z*u^2 + y^2*z^2*w + x*y^2*w*u + y*z*w*u^2)
-
-sampleCY=(p,n,N)->(
-x:=symbol x;
-S:=(ZZ/p)[x_0..x_(n+1)];
-m:=ideal gens S;
-for i from 1 to N list(
-print "---------";
-I:=ideal (x_0^2);
-while( dim radical(I+ ideal jacobian I) > 0 or isFPure(I)) do I=ideal(random(n+2,S));
-print("sample number "|i);
-(fSplittingHeight(I),I)
-)
-)
 
 
 
