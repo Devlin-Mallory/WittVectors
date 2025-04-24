@@ -1,7 +1,3 @@
---here's where we'll define classes and class operations
-
-
-
 witt = method()
 unWitt = method()
 wittLength = method()
@@ -16,6 +12,7 @@ truncation = method()
 ---
 --- WittRingElement
 ---
+
 WittRingElement = new Type of MutableHashTable;
 
 witt(List) := L0 -> (
@@ -41,6 +38,7 @@ toList(WittRingElement) := w -> w.tuple
 -- to return W instead of Witt_2(R). Tried to do it with caching below but failed. 
 --
 --
+
 ring(WittRingElement) := W -> (
     R := ring(W.tuple#0); -- note that witt subs every entry into R so this is good enough
     n := length W;
