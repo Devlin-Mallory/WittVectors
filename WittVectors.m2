@@ -85,6 +85,7 @@ load "tests.m2"
 ---10. decide what to do about defunct files in directory
 ---11. where does breakString belong?
 ---12. Joyal coordinates?
+---13. Cache wittTupleToOverring of witt vectors?
 
 
 ---TO DO

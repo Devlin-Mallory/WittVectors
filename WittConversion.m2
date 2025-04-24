@@ -53,7 +53,7 @@ wittTupleToOverring(WittRingElement) := w -> (
     p := char R;
     OR := W.overring;
     WittSub := OR.cache.wittSub;
-    WittLL := apply(w.tuple, ff -> WittSub(ff));
+    WittLL := apply(toList(w), ff -> WittSub(ff));
     sum toList apply(0..(n-1), j -> p^j*(WittLL#j)^(p^(n-1-j)) )
     )
 
@@ -221,3 +221,58 @@ OR:=target Phi;
 B:=quotient J;
 kernelZZ((flattenRing(B))_1*map(B,ring J)*Phi)
 )
+
+
+end
+
+
+------------------
+----------- This will be eventually deleted, but please leave while we figure out why witt is slow for WittQuotientRings
+------------------
+
+S = (ZZ/5)[x,y,z]
+gg = random(4, S)
+
+n = 4
+
+k = 0
+wll0 = toList(k:0_S) | {gg} | toList(n-k-1:0_S)
+ww0 = witt(wll0)
+wov0 = wittTupleToOverring ww0
+
+k = 1
+wll1 = toList(k:0_S) | {gg} | toList(n-k-1:0_S)
+ww1 = witt(wll1)
+wov1 = wittTupleToOverring ww1
+
+k = 2
+wll2 = toList(k:0_S) | {gg} | toList(n-k-1:0_S)
+ww2 = witt(wll2)
+wov2 = wittTupleToOverring ww2
+
+k = 3
+wll3 = toList(k:0_S) | {gg} | toList(n-k-1:0_S)
+ww3 = witt(wll3)
+wov3 = wittTupleToOverring ww3
+
+
+
+--
+wll = toList(k:0_S) | {gg} | toList(n-k-1:0_S) 
+ww = witt(wll)
+
+
+
+
+elapsedTime wittTupleToOverring(ww);
+
+wittTupleToOverring(WittRingElement) := w -> (
+    W := ring w;
+    R := W.unWitt;
+    n := W.wittLength;
+    p := char R;
+    OR := W.overring;
+    WittSub := OR.cache.wittSub;
+    WittLL := apply(toList(w), ff -> WittSub(ff));
+    sum toList apply(0..(n-1), j -> p^j*(WittLL#j)^(p^(n-1-j)) )
+    )
