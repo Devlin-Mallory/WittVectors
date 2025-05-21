@@ -51,7 +51,6 @@ export{
 "findFrobeniusLift",
 "createEquations",
 "table2", --MAYBE
-"quasiFSplittingNumber",
 "fSplittingHeight",
 "overring",
 "wittFrobenius",
