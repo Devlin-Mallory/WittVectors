@@ -18,7 +18,7 @@ sum apply( select(termsf, i-> ((flatten exponents i) % p^e) == toList(n:p^e-1)),
 )
 
 
-fSplittingHeight=method(Options=>{MaxHeight=>100})--We arbitraly chose to stop the computations at a height higher than 100 because it gets quite slow. The code does work for higher quasi F Splitting height so a user can change this if they wishes. 
+fSplittingHeight=method(Options=>{MaxHeight=>102})--We arbitraly chose to stop the computations at a height higher than 102 because it gets quite slow. The code does work for higher quasi F Splitting height so a user can change this if they wishes. 
 fSplittingHeight(Ideal) := ZZ => opts-> I0->(
 S:=ring I0;
 if class S =!= PolynomialRing then return "error: expected ambient ring to be a polynomial ring";
