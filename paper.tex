@@ -228,7 +228,7 @@
 \maketitle
 
 \begin{abstract}
-We develop an algorithm for performing arithmetic operations in rings of finite length $p$-typical Witt vectors over finitely generated $\F_p$-algebras. We use this to find delta structures on quotients of polynomial rings. We also implement an algorithm to find the quasi-$F$-splitting height of a  ?? variety.
+We develop an algorithm for performing arithmetic operations in rings of finite length $p$-typical Witt vectors over finitely generated $\F_p$-algebras. We use this to find delta structures on quotients of polynomial rings. We also implement an algorithm to find the quasi-$F$-splitting height of a local complete intersection.
 We them implement these algorithm as a package in the computer algebra system Macaulay2. 
 \end{abstract}
 
@@ -241,9 +241,8 @@ We them implement these algorithm as a package in the computer algebra system Ma
 
 Fix a prime number $p > 0$.
 
-Given a commutative ring $R$ and an integer $n \geq 1$, we let $W_{n}(R)$ be the ring of $p$-typical Witt vectors of length $n$ over $R$. Recall that, as a set, we have $W_n(R) = R \times R \times \cdots \times R$ ($n$ copies), with addition and multiplication defined by certain universal polynomials. 
+Given a commutative ring $R$ and an integer $n \geq 1$, we let $W_{n}(R)$ be the ring of $p$-typical Witt vectors of length $n$ over $R$. Recall that, as a set, we have $W_n(R) = R \times R \times \cdots \times R$ ($n$ copies), with addition and multiplication defined by certain universal polynomials (see \cite[Section 8.10]{JacobsonBasicAlgebraII} for more details about these universal polynomials). However, these get complicated very fast and make computations quite difficult in $W_n(R)$ for any $n>2$. 
 
-\comment{Add reference for universal polynomials}
 
 The ring structure of $W_n(R)$ is, in fact, engineered so that for every $i = 0, \dots, n-1$ the $i$-th ghost map
 %
@@ -327,14 +326,18 @@ Now, if $A$ is instead a quotient of a polynomial ring, say $A=\F_p[x_1,\ldots,x
 \[
 f((x_1,\delta(x_1)),\ldots, (x_n,\delta(x_n)))= (f(x_1,\ldots, x_n),\delta(f(x_1,\ldots, x_n))).
 \]
-But in this case, this implies that the $(x_i,\delta(x_i))$ must satisfy the equations defined by the $f_j$s. Note that these are just equations in $W_2(A)$. So if we let $C\coloneqq A[y_1,\ldots,y_n]$ and consider the equations 
+But in this case, this implies that the $(x_i,\delta(x_i))$ must satisfy the equations defined by the $g_j$s. Note that these are just equations in $W_2(A)$. So if we let $C\coloneqq A[y_1,\ldots,y_n]$ and consider the equations 
 \begin{equation}\label{eqn delta is 0}
-f_j((x_1,y_1),\ldots, (x_n,y_n))= (f_j(x_1,\ldots, x_n),\delta(f_j(x_1,\ldots, x_n)))=(0,0)
+g_j((x_1,y_1),\ldots, (x_n,y_n))= (g_j(x_1,\ldots, x_n),\delta(g_j(x_1,\ldots, x_n)))=(0,0)
 \end{equation}
-then the solutions of the $y_j$s in terms of $x_i$s are precisely the possible values of the $\delta(x_i)$s. Here, we abuse notation by seeing $f_j$ as a polynomial in $W_2(C)$ where the $i$-th variable is $(x_i,y_i)$. For instance, if $f_j(x_1,x_2)=x_1^2+x_2$ then $f_j((x_1,y_1),(x_2,y_2))=(x_1,y_1)^2+(x_2,y_2)$. For now, our code lifts element an element $a$ in $\F_p$ to the smallest element $b$ in $\Z/p^2$ with $a=b\mod p$ so $1\in \F_2$ will lift to $1$ in $ \Z/4$, not $3$.
+then the solutions of the $y_j$s in terms of $x_i$s are precisely the possible values of the $\delta(x_i)$s. Here, we abuse notation by seeing $g_j$ as a polynomial in $W_2(C)$ where the $i$-th variable is $(x_i,y_i)$. For instance, if $g_j(x_1,x_2)=x_1^2+x_2$ then $g_j((x_1,y_1),(x_2,y_2))=(x_1,y_1)^2+(x_2,y_2)$. For now, our code lifts element an element $a$ in $\F_p$ to the smallest element $b$ in $\Z/p^2$ with $a=b\mod p$ so $1\in \F_2$ will lift to $1$ in $ \Z/4$, not $3$.
 
 
-If the field over which we are working isn't $\F_p$ but rather $\F_q$ for $q$ some power of $p$, we can still pretend we are working in over $\F_p$ by adding variables and having a bigger quotient so \autoref{eqn delta is 0} still holds. 
+\begin{remark}
+If the field over which we are working is not $\F_p$ but rather $\F_q$ for $q$ some power of $p$, we can still pretend we are working in over $\F_p$ by adding variables and adding equations in the defining ideal $(g_1,\ldots,g_r)$ so \autoref{eqn delta is 0} still holds. However, this has to be done by the user, our code only works over $\F_p$. 
+\comment{I think we can change this.}
+\end{remark}
+
 
 This is exactly what our \texttt{findFrobeniusLiftConstraints} method does. One can then use it to find examples of Frobenius lifts in different degrees using the \texttt{findFrobeniusLift} method. 
 
@@ -346,26 +349,19 @@ This is exactly what our \texttt{findFrobeniusLiftConstraints} method does. One 
                      3    2      2     4
         o3 = ideal (y  + x , aa x y + x )
                                1
-                               
                        ZZ
         o3 : Ideal of  --[aa ..aa , x..y]
-        
                         2   0    1
-
         i4 : findFrobeniusLift(f,2)
-
                         2	
         o4 = {x*y + y, y }
-
         o4 : List
         i5 : findFrobeniusLift(f,3)
-
                3    2       2    3    2                 3    2    2
         o5 = {x  + x y + x*y  + y  + x  + x*y + x + y, y  + x  + y }
     \end{verbatim}
 \end{example}
 This tells us that $aa_0=\delta(x)$ can be anything but $aa_1=\delta(y)$ must be such that $\delta(y)x^2y+x^4=0$. Replacing $x^2$ by $y^3$ gives $\delta(y)y^4+y^6=0$ so $\delta(y)\in y^2 +(f)$. This is exactly what \texttt{findFrobeniusLift(f,2)} returns. Trying for solutions with higher degrees will simply add elements of $(f)$ to the solution as one can see when trying \texttt{findFrobeniusLift(f,3)}.
-
 
 
 \section{Quasi $F$-splittings}
