@@ -6,6 +6,12 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{dutchcal}
 \usepackage{colonequals}
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=ynt
+]{biblatex}
+\addbibresource{biblio.bib}
 %
 \usepackage[colorlinks,  citecolor=black, linkcolor = black, urlcolor = black]{hyperref} 
 \usepackage{forest}
@@ -241,8 +247,8 @@ We them implement these algorithm as a package in the computer algebra system Ma
 
 Fix a prime number $p > 0$.
 
-Given a commutative ring $R$ and an integer $n \geq 1$, we let $W_{n}(R)$ be the ring of $p$-typical Witt vectors of length $n$ over $R$. Recall that, as a set, we have $W_n(R) = R \times R \times \cdots \times R$ ($n$ copies), with addition and multiplication defined by certain universal polynomials (see \cite[Section 8.10]{JacobsonBasicAlgebraII} for more details about these universal polynomials). However, these get complicated very fast and make computations quite difficult in $W_n(R)$ for any $n>2$. 
-
+Given a commutative ring $R$ and an integer $n \geq 1$, we let $W_{n}(R)$ be the ring of $p$-typical Witt vectors of length $n$ over $R$. Recall that, as a set, we have $W_n(R) = R \times R \times \cdots \times R$ ($n$ copies), with addition and multiplication defined by certain universal polynomials (see \cite[Section 8.10]{JacobsonBasicAlgebraII} for more details about these universal polynomials). Here are the polynomials for $n=1,2$.
+\comment{todo}
 
 The ring structure of $W_n(R)$ is, in fact, engineered so that for every $i = 0, \dots, n-1$ the $i$-th ghost map
 %
@@ -253,6 +259,14 @@ given by
 $$w_i(x_0, \dots , x_{n-1}) \ceq x_0^{p^i} + p x_1^{p^{i-1}} + p^2 x_2^{p^{i-2}} + \cdots + p^i x_i$$
 %
 is a ring homomorphism. 
+\comment{Do we need this ghost map in the intro?}
+
+
+However, these get complicated very fast and make computations quite difficult in $W_n(R)$ for any $n>2$. 
+See for instance \cite{FinottiComputationsWittVectorsLength3}. In our implementation, we use a presentation of the ring of Witt vectors as a subalgebra of a polynomial ring as in Illusie \cite{IllusieComplexeDeRhamWittCristalline} (see \autoref{thm-witt-presentation-poly}) to reduce our computations to ones in a polynomial ring. We began our project in Fall 2023 and since then, a similar algorithm has been developped independently by Muñoz-\relax-Bertrand in Sage \cite{MunozBertrandFasterComputationWittVectors}. However, we believe it is still useful to have this algorithm implemented in Macaulay2. 
+
+Using these Witt vector computations, we developped an algorithm that gives constraints to the possible $\delta$-structures on a specific lift $B$ of a given ring $A$ of characteristic $p$ to characteristic $p^2$, see \autoref{section frobeniuslift}. We also implemented an algorithm that allows us to compute the quasi-$F$-splitting height of a complete intersection using the Fedder-type criterion of \cite{KawakamiTakamatsuYoshikawaFedderQuasi}, see \autoref{section quasiFSplitting}.
+
 
 \comment{Emphasize computations are hard, maybe point to references? Talk about some history? Mention $W(R)$ is the ``universal $\delta$-ring mapping to $R$"? Talk about quasi-$F$-splitting stuff in the abstract?}
 
@@ -311,7 +325,7 @@ Next, we apply Proposition \ref{prop-witt-presentation-general} to the special c
 \section{Basic examples}
 
 
-\section{$\delta$-rings and $p$-derivations}
+\section{$\delta$-rings and $p$-derivations}\label{section frobeniuslift}
 In this section, we explain how we can compute the set of possible $\delta$ structures on a lift $B$ of a given ring $A$ of characteristic $p$ to characteristic $p^2$. 
 
 Giving a $\delta$-structure on $B$ is the same as giving a ring map $\phi\colon A\to W_2(A)$ such that $\pi\circ \phi=\id_A$ where $\pi\colon W_2(A)\to A$ is the projection onto the first coordinate (see \cite[Section 1 - Corollaire]{JoyalDeltaAnneauWitt}).
@@ -364,7 +378,7 @@ This is exactly what our \texttt{findFrobeniusLiftConstraints} method does. One 
 This tells us that $aa_0=\delta(x)$ can be anything but $aa_1=\delta(y)$ must be such that $\delta(y)x^2y+x^4=0$. Replacing $x^2$ by $y^3$ gives $\delta(y)y^4+y^6=0$ so $\delta(y)\in y^2 +(f)$. This is exactly what \texttt{findFrobeniusLift(f,2)} returns. Trying for solutions with higher degrees will simply add elements of $(f)$ to the solution as one can see when trying \texttt{findFrobeniusLift(f,3)}.
 
 
-\section{Quasi $F$-splittings}
+\section{Quasi $F$-splittings}\label{section quasiFSplitting}
 We now explain how to use our code to detect whether or not a given variety is quasi $F$-split and if so, what is its quasi-$F$-splitting height.
 We recall the definition of a quasi-$F$-splitting. 
 \begin{definition}[\cite{YobukoQuasiFSplittingLiftingCY}]
@@ -417,10 +431,15 @@ o3 = 5
 
 \end{example}
 
-Let $R\coloneqq \F_p[x_1,\ldots,x_n]$ and $f_1,\ldots,f_r$ be a homogeneous regular sequence in $R$. Let $f\coloneqq f_1\cdots f_n$ and $I\coloneqq(f_1,\ldots,f_n)$. In \cite[Theorem 5.8]{KawakamiTakamatsuYoshikawaFedderQuasi}, they show that there is $g\in R$ such that if $f^{p-1} g^{1+p+\ldots+p^{n-2}}\in \mathfrak{m}^{[p^n]}$ for all $n$, where $\mathfrak{m}$ is the homogeneous maximal ideal of $R$, then the quasi-$F$-splitting height of $R/I$ is infinite. From the construction of $g$, this is the case if $f^{p-2}\in \mathfrak{m}^{[p]}$ or 
-$((f^{p-2})+I^{[p]})f^{p(p-2)}g \subset \mathfrak{m}^{[p^2]}$, which is what our code checks. 
+Let $R\coloneqq \F_p[x_1,\ldots,x_n]$ and $f_1,\ldots,f_r$ be a homogeneous regular sequence in $R$. Let $f\coloneqq f_1\cdots f_n$ and $I\coloneqq(f_1,\ldots,f_n)$. In \cite[Theorem 5.8]{KawakamiTakamatsuYoshikawaFedderQuasi}, they show that if $f^{p-1} \Delta_1(f)^{1+p+\ldots+p^{n-2}}\in \mathfrak{m}^{[p^n]}$ for all $n$, where $\mathfrak{m}$ is the homogeneous maximal ideal of $R$, then the quasi-$F$-splitting height of $R/I$ is infinite. Where $\Delta_1(f)$ is defined such that 
+\[
+(0,\Delta_1(f))=(f,0)-\Sigma(b_i M_i,0)
+\]
+in $W_2(S)$ for $f=\Sigma b_i M_i$ with $b_i\in \F_p$ $M_i$ monomials.
+By the properties of $\Delta_1(f)$, this is the case if $f^{p-2}\in \mathfrak{m}^{[p]}$ or 
+$((f^{p-2})+I^{[p]})f^{p(p-2)}\Delta_1(f) \subset \mathfrak{m}^{[p^2]}$, which is what our code checks. 
 We note that there could be a variety with infinite quasi-$F$-splitting height that our code does not check. 
-\comment{Maybe we could just write delta 1 as the big ugly sum instead of this mysterious g?}
+
 \begin{example} 
 \begin{verbatim}
 i1 : R=ZZ/3[x,y,z,w];
@@ -522,9 +541,9 @@ The \code{PolynomialRing} and \code{QuotientRing} classes in \code{Macaulay2} ha
 For a \code{PolynomialRing} or \code{QuotientRing}, say \code{R}, our package (when called appropriately) creates keys \code{R.cache.wittVectors.n} (where $n$ is an integer), which is the \code{WittPolynomialRing} given by \code{witt(n, R)}. 
 
 
+\printbibliography
 
-
-\bibliography{biblio}
-\bibliographystyle{alpha}
+%\bibliography{biblio}
+%\bibliographystyle{alpha}
 
 \end{document}
