@@ -150,21 +150,23 @@ wittRingToTuple(RingElement):=(F)->(
 -----------------------------
 -----------------------------
 
-wittOverringToTuple(RingElement) := F -> (
-    -- NOTE: takeRoot is not currently working for R a quotient ring
-    -- one solution to be discussed next week: make the wittOverring of a quotient ring simply the wittOverring of the ambient polynomial ring
-    -- also we're going to move takeRoot out of this function
+
     takeRoot := (f, n) -> (
     --- in a ring of char p , takes the (1/p^n) root of a polynomial f
     R := ring f;
     p := char R;
     d := numgens R;
+    S := ambient R;
     yy := symbol yy;
-    RY := R[yy_0 .. yy_(d-1)] / ideal( for i from 0 to d-1 list yy_i^(p^n) - R_i );
-    Rsub := map( RY, R, toList( yy_0..yy_(d-1)) );
-    sub(Rsub(f), R)
+    SY := S[yy_0 .. yy_(d-1)] / ideal( for i from 0 to d-1 list yy_i^(p^n) - S_i );
+    Ssub := map( SY, S, toList( yy_0..yy_(d-1)) );
+    RY := quotient Ssub(ideal R);
+    Rsub := (last flattenRing(RY))*map(RY,R,Ssub);
+    sub(Rsub(f),R)
     );
 
+
+wittOverringToTuple(RingElement) := F -> (
     OR := ring F;
     R := OR.cache.unWitt;
     unWittSub := map(R, OR, vars R);
