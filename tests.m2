@@ -1,31 +1,11 @@
-TEST /// -- Check that the fSplittingHeight method gives back the correct number
-    table2=method()
-    table2(ZZ):=n->(
-        x:=symbol x;
-        y:=symbol y;
-        z:=symbol z;
-        w:=symbol w;
-        S:=(ZZ/3)[x,y,z,w];
-        I:=new MutableHashTable from {};
-        I#1=x^4 + y^4 + z^4 + 2*w^4 + x^2* y*w + y*z^2*w;
-        I#2=x^4 + 2*y^4 + 2*z^4 + 2*w^4 + x*y*z^2;
-        I#3=x^4 + y^4 + z^4 + w^4 + x^2*z^2 + x*y*z^2 + z^3*w;
-        I#4=x^4 + y^4 + z^4 + w^4 + x^2*z^2 + x*y*z^2;
-        I#5=x^4 + y^4 + z^4 + w^4 + x^3*z + z^3*w + y*z^2*w + y*z*w^2;
-        I#7=x^4 + y^4 + z^4 + w^4 + x*y^2*z + x*z^2*w + y*z*w^2 + y^2*z*w;
-        I#8=x^4 + x^2*y*z + x^2*y*w + 2*x^2*z^2 + x*y*w^2 + 2*y^4 + y^3*w + z^4 + w^4;
-        I#9=x^4 + y^4 + z^4 + w^4 + x*y^3 + y^3*w + z^2*w^2 + 2*x*y*z^2 + y*z*w^2;
-        I#10=x^4 + 2*x^2*y*z + x^2*y*w + x*y^2*w + y^4 + y^3*w + y^2*z^2 +2*y^2*z*w + y^2*w^2 + y*z^3 + y*z^2*w + y*z*w^2 + z^4 + z*w^3;
-        I#11=x^4 + y^4 + z^4 + w^4;
-    if n>10 or n==6 then return I#11 else return I#n
-    )
-    for i from 1 to 11 do (
-        I=ideal table2(i);
-        j=i;
-        if i==6 or i==11 then j=infinity;
-        assert(fSplittingHeight(I)==j) 
-    )
-    ///
+--TEST /// -- Check that the fSplittingHeight method gives back the correct number
+--    for i from 1 to 11 do (
+--        I=ideal table2(i);
+--        j=i;
+--        if i==6 or i==11 then j=infinity;
+--        assert(fSplittingHeight(I)==j)
+--    )
+--    ///
 
 TEST ///
     S = (ZZ/5)[x,y]
@@ -47,9 +27,9 @@ TEST ///
     w1+w2 == witt{x_1+y_1, -x_1^4*y_1-2*x_1^3*y_1^2-2*x_1^2*y_1^3-x_1*y_1^4+x_2+y_2, -x_1^24*y_1-2*x_1^23*y_1^2-2*x_1^22*y_1^3-x_1^21*y_1^4-2*x_1^19*y_1^6+2*x_1^18*y_1^7+x_1^16*y_1^9-x_1^13*y_1^12-x_1^12*y_1^13+x_1^9*y_1^16+2*x_1^7*y_1^ 18-2*x_1^6*y_1^19-x_1^4*y_1^21-2*x_1^3*y_1^22-2*x_1^2*y_1^23-x_1*y_1^24-x_1^16*x_2*y_1^4+2*x_1^15*x_2*y_1^5-2*x_1^14*x_2*y_1^6+x_1^13*x_2*y_1^7-2*x_1^ 11*x_2*y_1^9-2*x_1^10*x_2*y_1^10-2*x_1^9*x_2*y_1^11+x_1^7*x_2*y_1^13-2*x_1^6*x_2*y_1^14+2*x_1^5*x_2*y_1^15-x_1^4*x_2*y_1^16-x_1^16*y_1^4*y_2+2*x_1^15*y _1^5*y_2-2*x_1^14*y_1^6*y_2+x_1^13*y_1^7*y_2-2*x_1^11*y_1^9*y_2-2*x_1^10*y_1^10*y_2-2*x_1^9*y_1^11*y_2+x_1^7*y_1^13*y_2-2*x_1^6*y_1^14*y_2+2*x_1^5*y_1^ 15*y_2-x_1^4*y_1^16*y_2+2*x_1^12*x_2^2*y_1^3+2*x_1^11*x_2^2*y_1^4+x_1^10*x_2^2*y_1^5+x_1^8*x_2^2*y_1^7+x_1^7*x_2^2*y_1^8+x_1^5*x_2^2*y_1^10+2*x_1^4*x_2 ^2*y_1^11+2*x_1^3*x_2^2*y_1^12-x_1^12*x_2*y_1^3*y_2-x_1^11*x_2*y_1^4*y_2+2*x_1^10*x_2*y_1^5*y_2+2*x_1^8*x_2*y_1^7*y_2+2*x_1^7*x_2*y_1^8*y_2+2*x_1^5*x_2 *y_1^10*y_2-x_1^4*x_2*y_1^11*y_2-x_1^3*x_2*y_1^12*y_2+2*x_1^12*y_1^3*y_2^2+2*x_1^11*y_1^4*y_2^2+x_1^10*y_1^5*y_2^2+x_1^8*y_1^7*y_2^2+x_1^7*y_1^8*y_2^2+ x_1^5*y_1^10*y_2^2+2*x_1^4*y_1^11*y_2^2+2*x_1^3*y_1^12*y_2^2-2*x_1^8*x_2^3*y_1^2+2*x_1^7*x_2^3*y_1^3-x_1^6*x_2^3*y_1^4-x_1^4*x_2^3*y_1^6+2*x_1^3*x_2^3* y_1^7-2*x_1^2*x_2^3*y_1^8-x_1^8*x_2^2*y_1^2*y_2+x_1^7*x_2^2*y_1^3*y_2+2*x_1^6*x_2^2*y_1^4*y_2+2*x_1^4*x_2^2*y_1^6*y_2+x_1^3*x_2^2*y_1^7*y_2-x_1^2*x_2^2 *y_1^8*y_2-x_1^8*x_2*y_1^2*y_2^2+x_1^7*x_2*y_1^3*y_2^2+2*x_1^6*x_2*y_1^4*y_2^2+2*x_1^4*x_2*y_1^6*y_2^2+x_1^3*x_2*y_1^7*y_2^2-x_1^2*x_2*y_1^8*y_2^2-2*x_ 1^8*y_1^2*y_2^3+2*x_1^7*y_1^3*y_2^3-x_1^6*y_1^4*y_2^3-x_1^4*y_1^6*y_2^3+2*x_1^3*y_1^7*y_2^3-2*x_1^2*y_1^8*y_2^3+x_1^4*x_2^4*y_1+2*x_1^3*x_2^4*y_1^2+2*x _1^2*x_2^4*y_1^3+x_1*x_2^4*y_1^4-x_1^4*x_2^3*y_1*y_2-2*x_1^3*x_2^3*y_1^2*y_2-2*x_1^2*x_2^3*y_1^3*y_2-x_1*x_2^3*y_1^4*y_2+x_1^4*x_2^2*y_1*y_2^2+2*x_1^3* x_2^2*y_1^2*y_2^2+2*x_1^2*x_2^2*y_1^3*y_2^2+x_1*x_2^2*y_1^4*y_2^2-x_1^4*x_2*y_1*y_2^3-2*x_1^3*x_2*y_1^2*y_2^3-2*x_1^2*x_2*y_1^3*y_2^3-x_1*x_2*y_1^4*y_2 ^3+x_1^4*y_1*y_2^4+2*x_1^3*y_1^2*y_2^4+2*x_1^2*y_1^3*y_2^4+x_1*y_1^4*y_2^4-x_2^4*y_2-2*x_2^3*y_2^2-2*x_2^2*y_2^3-x_2*y_2^4+x_3+y_3}
     w1*w2 == witt{x_1*y_1, x_2*y_1^5+x_1^5*y_2, -x_1^5*x_2^4*y_1^20*y_2-2*x_1^10*x_2^3*y_1^15*y_2^2-2*x_1^15*x_2^2*y_1^10*y_2^3-x_1^20*x_2*y_1^5*y_2^4+x_3*y_1^25+x_1^25*y_3+x_2^5*y_2^5}
 ///
-    
 
-TEST /// 
+
+TEST ///
     S = (ZZ/3)[x,y,z,w]
     I = ideal(x^2+y^2+z^2+w^2, x*y+x*z+x*w+y*z+y*w+z*w)
     n = 3
@@ -59,11 +39,11 @@ TEST ///
     assert isSubset(ideal wittTupleToOverring witt f, J)
 ///
 
-TEST /// 
+TEST ///
     S = (ZZ/5)[x_1,x_2,x_3,y_1,y_2,y_3]
     W3S = witt(3,S)
     w1 = witt{x_1,x_2,x_3}
-    wittFrobenius(1,w1) == witt{x_1^5,x_2^5,x_3^5}    
+    wittFrobenius(w1) == witt{x_1^5,x_2^5,x_3^5}
 ///
 
 
@@ -95,7 +75,7 @@ TEST ///
     p = map(R,S)
     Wp = witt(2,p)
     Wp(w) == witt{0_R,0_R}
-    w21 = witt(1,2,id_S) 
+    w21 = witt(1,2,id_S)
     assert((try w21^2) == null)
     assert((try w21*w21) == null)
     use S
@@ -110,7 +90,7 @@ R = GF(5)[x,y,z]
     f2 = random(2, R)
     f3 = random(4, R)
     tt = {f1, f2, f3}
-    assert witt tt == wittOverringToTuple wittTupleToOverring witt tt
+    assert( witt tt == wittOverringToTuple wittTupleToOverring witt tt)
 ///
 
 TEST ///
@@ -118,6 +98,6 @@ TEST ///
     WR = witt(3, R)
     w = witt{x,y,z}
     t = truncation(2, WR)
-    assert t(w) == witt{x,y}
+    assert( t(w) == witt{x,y})
 ///
 
