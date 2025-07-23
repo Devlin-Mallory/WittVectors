@@ -151,6 +151,9 @@ wittRingToTuple(RingElement):=(F)->(
 -----------------------------
 
 wittOverringToTuple(RingElement) := F -> (
+    -- NOTE: takeRoot is not currently working for R a quotient ring
+    -- one solution to be discussed next week: make the wittOverring of a quotient ring simply the wittOverring of the ambient polynomial ring
+    -- also we're going to move takeRoot out of this function
     takeRoot := (f, n) -> (
     --- in a ring of char p , takes the (1/p^n) root of a polynomial f
     R := ring f;
