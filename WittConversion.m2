@@ -164,7 +164,7 @@ wittOverringToTuple(RingElement) := F -> (
 
     OR := ring F;
     R := OR.cache.unWitt;
-    unWittSub := map(R, OR, vars R);
+    unWittSub := map(R, OR, vars R); -- WARNING!! Fix when working with arbitrary finite fields?
     wittSub := OR.cache.wittSub;
     (p, n) := toSequence (factor(char OR))#0;
     
