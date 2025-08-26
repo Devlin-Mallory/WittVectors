@@ -246,24 +246,26 @@ We them implement these algorithm as a package in the computer algebra system Ma
 \section{Introduction}
 
 Fix a prime number $p > 0$.
+Given a commutative ring $R$ of characteristic $p$ and an integer $n \geq 1$, we let $W_{n}(R)$ be the ring of $p$-typical Witt vectors of length $n$ over $R$. Recall that, as a set, we have $W_n(R) = R \times R \times \cdots \times R$ ($n$ copies), with addition and multiplication defined by certain universal polynomials (see \cite[Section 8.10]{JacobsonBasicAlgebraII} for more details about these universal polynomials). For $n=2$, we have 
+\[
+(x_1,y_1)+(x_2,y_2)=\left(x_1+x_2, y_1+y_2-\frac{(x_1+x_2)^p-x_1^p-x_2^p}{p}\right)
+\]
+and 
+\[
+(x_1,y_1)(x_2,y_2)=\left(x_1x_2, x_1^py_2+x_2^py_1+py_1y_2\right).
+\]
+For $n=3$, we have $(x_1,y_1,z_1)+(x_2,y_2,z_2)$
+\[
+\left(x_1+x_2, y_1+y_2-\frac{(x_1+x_2)^p-x_1^p-x_2^p}{p},z_1+z_2+\frac{1}{p}\left(y_1^p+y_2^p-\left(y_1+y_2+\frac{x_1^p+x_2^p-(x_1+x_2)^p}{p}\right)^p\right)\right)+\frac{x_1^{p^2}+x_2^{p^2}-(x_1+y_1)^{p^2}}{p^2}
+\]
+\comment{align and make it pretty}
+and 
+\[
+(x_1,y_1,z_1)(x_2,y_2,z_2)=\left(x_1x_2, x_1^py_2+x_2^py_1+py_1y_2,z_1x_2^{p^2}+y_1^py_2^p+x_1^{p^2}z_2+\frac{y_1^px_2^{p^2}+x_1^{p^2}y_2^p-(y_1x_2^p+x_1^py_2)^p}{p}\right).
+\]
 
-Given a commutative ring $R$ and an integer $n \geq 1$, we let $W_{n}(R)$ be the ring of $p$-typical Witt vectors of length $n$ over $R$. Recall that, as a set, we have $W_n(R) = R \times R \times \cdots \times R$ ($n$ copies), with addition and multiplication defined by certain universal polynomials (see \cite[Section 8.10]{JacobsonBasicAlgebraII} for more details about these universal polynomials). Here are the polynomials for $n=1,2$.
-\comment{todo}
-
-The ring structure of $W_n(R)$ is, in fact, engineered so that for every $i = 0, \dots, n-1$ the $i$-th ghost map
-%
-$$w_i: W_n(R) \to R$$
-%
-given by 
-%
-$$w_i(x_0, \dots , x_{n-1}) \ceq x_0^{p^i} + p x_1^{p^{i-1}} + p^2 x_2^{p^{i-2}} + \cdots + p^i x_i$$
-%
-is a ring homomorphism. 
-\comment{Do we need this ghost map in the intro?}
-
-
-However, these get complicated very fast and make computations quite difficult in $W_n(R)$ for any $n>2$. 
-See for instance \cite{FinottiComputationsWittVectorsLength3}. In our implementation, we use a presentation of the ring of Witt vectors as a subalgebra of a polynomial ring as in Illusie \cite{IllusieComplexeDeRhamWittCristalline} (see \autoref{thm-witt-presentation-poly}) to reduce our computations to ones in a polynomial ring. We began our project in Fall 2023 and since then, a similar algorithm has been developped independently by Muñoz-\relax-Bertrand in Sage \cite{MunozBertrandFasterComputationWittVectors}. However, we believe it is still useful to have this algorithm implemented in Macaulay2. 
+The complexity of these polynomials increases as $n$ gets bigger and make computations quite difficult in $W_n(R)$ for any $n>2$. 
+Indeed, historically, computations with Witt vectors of length $3$ have been challenging, see for instance \cite{FinottiComputationsWittVectorsLength3}. To overcome these difficulties, we use a presentation of the ring of Witt vectors as a subalgebra of a polynomial ring as in Illusie \cite{IllusieComplexeDeRhamWittCristalline} (see \autoref{thm-witt-presentation-poly}) to reduce our computations to ones in a polynomial ring. We began our project in Fall 2023 and since then, a similar algorithm has been developped independently by Muñoz-\relax-Bertrand in Sage \cite{MunozBertrandFasterComputationWittVectors}. However, we believe it is still useful to have this algorithm implemented in Macaulay2 since WittVectors are increasingly used by commutative algebraists.
 
 Using these Witt vector computations, we developped an algorithm that gives constraints to the possible $\delta$-structures on a specific lift $B$ of a given ring $A$ of characteristic $p$ to characteristic $p^2$, see \autoref{section frobeniuslift}. We also implemented an algorithm that allows us to compute the quasi-$F$-splitting height of a complete intersection using the Fedder-type criterion of \cite{KawakamiTakamatsuYoshikawaFedderQuasi}, see \autoref{section quasiFSplitting}.
 
@@ -271,7 +273,8 @@ Using these Witt vector computations, we developped an algorithm that gives cons
 \comment{Emphasize computations are hard, maybe point to references? Talk about some history? Mention $W(R)$ is the ``universal $\delta$-ring mapping to $R$"? Talk about quasi-$F$-splitting stuff in the abstract?}
 
 \subsection*{Acknowledgements}
-We would like to thank Karl Schwede for putting our team together and showing us how to work with Macaulay2. We would also like to thank Kevin Tucker, Jakub Witaszek, and Nawaj KC for useful conversations on this topic
+We would like to thank Karl Schwede for putting our team together and showing us how to work with Macaulay2.
+We would also like to thank Kevin Tucker, Jakub Witaszek, and Nawaj KC for useful conversations on this topic. This project started during the academic year 2023-2024 as part of an RTG seminar under NSF award 1840190. Fayolle was supported by an NSERC doctoral grant, Goel was supported by {\color{red} todo}, Mallory was supported by {\color{red} todo}, Quinlan-Gallego was supported by an NSF postoctoral fellowship as well as {\color{red} todo}, Takamatsu was supported by by JSPS KAKENHI Grant number JP19J22795 as well as {\color{red} todo}.
 
 \section{Finite length Witt vectors as finitely generated algebras}
 
