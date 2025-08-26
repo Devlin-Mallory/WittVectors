@@ -7,6 +7,7 @@ wittIdeal = method(Dispatch => Thing)
 verschiebung = method()
 wittFrobenius = method()
 truncation = method()
+makeBaseFieldPrime = method()
 
 
 ---
@@ -159,6 +160,19 @@ wittOverringToTuple(sub(f, matrix{Lexplicit}))
 WittPolynomialRing = new Type of MutableHashTable;
 
 protect overring
+
+
+--EAMON 8/26/2025: I have added this function to get non-prime fields working. Please check.
+
+-- makeBaseFieldPrime(PolynomialRing) := R -> (
+--     F := baseRing(R);
+--     if isFinitePrimeField(F) then(
+-- 	return R;
+-- 	)
+--     else(
+-- 	FAmb := ambient(F);
+-- 	FAmbVar := (vars FAmb)_(0,0);
+-- 	--TODO: finish this.
 
 witt(ZZ,PolynomialRing) := (n,R)->(
     if not R.?cache then(

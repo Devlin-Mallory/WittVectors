@@ -11,21 +11,24 @@ wittOverringIdeal=method()
 -----------------------------
 -----------------------------
 
+-- EAMON, 8/26/2025: I have fixed this so that the wittOverring of a quotient ring
+-- is the wittOverring of its ambient ring. From the point of view of arithmetic, I
+-- don't think this will break anything, but we should test.
+
+
 wittOverring(ZZ, Ring) := (n, R) -> (
-    --TODO: for a quotient ring R, test wittSub of its overring.
     if class R =!= PolynomialRing then(
-        S := ambient R; 
-        --TODO: flattenRing S before checking its polynomial?
+        S := ambient R;
         if class S =!= PolynomialRing then(
 	    error "wittVectors currently only implemented for quotients of polynomial rings"
 	    );
-        I:=ideal R;
-	OR := quotient wittOverringIdeal(n, I);
-	OR.cache = new CacheTable;
-	ORvars := flatten entries vars OR;
-	WittSub := map (OR, R, ORvars); -- WARNING: not a real map!
-	OR.cache.wittSub = WittSub;
-        OR.cache.unWitt = R;);
+	OS := wittOverring(n, S);
+	OSvars := flatten entries vars OS;
+	WittSub := map(OS, R, OSvars); -- WARNING: not a real map!
+	OS.cache.wittSub = WittSub;
+	OS.cache.unWitt = R;
+	return(OS)
+	);
     if class R === PolynomialRing then(
         Rvars := flatten entries vars R;
         p := char R;
@@ -33,14 +36,49 @@ wittOverring(ZZ, Ring) := (n, R) -> (
         -- we create the WittOverring; called so because the n-th Witt ring of R
         -- will be a subring of this WittOverring.
         T := symbol T;
-	OR = ZZ[T_1 .. T_d] / p^n;
+	OR := ZZ[T_1 .. T_d] / p^n;
 	OR.cache = new CacheTable;
-	ORvars = flatten entries vars OR;
+	ORvars := flatten entries vars OR;
 	WittSub = map(OR, R, ORvars); -- WARNING: this is not a "real" map!
 	OR.cache.wittSub = WittSub;
-	OR.cache.unWitt = R;);
-    OR
+	OR.cache.unWitt = R;
+	return(OR)
+	);
 )
+
+
+--OLD VERSION
+
+-- wittOverring(ZZ, Ring) := (n, R) -> (
+--     --TODO: for a quotient ring R, test wittSub of its overring.
+--     if class R =!= PolynomialRing then(
+--         S := ambient R; 
+--         --TODO: flattenRing S before checking its polynomial?
+--         if class S =!= PolynomialRing then(
+-- 	    error "wittVectors currently only implemented for quotients of polynomial rings"
+-- 	    );
+--         I:=ideal R;
+-- 	OR := quotient wittOverringIdeal(n, I);
+-- 	OR.cache = new CacheTable;
+-- 	ORvars := flatten entries vars OR;
+-- 	WittSub := map (OR, R, ORvars); -- WARNING: not a real map!
+-- 	OR.cache.wittSub = WittSub;
+--         OR.cache.unWitt = R;);
+--     if class R === PolynomialRing then(
+--         Rvars := flatten entries vars R;
+--         p := char R;
+--         d := length Rvars;
+--         -- we create the WittOverring; called so because the n-th Witt ring of R
+--         -- will be a subring of this WittOverring.
+--         T := symbol T;
+-- 	OR = ZZ[T_1 .. T_d] / p^n;
+-- 	OR.cache = new CacheTable;
+-- 	ORvars = flatten entries vars OR;
+-- 	WittSub = map(OR, R, ORvars); -- WARNING: this is not a "real" map!
+-- 	OR.cache.wittSub = WittSub;
+-- 	OR.cache.unWitt = R;);
+--     OR
+-- )
 
 -----------------------------
 -----------------------------
