@@ -164,7 +164,6 @@ protect overring
 
 --EAMON 8/26/2025: I have added this function to get non-prime fields working. Please check.
 
-makeBaseFieldPrime = method()
 makeBaseFieldPrime(PolynomialRing) := R -> (
     F := baseRing(R);
     if isFinitePrimeField(F) then(
