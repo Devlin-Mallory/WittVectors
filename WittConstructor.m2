@@ -164,15 +164,18 @@ protect overring
 
 --EAMON 8/26/2025: I have added this function to get non-prime fields working. Please check.
 
--- makeBaseFieldPrime(PolynomialRing) := R -> (
---     F := baseRing(R);
---     if isFinitePrimeField(F) then(
--- 	return R;
--- 	)
---     else(
--- 	FAmb := ambient(F);
--- 	FAmbVar := (vars FAmb)_(0,0);
--- 	--TODO: finish this.
+makeBaseFieldPrime = method()
+makeBaseFieldPrime(PolynomialRing) := R -> (
+    F := baseRing(R);
+    if isFinitePrimeField(F) then(
+	return R;
+	)
+    else(
+	FAmb := ambient(F);
+	FAmbVar := (vars FAmb)_(0,0);
+        S := ambient R;
+        S' := FAmb(monoid S);
+        S'))
 
 witt(ZZ,PolynomialRing) := (n,R)->(
     if not R.?cache then(
