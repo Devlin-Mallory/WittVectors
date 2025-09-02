@@ -54,7 +54,8 @@ export{
 "fSplittingHeight",
 "overring",
 "wittFrobenius",
-"truncation"
+"truncation",
+"makeBaseFieldPrime",
 }
 
 protect tuple

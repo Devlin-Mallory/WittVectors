@@ -35,7 +35,8 @@ net(WittRingElement) := w -> net(w.tuple)
 
 toList(WittRingElement) := w -> w.tuple
 
---TODO: here I would like R = GF(3)[x]; W = witt(2, R); w = witt({x, x+1}); ring w
+--
+-- TODO: here I would like R = GF(3)[x]; W = witt(2, R); w = witt({x, x+1}); ring w
 -- to return W instead of Witt_2(R). Tried to do it with caching below but failed. 
 --
 --
@@ -161,9 +162,7 @@ WittPolynomialRing = new Type of MutableHashTable;
 
 protect overring
 
-
---EAMON 8/26/2025: I have added this function to get non-prime fields working. Please check.
-
+--EAMON 9/2: a bug? R = GF(9)[x]; R0 = makeBaseFieldPrime(R); use R; a
 makeBaseFieldPrime(PolynomialRing) := R -> (
     F := baseRing(R);
     if isFinitePrimeField(F) then(
@@ -174,7 +173,28 @@ makeBaseFieldPrime(PolynomialRing) := R -> (
 	FAmbVar := (vars FAmb)_(0,0);
         S := ambient R;
         S' := FAmb(monoid S);
-        S'))
+        return (flattenRing S')_0;
+    );
+    )
+
+makeBaseFieldPrime(QuotientRing) := R -> (
+    S := ambient(R);
+    if class(S) =!= PolynomialRing then(
+	error "makeBaseFieldPrime is only implemented for quotients of polynomial rings. Consider flattening first";
+	);
+    S' := makeBaseFieldPrime(S);
+    varsS' := first entries vars S';
+    fieldVar := varsS'_(-1);
+
+    Rvars := first entries vars R;
+    Rvars2 := append(Rvars, fieldVar_R);
+
+    phi := map(R, S', Rvars2);
+
+    outputRing := S' / kernel(phi);
+
+    return ( (flattenRing outputRing)_0 )
+    )
 
 witt(ZZ,PolynomialRing) := (n,R)->(
     if not R.?cache then(
