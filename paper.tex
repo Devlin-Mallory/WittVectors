@@ -229,24 +229,23 @@ sorting=ynt
 
 \begin{document}
 
-\title{Witt vector computations in Macaulay2}
+\title{Witt vector package for Macaulay2}
 \author{Anne Fayolle, Abhay Goel, Devlin Mallory, Eamon Quinlan-Gallego, Teppei Takamatsu}
 \maketitle
 
 \begin{abstract}
-We develop an algorithm for performing arithmetic operations in rings of finite length $p$-typical Witt vectors over finitely generated $\F_p$-algebras. We use this to find delta structures on quotients of polynomial rings. We also implement an algorithm to find the quasi-$F$-splitting height of a local complete intersection.
-We them implement these algorithm as a package in the computer algebra system Macaulay2. 
+We develop an algorithm for performing arithmetic operations in rings of finite length $p$-typical Witt vectors over finitely generated $\F_p$-algebras. This allows us to implement an algorithm that finds restriction on the existence delta structures on quotients of polynomial rings and, in some cases, gives a delta structure. We also implement an algorithm to find the quasi-$F$-splitting height of a local complete intersection.
 \end{abstract}
 
 \comment{
- Funding info.
+@ everyone, please update your funding info in the acknowledgements.
 }
 
 
 \section{Introduction}
 
 Fix a prime number $p > 0$.
-Given a commutative ring $R$ of characteristic $p$ and an integer $n \geq 1$, we let $W_{n}(R)$ be the ring of $p$-typical Witt vectors of length $n$ over $R$. Recall that, as a set, we have $W_n(R) = R \times R \times \cdots \times R$ ($n$ copies), with addition and multiplication defined by certain universal polynomials (see \cite[Section 8.10]{JacobsonBasicAlgebraII} for more details about these universal polynomials). For $n=2$, we have 
+Given a commutative ring $R$ of characteristic $p$ and an integer $n \geq 1$, we let $W_{n}(R)$ be the ring of $p$-typical Witt vectors of length $n$ over $R$. Recall that, as a set, we have $W_n(R) = R \times R \times \cdots \times R$ ($n$ copies), with addition and multiplication defined by certain universal polynomials (see \cite[Section 8.10]{JacobsonBasicAlgebraII} for more details about these universal polynomials). One can write down explicitly how addition and multiplication works in $W_n(R)$. Indeed, for $n=2$, we have 
 \[
 (x_1,y_1)+(x_2,y_2)=\left(x_1+x_2, y_1+y_2-\frac{(x_1+x_2)^p-x_1^p-x_2^p}{p}\right)
 \]
@@ -254,23 +253,20 @@ and
 \[
 (x_1,y_1)(x_2,y_2)=\left(x_1x_2, x_1^py_2+x_2^py_1+py_1y_2\right).
 \]
-For $n=3$, we have $(x_1,y_1,z_1)+(x_2,y_2,z_2)$
-\[
-\left(x_1+x_2, y_1+y_2-\frac{(x_1+x_2)^p-x_1^p-x_2^p}{p},z_1+z_2+\frac{1}{p}\left(y_1^p+y_2^p-\left(y_1+y_2+\frac{x_1^p+x_2^p-(x_1+x_2)^p}{p}\right)^p\right)\right)+\frac{x_1^{p^2}+x_2^{p^2}-(x_1+y_1)^{p^2}}{p^2}
-\]
-\comment{align and make it pretty}
+For $n=3$, we have 
+\begin{align*}
+(x_1,y_1,z_1)+(x_2,y_2,z_2)&=\Bigg(x_1+x_2, y_1+y_2-\frac{(x_1+x_2)^p-x_1^p-x_2^p}{p},\\
+&z_1+z_2+\frac{1}{p}\left(y_1^p+y_2^p-\left(y_1+y_2+\frac{x_1^p+x_2^p-(x_1+x_2)^p}{p}\right)^p\right)+\frac{x_1^{p^2}+x_2^{p^2}-(x_1+y_1)^{p^2}}{p^2}\Bigg)
+\end{align*}
 and 
 \[
 (x_1,y_1,z_1)(x_2,y_2,z_2)=\left(x_1x_2, x_1^py_2+x_2^py_1+py_1y_2,z_1x_2^{p^2}+y_1^py_2^p+x_1^{p^2}z_2+\frac{y_1^px_2^{p^2}+x_1^{p^2}y_2^p-(y_1x_2^p+x_1^py_2)^p}{p}\right).
 \]
-
-The complexity of these polynomials increases as $n$ gets bigger and make computations quite difficult in $W_n(R)$ for any $n>2$. 
-Indeed, historically, computations with Witt vectors of length $3$ have been challenging, see for instance \cite{FinottiComputationsWittVectorsLength3}. To overcome these difficulties, we use a presentation of the ring of Witt vectors as a subalgebra of a polynomial ring as in Illusie \cite{IllusieComplexeDeRhamWittCristalline} (see \autoref{thm-witt-presentation-poly}) to reduce our computations to ones in a polynomial ring. We began our project in Fall 2023 and since then, a similar algorithm has been developped independently by Muñoz-\relax-Bertrand in Sage \cite{MunozBertrandFasterComputationWittVectors}. However, we believe it is still useful to have this algorithm implemented in Macaulay2 since WittVectors are increasingly used by commutative algebraists.
+As one can start to see from these, the complexity of these operations increases dramatically as $n$ gets bigger and make computations quite difficult in $W_n(R)$ for any $n>2$. 
+Indeed, historically, even computations with Witt vectors of length $3$ have been challenging, see for instance \cite{FinottiComputationsWittVectorsLength3}. To overcome these difficulties, we use a presentation of the ring of Witt vectors as a subalgebra of a polynomial ring as in Illusie \cite{IllusieComplexeDeRhamWittCristalline} (see \autoref{thm-witt-presentation-poly}) to reduce our computations to ones in a polynomial ring. We began our project in Fall 2023 and since then, a similar algorithm has been developped independently by Muñoz-\relax-Bertrand in Sage \cite{MunozBertrandFasterComputationWittVectors}. However, we believe it is still useful to have this algorithm implemented in Macaulay2 since WittVectors are increasingly used by commutative algebraists.
 
 Using these Witt vector computations, we developped an algorithm that gives constraints to the possible $\delta$-structures on a specific lift $B$ of a given ring $A$ of characteristic $p$ to characteristic $p^2$, see \autoref{section frobeniuslift}. We also implemented an algorithm that allows us to compute the quasi-$F$-splitting height of a complete intersection using the Fedder-type criterion of \cite{KawakamiTakamatsuYoshikawaFedderQuasi}, see \autoref{section quasiFSplitting}.
 
-
-\comment{Emphasize computations are hard, maybe point to references? Talk about some history? Mention $W(R)$ is the ``universal $\delta$-ring mapping to $R$"? Talk about quasi-$F$-splitting stuff in the abstract?}
 
 \subsection*{Acknowledgements}
 We would like to thank Karl Schwede for putting our team together and showing us how to work with Macaulay2.
@@ -325,8 +321,121 @@ Next, we apply Proposition \ref{prop-witt-presentation-general} to the special c
 	In the context of Theorem \ref{thm-witt-presentation-poly}, it is useful to think of the variables $Y_k$ as $x_k^{1/p^{n-1}}$.
 \end{remark}
 
-\section{Basic examples}
 
+\section{Details on the \texttt{Macaulay2} package}
+
+Here is how the different classes should behave at the end of the day, not necessarily that they do so now.
+
+\subsection{The \code{WittOverring} class}
+
+The class \code{WittOverring} is a subclass of \code{PolynomialRing}, with special keys as follows:
+
+\directory{
+[WittOverring
+  [underring (WittPolynomialRing or WittQuotientRing)]
+  [wittSub (RingMap)]
+]
+}
+
+
+
+\subsection{The \code{WittPolynomialRing} class}
+
+Given a \code{PolynomialRing} object, say $R$, and an integer $n \geq 0$, running \code{witt(n, R)} creates an object of the new class \code{WittPolynomialRing}, which is a \code{MutableHashTable} with special entries as follows:
+
+
+\directory{
+[WittPolynomialRing
+  [wittLength (ZZ)]
+  [unWitt (PolynomialRing)]
+  [overring (WittOverring)]
+  [explicit (QuotientRing) (!)]
+]
+}
+
+\code{(!)}: Only computed when necessary.
+
+\subsection{The \code{WittQuotientRing} class}
+
+\directory{
+[WittQuotientRing
+  [wittLength (ZZ)]
+  [ambient (WittPolynomialRing)]
+  [unWitt (QuotientRing)]
+  [overring (WittOverring)]
+  [explicit (QuotientRing) (!)]
+]
+}
+
+\code{(!)}: Only computed when necessary.
+
+
+\subsection{The \code{WittRingElement} class}
+
+
+
+\code{(!)}: Only computed when necessary.
+
+\subsection{Caching}
+
+The \code{PolynomialRing} and \code{QuotientRing} classes in \code{Macaulay2} have a \code{cache} key, which is used to store data like Grobner bases, etc... 
+
+For a \code{PolynomialRing} or \code{QuotientRing}, say \code{R}, our package (when called appropriately) creates keys \code{R.cache.wittVectors.n} (where $n$ is an integer), which is the \code{WittPolynomialRing} given by \code{witt(n, R)}. 
+
+\subsection{Examples}
+\begin{example} Addition and multiplication of Witt vectors. 
+    \begin{verbatim}
+        i1: S = (ZZ/5)[x_1,x_2,y_1,y_2];
+        i2: W2S = witt(2,S)
+        o2 = Witt (S)
+                 2
+        o2 : WittPolynomialRing
+        i3 :w1 = witt{x_1,x_2}
+        o3 = {x , x }
+               1   2
+        o3 : WittRingElement
+        i4 :w1 = witt{y_1,y_2};
+        i5 : w1+w2
+                          4       3 2     2 3      4
+        o5 = {x  + y , - x y  - 2x y  - 2x y  - x y  + x  + y }
+               1    1     1 1     1 1     1 1    1 1    2    2
+        o5 : WittRingElement
+        i6 : w1*w2
+                     5    5
+        o6 = {x y , x y  + x y }
+               1 1   2 1    1 2
+        o6 : WittRingElement
+    \end{verbatim}
+\end{example}
+
+\begin{example} Frobenius, Vershiebung, and truncations in Witt vectors.
+    \begin{verbatim}
+        i1 :  S = (ZZ/5)[x_1,x_2,x_3,y_1,y_2,y_3]
+        o1 = S
+        o1 : PolynomialRing
+        i2 :  W3S = witt(3,S)
+        o2 = Witt (S)
+                 3
+        o2 : WittPolynomialRing
+        i3 : w1 = witt{x_1,x_2,x_3}
+        o3 = {x , x , x }
+               1   2   3
+        o3 : WittRingElement
+        i4 : wittFrobenius(w1)
+                5   5   5
+        o4 = {x , x , x }
+               1   2   3
+        o4 : WittRingElement
+        i5 : verschiebung(w1)
+        o5 = {0, x , x , x }
+                  1   2   3
+        o5 : WittRingElement
+        i6 : truncate(3,o5)
+        o6 = {0, x , x }
+                  1   2
+        o6 : WittRingElement
+    \end{verbatim}
+\end{example}
 
 \section{$\delta$-rings and $p$-derivations}\label{section frobeniuslift}
 In this section, we explain how we can compute the set of possible $\delta$ structures on a lift $B$ of a given ring $A$ of characteristic $p$ to characteristic $p^2$. 
@@ -483,72 +592,12 @@ o3 = 1
 \end{verbatim}
 \end{example}
 
-
-
-\section{Details on the \texttt{Macaulay2} package}
-
-Here is how the different classes should behave at the end of the day, not necessarily that they do so now.
-
-\subsection{The \code{WittOverring} class}
-
-The class \code{WittOverring} is a subclass of \code{PolynomialRing}, with special keys as follows:
-
-\directory{
-[WittOverring
-  [underring (WittPolynomialRing or WittQuotientRing)]
-  [wittSub (RingMap)]
-]
-}
-
-
-
-\subsection{The \code{WittPolynomialRing} class}
-
-Given a \code{PolynomialRing} object, say $R$, and an integer $n \geq 0$, running \code{witt(n, R)} creates an object of the new class \code{WittPolynomialRing}, which is a \code{MutableHashTable} with special entries as follows:
-
-
-\directory{
-[WittPolynomialRing
-  [wittLength (ZZ)]
-  [unWitt (PolynomialRing)]
-  [overring (WittOverring)]
-  [explicit (QuotientRing) (!)]
-]
-}
-
-\code{(!)}: Only computed when necessary.
-
-\subsection{The \code{WittQuotientRing} class}
-
-\directory{
-[WittQuotientRing
-  [wittLength (ZZ)]
-  [ambient (WittPolynomialRing)]
-  [unWitt (QuotientRing)]
-  [overring (WittOverring)]
-  [explicit (QuotientRing) (!)]
-]
-}
-
-\code{(!)}: Only computed when necessary.
-
-
-\subsection{The \code{WittRingElement} class}
-
-
-
-\code{(!)}: Only computed when necessary.
-
-\subsection{Caching}
-
-The \code{PolynomialRing} and \code{QuotientRing} classes in \code{Macaulay2} have a \code{cache} key, which is used to store data like Grobner bases, etc... 
-
-For a \code{PolynomialRing} or \code{QuotientRing}, say \code{R}, our package (when called appropriately) creates keys \code{R.cache.wittVectors.n} (where $n$ is an integer), which is the \code{WittPolynomialRing} given by \code{witt(n, R)}. 
-
-
 \printbibliography
 
 %\bibliography{biblio}
 %\bibliographystyle{alpha}
+
+
+
 
 \end{document}
