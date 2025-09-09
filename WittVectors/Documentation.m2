@@ -85,18 +85,25 @@ document { Key => WittPolynomialRing,
     ///
     }
 
+
 document {
     Key => {findFrobeniusLift, (RingElement, ZZ)},
     Headline => "find a lift of the Frobenius",
     Usage => "findFrobeniusLift(d, f)",
     Inputs => {"(d,f)"},
     Outputs => {{"find a lift of the Frobenius on the ring", TT "W_2(S/f)" "using polynomials of degree", TT " < d+1"}}
+	Text This methods tries random polynomials of the given degree and checks if they give Frobenius lifts. This might not terminate since there might not be one that is a Frobenius lift.
     Example 
 		S = (ZZ/2)[x,y]
 		I = ideal(x^2 +y^3)
 		L = findFrobeniusLift(2,I)
 	Text This should give a list wose second entry is y^2
+	Text To see which options the algorithm is trying, set verbose to true
 	Example 
+		S = (ZZ/2)[x,y]
+		I = ideal(x^3+y^5)
+		findFrobeniusLift(2,I,Verbose=>true)
+	Text This can give a couple of values like (x^2,0) or (0,y^2). Time will vary since the polynomials the algorithm tries are random.
     ///
     }
 
