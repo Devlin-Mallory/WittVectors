@@ -50,7 +50,12 @@ document {
     Usage => "findFrobeniusLift(d, f)",
     Inputs => {"(d,f)"},
     Outputs => {{"find a lift of the Frobenius on the ring", TT "W_2(S/f)" "using polynomials of degree", TT " < d+1"}}
-    EXAMPLE lines ///
+    Example 
+		S = (ZZ/2)[x,y]
+		I = ideal(x^2 +y^3)
+		L = findFrobeniusLift(2,I)
+	Text This should give a list wose second entry is y^2
+	Example 
     ///
     }
 
@@ -81,8 +86,8 @@ doc ///
 	 Text This should give infinity. 
 	 Example
 		S = ZZ/3[x,y,z]
-       	        I = ideal(x,y)
-	        fSplittingHeight I
+       	I = ideal(x,y)
+	    fSplittingHeight I
 	 Text This should give 1. 
 	 Example 
 		 S = (ZZ/2)[x,y,z,w,u]
