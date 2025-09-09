@@ -22,9 +22,9 @@ findFrobeniusLift(ZZ,Ideal) := opts -> (d,I) ->(
     T := ring J;
     j := 0;
     if not opts.Nontrivial then L :=toList((n):0) else L = for i from 0 to n-1 list sum for i from 0 to d list random(i,S);
-if opts.Verbose then 
+if opts.Verbose then
     while (evalMap(L,I,T))(J) != 0 do ( print j; j = j +1 ; L=for i from 0 to n-1 list sum for i from 0 to d list random(i,S) )
-    else 
+    else
     while (evalMap(L,I,T))(J) != 0 do (j = j +1 ; L=for i from 0 to n-1 list sum for i from 0 to d list random(i,S) );
     apply(L,i->sub(i,R))
 )
