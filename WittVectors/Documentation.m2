@@ -97,7 +97,7 @@ document {
 		S = (ZZ/2)[x,y]
 		I = ideal(x^2 +y^3)
 		L = findFrobeniusLift(2,I)
-	Text This should give a list wose second entry is y^2
+	Text This should give a list whose second entry is y^2
 	Text To see which options the algorithm is trying, set verbose to true
 	Example 
 		S = (ZZ/2)[x,y]
