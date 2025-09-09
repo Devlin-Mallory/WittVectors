@@ -8,9 +8,9 @@
 --TODO: make this work for a nonprincipal ideal
 
 
-findFrobeniusLift=method(Options=>{Nontrivial=>false})
+findFrobeniusLift=method(Options=>{Nontrivial=>false, Verbose=>false})
 
-findFrobeniusLift(ZZ,RingElement) := opts -> (d,f) -> findFrobeniusLift(d, ideal f)
+findFrobeniusLift(ZZ,RingElement) := opts -> (d,f) -> findFrobeniusLift(d, ideal f,opts)
 
 
 
@@ -22,7 +22,7 @@ findFrobeniusLift(ZZ,Ideal) := opts -> (d,I) ->(
     T := ring J;
     j := 0;
     if not opts.Nontrivial then L :=toList((n):0) else L = for i from 0 to n-1 list sum for i from 0 to d list random(i,S);
-    while (evalMap(L,I,T))(J) != 0 do (print j; j = j +1 ;  print L; L=for i from 0 to n-1 list sum for i from 0 to d list random(i,S) );
+    while (evalMap(L,I,T))(J) != 0 do (if opts.Verbose then print j; j = j +1 ; L=for i from 0 to n-1 list sum for i from 0 to d list random(i,S) );
     apply(L,i->sub(i,R))
 )
 
