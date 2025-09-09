@@ -67,7 +67,6 @@ needsPackage "SLPexpressions"
 needsPackage "MinimalPrimes"
 needsPackage "Elimination"
 rld = () -> (loadPackage "WittVectors")
-
 load "./WittConstructor.m2"
 load "./Kernels.m2"
 load "./WittConversion.m2"

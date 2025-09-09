@@ -1,4 +1,4 @@
-loadPackage("WittVectors")
+xloadPackage("WittVectors")
 S = (ZZ/5)[x,y,z]
 gg = random(4, S)
 R = S / gg
