@@ -1,0 +1,7 @@
+1. replace witt(n,R) by witt(n, makeBaseFieldPrime(R)) and add tests of witt(n,R) for R a ring over Galois fields 
+1.5 add caching
+2. add warning in paper about output/time involved for explicit
+3. Documentation
+4. paper
+5. add char p checks
+
