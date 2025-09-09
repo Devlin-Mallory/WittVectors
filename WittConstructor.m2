@@ -7,7 +7,7 @@ wittIdeal = method(Dispatch => Thing)
 verschiebung = method()
 wittFrobenius = method()
 truncation = method()
-makeBaseFieldPrime = method()
+makeCoefficientFieldPrime = method()
 
 
 ---
@@ -162,10 +162,11 @@ WittPolynomialRing = new Type of MutableHashTable;
 
 protect overring
 
---EAMON 9/2: a bug? R = GF(9)[x]; R0 = makeBaseFieldPrime(R); use R; a
-makeBaseFieldPrime(PolynomialRing) := R -> (
-    F := baseRing(R);
-    if isFinitePrimeField(F) then(
+--EAMON 9/2: a bug? R = GF(9)[x]; R0 = makeCoefficientFieldPrime(R); use R; a
+makeCoefficientFieldPrime(PolynomialRing) := R -> (
+    F := coefficientRing R;
+    if not isField F then error "expected a field as coefficient ring";
+    if isFinitePrimeField F then(
 	return R;
 	)
     else(
@@ -177,26 +178,27 @@ makeBaseFieldPrime(PolynomialRing) := R -> (
     );
     )
 
-makeBaseFieldPrime(QuotientRing) := R -> (
+makeCoefficientFieldPrime(QuotientRing) := R -> (
+    F := coefficientRing R;
+    if not isField F then error "expected a field as coefficient ring";
+    if isFinitePrimeField(F) then(
+	return R;
+	);
     S := ambient(R);
     if class(S) =!= PolynomialRing then(
-	error "makeBaseFieldPrime is only implemented for quotients of polynomial rings. Consider flattening first";
-	);
-    S' := makeBaseFieldPrime(S);
+	error "makeCoefficientFieldPrime is only implemented for quotients of polynomial rings. Consider flattening first";);
+    S' := makeCoefficientFieldPrime(S);
     varsS' := first entries vars S';
     fieldVar := varsS'_(-1);
-
     Rvars := first entries vars R;
     Rvars2 := append(Rvars, fieldVar_R);
-
     phi := map(R, S', Rvars2);
-
     outputRing := S' / kernel(phi);
-
     return ( (flattenRing outputRing)_0 )
     )
 
 witt(ZZ,PolynomialRing) := (n,R)->(
+    if not isFinitePrimeField(coefficientRing R) then return witt(n, makeCoefficientFieldPrime(R));
     if not R.?cache then(
 	R.cache = new CacheTable;
 	);
@@ -250,6 +252,7 @@ random(ZZ, WittPolynomialRing) := opts -> (nn, WPR) -> (
 WittQuotientRing = new Type of MutableHashTable;
 
 witt(ZZ, QuotientRing) := (n,R)->(
+    if not isFinitePrimeField(coefficientRing R) then return witt(n, makeCoefficientFieldPrime(R));
     if not R.?cache then(
 	R.cache = new CacheTable;
 	);

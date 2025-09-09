@@ -55,7 +55,7 @@ export{
 "overring",
 "wittFrobenius",
 "truncation",
-"makeBaseFieldPrime",
+"makeCoefficientFieldPrime",
 }
 
 protect tuple
