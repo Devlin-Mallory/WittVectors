@@ -1,1 +1,0 @@
---TODO: add mixed char Jacobian criterion
