@@ -223,6 +223,9 @@ witt(ZZ,PolynomialRing) := (n,R)->(
     R.cache.wittRings#n
 )
 
+
+witt(ZZ,GaloisField) := (n,R)-> witt(n, ambient R)
+
 unWitt(WittPolynomialRing) := WPR ->(
     WPR.unWitt
     )

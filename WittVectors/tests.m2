@@ -1,3 +1,13 @@
+
+TEST ///
+witt(2,ZZ/3)
+witt(2,ZZ/3[x])
+witt(2,ZZ/5[x]/x^2)
+witt(2,GF 9)
+witt(2, (GF 9)[x])
+witt(2, (GF 9)[x]/x^2)
+///
+
 --TEST /// -- Check that the fSplittingHeight method gives back the correct number
 --    for i from 1 to 11 do (
 --        I=ideal table2(i);
