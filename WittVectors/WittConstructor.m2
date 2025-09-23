@@ -8,6 +8,7 @@ verschiebung = method()
 wittFrobenius = method()
 truncation = method()
 makeCoefficientFieldPrime = method()
+charPCheck = method()
 
 
 ---
@@ -16,6 +17,10 @@ makeCoefficientFieldPrime = method()
 
 WittRingElement = new Type of MutableHashTable;
 
+charPCheck(Ring) :=  R -> (
+    if char R == 0 then error "expected a ring of positive characteristic";
+    if not isPrime char R then error "expected a ring of prime characteristic";)
+
 witt(List) := L0 -> (
     ww := new WittRingElement from MutableHashTable;
     --check all elements of the list lie in ZZ or same ring
@@ -23,6 +28,7 @@ witt(List) := L0 -> (
     BaseRing := unique select(L,i-> i =!= ZZ);
     if length (BaseRing) == 0 then error "must specify ring; e.g., use sub";
     if  length (BaseRing) > 1 then error "expected elements from the same ring";
+    charPCheck(first BaseRing);
     --
     ww.tuple = apply(L0,i -> sub(i, first BaseRing ));
     for nn from 0 to (length L0)-1 do(
@@ -164,8 +170,8 @@ protect overring
 
 --EAMON 9/2: a bug? R = GF(9)[x]; R0 = makeCoefficientFieldPrime(R); use R; a
 makeCoefficientFieldPrime(PolynomialRing) := R -> (
-    F := coefficientRing R;
-    if not isField F then error "expected a field as coefficient ring";
+    F := try coefficientRing R;
+    if F =!= null and not isField F then error "expected a field as coefficient ring";
     if isFinitePrimeField F then(
 	return R;
 	)
@@ -179,8 +185,8 @@ makeCoefficientFieldPrime(PolynomialRing) := R -> (
     )
 
 makeCoefficientFieldPrime(QuotientRing) := R -> (
-    F := coefficientRing R;
-    if not isField F then error "expected a field as coefficient ring";
+    F := try coefficientRing R;
+    if F =!= null and not isField F then error "expected a field as coefficient ring";
     if isFinitePrimeField(F) then(
 	return R;
 	);
@@ -198,7 +204,9 @@ makeCoefficientFieldPrime(QuotientRing) := R -> (
     )
 
 witt(ZZ,PolynomialRing) := (n,R)->(
-    if not isFinitePrimeField(coefficientRing R) then return witt(n, makeCoefficientFieldPrime(R));
+    charPCheck R;
+    F := try coefficientRing R;
+    if F =!= null and not isFinitePrimeField F then return witt(n, makeCoefficientFieldPrime(R));
     if not R.?cache then(
 	R.cache = new CacheTable;
 	);
@@ -252,7 +260,8 @@ random(ZZ, WittPolynomialRing) := opts -> (nn, WPR) -> (
 WittQuotientRing = new Type of MutableHashTable;
 
 witt(ZZ, QuotientRing) := (n,R)->(
-    if not isFinitePrimeField(coefficientRing R) then return witt(n, makeCoefficientFieldPrime(R));
+    F := try coefficientRing R;
+    if F =!= null and not isFinitePrimeField F then return witt(n, makeCoefficientFieldPrime(R));
     if not R.?cache then(
 	R.cache = new CacheTable;
 	);

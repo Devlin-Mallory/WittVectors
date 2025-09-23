@@ -17,7 +17,7 @@ wittOverringIdeal=method()
 
 
 wittOverring(ZZ, Ring) := (n, R) -> (
-    if class R =!= PolynomialRing then(
+    if class R =!= PolynomialRing and not isField(R) then(
         S := ambient R;
         if class S =!= PolynomialRing then(
 	    error "wittVectors currently only implemented for quotients of polynomial rings"
@@ -29,7 +29,7 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 	OS.cache.unWitt = R;
 	return(OS)
 	);
-    if class R === PolynomialRing then(
+    if class R === PolynomialRing or isField(R) then(
         Rvars := flatten entries vars R;
         p := char R;
         d := length Rvars;
@@ -196,7 +196,7 @@ wittRingToTuple(RingElement):=(F)->(
     d := numgens R;
     S := ambient R;
     yy := symbol yy;
-    SY := S[yy_0 .. yy_(d-1)] / ideal( for i from 0 to d-1 list yy_i^(p^n) - S_i );
+    SY := (SY0 := S[yy_0 .. yy_(d-1)]) / sub(ideal( for i from 0 to d-1 list yy_i^(p^n) - S_i ), SY0);
     Ssub := map( SY, S, toList( yy_0..yy_(d-1)) );
     RY := quotient Ssub(ideal R);
     Rsub := (last flattenRing(RY))*map(RY,R,Ssub);
