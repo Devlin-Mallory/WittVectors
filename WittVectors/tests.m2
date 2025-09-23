@@ -6,6 +6,9 @@ witt(2,ZZ/5[x]/x^2)
 witt(2,GF 9)
 witt(2, (GF 9)[x])
 witt(2, (GF 9)[x]/x^2)
+assert( (try witt(2,ZZ/15)) == null)
+assert( (try witt(2,QQ)) == null)
+assert( (try witt(2,QQ[x])) == null)
 ///
 
 --TEST /// -- Check that the fSplittingHeight method gives back the correct number
