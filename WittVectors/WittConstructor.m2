@@ -487,6 +487,17 @@ WittRingMap WittRingElement := WittRingElement => (Wf, w) -> (
 
 ---
 
+wittFrobenius(WittQuotientRing) := WittRingMap => WPR -> (
+    R := WPR.unWitt;
+    nn := wittLength(WPR);
+    pp := char (R);
+    Rvars := gens R;
+    Rvarsp := apply(Rvars, xx -> xx^pp);
+    frob := map(R, R, Rvarsp);
+    witt(nn, frob)
+    )
+
+
 wittFrobenius(WittPolynomialRing) := WittRingMap => WPR -> (
     R := WPR.unWitt;
     nn := wittLength(WPR);
