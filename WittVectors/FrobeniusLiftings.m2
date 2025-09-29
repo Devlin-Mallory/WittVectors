@@ -51,25 +51,30 @@ sub(ideal last (sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tup
 
 expandFrobeniusConstraints=method(Options=>{Homogeneous=>false})
 
-expandFrobeniusConstraints(ZZ,RingElement) := opts -> (d,f)->(
-S := ring f;
-I := findFrobeniusLiftConstraints(f);
+expandFrobeniusConstraints(ZZ,RingElement) := opts -> (d,f)->expandFrobeniusConstraints(d,ideal f, opts)
+
+expandFrobeniusConstraints(ZZ,Ideal) := opts -> (d,J)->(
+S := ring J;
+I := findFrobeniusLiftConstraints(J);
 A := ring I;
-n := dim ring f;
+n := dim ring J;
 c := symbol c;
 B := S[c_(toList(n:0),{1})..c_(toList(n:d),{n})];
 monomials := if opts.Homogeneous then 
     apply(select( latticePoints hypercube(n, 0, d),i->sum entries i == {d}),j->entries j) 
 else
     apply(select( latticePoints hypercube(n, 0, d),i->sum entries i <= {d}),j->entries j) ;
-B := S[flatten for j from 1 to n list for i in monomials list c_(flatten i ,{j})];
+B := S[flatten for i in monomials list for j from 1 to n list c_(flatten i ,{j})];
 mapList := for j from 1 to n list sum apply(monomials,i->S_(flatten i)*c_(flatten i,{j}));
+--expand:=map(B/sub(J,B),A,mapList|gens S);
 expand:=map(B,A,mapList|gens S);
 --move the resulting ideal to B/fB?
 expand I
 )
 
 createEquations = method(Options => {Homogeneous => false})
+createEquations(ZZ,RingElement):=opts -> (d,f)->createEquations(d,ideal f,opts)
+--createEquations(ZZ,Ideal):=opts -> (d,J)->(
 createEquations(ZZ,RingElement):=opts -> (d,f)->(
 G:=expandFrobeniusConstraints(d,f,Homogeneous=>opts.Homogeneous);
 n:=dim ring f;
@@ -77,11 +82,11 @@ S:=ring f;
 p:=char S;
 T:=ring G;
 cc:=symbol cc;
-Bcc := T[cc_(toList(n:0))..cc_(toList(n:d))];
 monomials := if opts.Homogeneous then 
     apply(select( latticePoints hypercube(n, 0, d),i->sum entries i == {d}),j->entries j) 
 else
     apply(select( latticePoints hypercube(n, 0, d),i->sum entries i <= {d}),j->entries j) ;
+Bcc := T[for i in monomials list cc_(flatten i)];
 genericElement:=sum apply(monomials,j->S_(flatten j)*cc_(flatten j));
 constraint:=f*(genericElement)-sub(G_0,Bcc);
 --Bflatmap:=last flattenRing(Bcc);
