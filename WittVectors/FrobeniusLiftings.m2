@@ -8,7 +8,7 @@
 --TODO: make this work for a nonprincipal ideal
 
 
-findFrobeniusLift=method(Options=>{Nontrivial=>false, Verbose=>false})
+findFrobeniusLift=method(Options=>{Nontrivial=>false, Homogeneous => false, Verbose=>false})
 
 findFrobeniusLift(ZZ,RingElement) := opts -> (d,f) -> findFrobeniusLift(d, ideal f,opts)
 
@@ -21,11 +21,10 @@ findFrobeniusLift(ZZ,Ideal) := opts -> (d,I) ->(
     J := findFrobeniusLiftConstraints(I);
     T := ring J;
     j := 0;
-    if not opts.Nontrivial then L :=toList((n):0) else L = for i from 0 to n-1 list sum for i from 0 to d list random(i,S);
-if opts.Verbose then
-    while (evalMap(L,I,T))(J) != 0 do ( print j; j = j +1 ; L=for i from 0 to n-1 list sum for i from 0 to d list random(i,S) )
-    else
-    while (evalMap(L,I,T))(J) != 0 do (j = j +1 ; L=for i from 0 to n-1 list sum for i from 0 to d list random(i,S) );
+if not opts.Nontrivial then L :=toList((n):0) else L = for i from 0 to n-1 list if opts.Homogeneous == false then sum for i from 0 to d list random(i,S) else random(d,S);
+    while (evalMap(L,I,T))(J) != 0 do ( if opts.Verbose then print j; j = j +1 ; L=
+for i from 0 to n-1 list if opts.Homogeneous == false then sum for i from 0 to d list random(i,S) else random(d,S);
+);
     apply(L,i->sub(i,R))
 )
 
@@ -50,31 +49,39 @@ sub(ideal last (sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tup
 
 
 
-expandFrobeniusConstraints=method()
-expandFrobeniusConstraints(ZZ,RingElement) := (d,f)->(
+expandFrobeniusConstraints=method(Options=>{Homogeneous=>false})
+
+expandFrobeniusConstraints(ZZ,RingElement) := opts -> (d,f)->(
 S := ring f;
 I := findFrobeniusLiftConstraints(f);
 A := ring I;
 n := dim ring f;
 c := symbol c;
 B := S[c_(toList(n:0),{1})..c_(toList(n:d),{n})];
-monomials := apply(select( latticePoints hypercube(n, 0, d),i->sum entries i <= {d}),j->entries j) ;
-mapList := for i from 1 to n list sum apply(monomials,j->S_(flatten j)*c_(toSequence({flatten j}|{{i}})));
+monomials := if opts.Homogeneous then 
+    apply(select( latticePoints hypercube(n, 0, d),i->sum entries i == {d}),j->entries j) 
+else
+    apply(select( latticePoints hypercube(n, 0, d),i->sum entries i <= {d}),j->entries j) ;
+B := S[flatten for j from 1 to n list for i in monomials list c_(flatten i ,{j})];
+mapList := for j from 1 to n list sum apply(monomials,i->S_(flatten i)*c_(flatten i,{j}));
 expand:=map(B,A,mapList|gens S);
 --move the resulting ideal to B/fB?
 expand I
 )
 
-createEquations = method()
-createEquations(ZZ,RingElement):=(d,f)->(
-G:=expandFrobeniusConstraints(d,f);
+createEquations = method(Options => {Homogeneous => false})
+createEquations(ZZ,RingElement):=opts -> (d,f)->(
+G:=expandFrobeniusConstraints(d,f,Homogeneous=>opts.Homogeneous);
 n:=dim ring f;
 S:=ring f;
 p:=char S;
 T:=ring G;
 cc:=symbol cc;
 Bcc := T[cc_(toList(n:0))..cc_(toList(n:d))];
-monomials := apply(select( latticePoints hypercube(n, 0, d),i->sum entries i <= {d}),j->entries j) ;
+monomials := if opts.Homogeneous then 
+    apply(select( latticePoints hypercube(n, 0, d),i->sum entries i == {d}),j->entries j) 
+else
+    apply(select( latticePoints hypercube(n, 0, d),i->sum entries i <= {d}),j->entries j) ;
 genericElement:=sum apply(monomials,j->S_(flatten j)*cc_(flatten j));
 constraint:=f*(genericElement)-sub(G_0,Bcc);
 --Bflatmap:=last flattenRing(Bcc);
