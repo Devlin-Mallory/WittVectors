@@ -8,7 +8,7 @@
 --TODO: make this work for a nonprincipal ideal
 
 
-findFrobeniusLift=method(Options=>{Nontrivial=>false, Homogeneous => false, Verbose=>false})
+findFrobeniusLift=method(Options=>{Nontrivial=>false, Homogeneous => false, Verbose=>false, PerturbationTerm => null})
 
 findFrobeniusLift(ZZ,RingElement) := opts -> (d,f) -> findFrobeniusLift(d, ideal f,opts)
 
@@ -18,7 +18,7 @@ findFrobeniusLift(ZZ,Ideal) := opts -> (d,I) ->(
     S := ring I;
     R := S/I;
     n := numgens S;
-    J := findFrobeniusLiftConstraints(I);
+    J := findFrobeniusLiftConstraints(I, PerturbationTerm=>opts.PerturbationTerm, Homogeneous=>opts.Homogeneous);
     T := ring J;
     j := 0;
 if not opts.Nontrivial then L :=toList((n):0) else L = for i from 0 to n-1 list if opts.Homogeneous == false then sum for i from 0 to d list random(i,S) else random(d,S);
@@ -29,33 +29,46 @@ for i from 0 to n-1 list if opts.Homogeneous == false then sum for i from 0 to d
 )
 
 
-findFrobeniusLiftConstraints=method()
-findFrobeniusLiftConstraints(RingElement) := (f) -> findFrobeniusLiftConstraints(ideal f)
+findFrobeniusLiftConstraints=method(Options=>{PerturbationTerm=>null})
 
+findFrobeniusLiftConstraints(RingElement) := opts -> f -> findFrobeniusLiftConstraints(ideal f, opts)
 
-findFrobeniusLiftConstraints(Ideal) := (I) ->(
+findFrobeniusLiftConstraints(Ideal) := opts -> I ->(
+    c := numgens I;
+    fp := toList(c:0);
+if opts.PerturbationTerm =!= null  then( 
+    fp = opts.PerturbationTerm;
+    if length fp != numgens I then error "expected perturbation to have same number of generators of ideal");
 S:=ring I;
+fp=apply(fp,i->sub(i,S));
+p:=char S;
 R:=S/I;
 d:=numgens S;
 aa:=symbol aa;
 T:=prune(S[aa_0..aa_(d-1)]);
 TR:=T/sub(I,T);
-trim sum for f in I_* list(
+trim sum for r from 0 to numgens I-1 list (
+f:=I_r;
+g:=fp_r;
 Cf:=apply(flatten entries last coefficients f, i->sub(i,ZZ));
 Ef :=flatten( exponents\ flatten entries first coefficients f);
-WCf:=(apply(Ef,i->product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j)));
-sub(ideal last (sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tuple, TR))
-)
+WCf:=apply(Ef,i->product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j));
+Cfp:=apply(flatten entries last coefficients g, i->sub(i,ZZ));
+Efp :=flatten( exponents\ flatten entries first coefficients g);
+WCfp:=apply(Efp,i->product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j));
+if WCfp == {} then WCfp = {witt{0_T,0_T}};
+if Cfp == {} then Cfp = {0};
+sub(ideal last (p *Cfp_r*WCfp_r+sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tuple, TR)))
 
 
 
-expandFrobeniusConstraints=method(Options=>{Homogeneous=>false})
+expandFrobeniusConstraints=method(Options=>{Homogeneous=>false,PerturbationTerm=>null})
 
 expandFrobeniusConstraints(ZZ,RingElement) := opts -> (d,f) -> expandFrobeniusConstraints(d,ideal f, opts)
 
 expandFrobeniusConstraints(ZZ,Ideal) := opts -> (d,J) -> (
 S := ring J;
-I := findFrobeniusLiftConstraints(J);
+I := findFrobeniusLiftConstraints(J,PerturbationTerm=>opts.PerturbationTerm);
 A := ring I;
 n := dim ring J;
 c := symbol c;
@@ -71,10 +84,10 @@ expand:=map(B,A,mapList|gens S);
 expand I
 )
 
-createEquations = method(Options => {Homogeneous => false})
+createEquations = method(Options => {Homogeneous => false, PerturbationTerm=>null})
 createEquations(ZZ,RingElement) := opts -> (d,f)->createEquations(d,ideal f,opts)
 createEquations(ZZ,Ideal) := opts -> (d,I) -> (
-G:=expandFrobeniusConstraints(d,I,Homogeneous=>opts.Homogeneous);
+G:=expandFrobeniusConstraints(d,I,opts);
 n:=dim ring I;
 S:=ring I;
 p:=char S;

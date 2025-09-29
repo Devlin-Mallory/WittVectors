@@ -47,6 +47,7 @@ export{
 "explicitOver",
 "MaxHeight",
 "Nontrivial",
+"PerturbationTerm",
 "findFrobeniusLiftConstraints",
 "findFrobeniusLift",
 "createEquations",
