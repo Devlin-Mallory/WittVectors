@@ -137,3 +137,7 @@ breakString(String) := s -> (
     usLocation = first usLocation;
     (substring(s, 0, usLocation), substring(s, usLocation + 1, length s - 1))
 	)
+
+beginDocumentation()
+
+load "./WittVectors/Documentation.m2"
