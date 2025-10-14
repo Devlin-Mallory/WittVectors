@@ -75,6 +75,8 @@
 --///
 
 
+
+
 doc ///
     Key
 	(witt, List)
@@ -91,8 +93,8 @@ doc ///
 	    ring $R$ of positive prime characteristic, this produces the WittRingElement
 	    $(x_1, \dots , x_n) \in W_n(R)$.
 	Example
-	    R = GF(3)[x,y,z]
-	    witt{x + y, y^3 + x*z^2}
+            R = ZZ/5[x,y,z]/(x^3 + y^3 + z^3);
+            x + y
 ///
 
 
@@ -121,7 +123,7 @@ doc ///
 	 Text
 	        This should give 4. 
 	 Example
-		S = ZZ/3[x,y,z]
+		S = ZZ/3[x,y,z, w]
        	        I = ideal(x^4 + y^4 + z^4 + w^4)
 	        fSplittingHeight I -- I got 4, not infinity...
 	 Text
