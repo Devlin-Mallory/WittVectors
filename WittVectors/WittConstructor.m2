@@ -6,7 +6,6 @@ explicitOver = method()
 wittIdeal = method(Dispatch => Thing)
 verschiebung = method()
 wittFrobenius = method()
-truncate = method()
 makeCoefficientFieldPrime = method()
 charPCheck = method()
 
