@@ -106,7 +106,7 @@ doc ///
 	Inputs
 	 I: Ideal
 	Outputs
-	 r: ZZ --Is this right? Just added this to make it compile but not sure what should go here.
+	 r: Number --Is this right? Just added this to make it compile but not sure what should go here.
 	Description
 	 Text
 		This gives the quasi-F-Splitting height r of S/I
