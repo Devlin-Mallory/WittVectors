@@ -6,7 +6,7 @@ explicitOver = method()
 wittIdeal = method(Dispatch => Thing)
 verschiebung = method()
 wittFrobenius = method()
-truncation = method()
+truncate = method()
 makeCoefficientFieldPrime = method()
 charPCheck = method()
 
@@ -517,12 +517,12 @@ wittFrobenius(WittRingElement) := WittRingMap => ww -> (
     wF(ww)
     )
 
-truncation(ZZ, WittPolynomialRing) := (n, W) -> (
+truncate(ZZ, WittPolynomialRing) := (n, W) -> (
     if n > wittLength W then error "can't truncate to something longer";
     witt(n, wittLength W, map(unWitt W, unWitt W))
 )
 
-truncation(ZZ, WittQuotientRing) := (n, W) -> (
+truncate(ZZ, WittQuotientRing) := (n, W) -> (
     if n > wittLength W then error "can't truncate to something longer";
     witt(n, wittLength W, map(unWitt W, unWitt W))
 )
