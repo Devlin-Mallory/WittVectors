@@ -96,10 +96,6 @@ doc ///
 ///
 
 
-
-end
-
-
 doc ///
 	Key
 	 fSplittingHeight
@@ -123,7 +119,7 @@ doc ///
 	 Example
 		S = ZZ/3[x,y,z,w]
        	        I = ideal(x^4 + y^4 + z^4 + w^4)
-	        fSplittingHeight I -- I got 4, not infinity...
+	        fSplittingHeight I
 	 Text
 	        This should give infinity. 
 	 Example
@@ -280,4 +276,9 @@ doc ///
 	SeeAlso
 	
 ///
+
+
+end
+
+
 
