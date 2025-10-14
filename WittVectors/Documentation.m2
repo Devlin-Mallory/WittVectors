@@ -98,10 +98,6 @@ doc ///
 ///
 
 
-
-end
-
-
 doc ///
 	Key
 	 fSplittingHeight
@@ -112,7 +108,7 @@ doc ///
 	Inputs
 	 I: Ideal
 	Outputs
-	 r: ZZ --Is this right? Just added this to make it compile but not sure what should go here.
+	 r: Number --Is this right? Just added this to make it compile but not sure what should go here.
 	Description
 	 Text
 		This gives the quasi-F-Splitting height r of S/I
@@ -123,9 +119,10 @@ doc ///
 	 Text
 	        This should give 4. 
 	 Example
-		S = ZZ/3[x,y,z, w]
+		S = ZZ/3[x,y,z,w]
+		S = ZZ/3[x,y,z,w]
        	        I = ideal(x^4 + y^4 + z^4 + w^4)
-	        fSplittingHeight I -- I got 4, not infinity...
+	        fSplittingHeight I
 	 Text
 	        This should give infinity. 
 	 Example
@@ -282,4 +279,9 @@ doc ///
 	SeeAlso
 	
 ///
+
+
+end
+
+
 
