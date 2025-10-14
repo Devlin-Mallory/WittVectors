@@ -110,7 +110,7 @@ TEST ///
     R = GF(7)[x,y,z]
     WR = witt(3, R)
     w = witt{x,y,z}
-    t = truncation(2, WR)
+    t = truncate(2, WR)
     assert( t(w) == witt{x,y})
 ///
 
