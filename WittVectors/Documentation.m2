@@ -121,7 +121,7 @@ doc ///
 	 Text
 	        This should give 4. 
 	 Example
-		S = ZZ/3[x,y,z]
+		S = ZZ/3[x,y,z,w]
        	        I = ideal(x^4 + y^4 + z^4 + w^4)
 	        fSplittingHeight I -- I got 4, not infinity...
 	 Text
