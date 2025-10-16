@@ -182,6 +182,42 @@ doc ///
 ///
 
 
+doc ///
+    Key
+	(wittFrobenius, WittPolynomialRing)
+	(wittFrobenius, WittQuotientRing)
+	(wittFrobenius, WittRingElement)
+	(wittFrobenius, ZZ, Ring)
+    Usage
+	witt W
+	witt w
+	witt(n, R)
+    Inputs
+	W:{WittPolynomialRing,WittQuotientRing}
+	   The Witt ring of a ring R of positive characteristic
+	w:WittRingElement
+           an element of a Witt ring
+        n:ZZ
+           a positive integer, the length of the Witt vectors to consider
+        R:Ring
+            a ring of positive characteristic
+    Outputs
+	phi:WittRingMap
+            the Frobenius map on W
+	phi(w):WittRingElement
+            the image of w under the Frobenius map
+    Description
+	Text
+            This gives the Frobenius map on the Witt ring W, or given a ring R and an integer n gives the Frobenius map on W_n(R), or given a Witt vector w gives the image w under the Frobenius map.
+	Example
+            R = ZZ/5[x]
+            W = witt(2,R);
+            phi = wittFrobenius W;
+            w = witt {x,y,z};
+            phi(w)
+///
+
+
 document { Key => WittPolynomialRing,
     SeeAlso => {WittRing},
     Headline => "the class of Witt rings of a polynomial ring",
