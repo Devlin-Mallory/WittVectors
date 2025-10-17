@@ -187,36 +187,66 @@ doc ///
     Key
 	(wittFrobenius, WittPolynomialRing)
 	(wittFrobenius, WittQuotientRing)
-	(wittFrobenius, WittRingElement)
+    Usage
+    	phi = wittFrobenius W
+    Inputs
+	W:{WittPolynomialRing, WittQuotientRing}
+	   The Witt ring of a ring R of positive characteristic
+    Outputs
+	phi:WittRingMap
+            the Frobenius map on W
+    Description
+	Text
+            This gives the Frobenius map on the Witt ring W
+	Example
+            R = ZZ/5[x]
+            W = witt(2,R);
+            phi = wittFrobenius W;
+///
+
+doc ///
+    Key
 	(wittFrobenius, ZZ, Ring)
     Usage
-	witt W
-	witt w
-	witt(n, R)
+	phi = wittFrobenius(n, R)
     Inputs
-	W:{WittPolynomialRing,WittQuotientRing}
-	   The Witt ring of a ring R of positive characteristic
-	w:WittRingElement
-           an element of a Witt ring
         n:ZZ
            a positive integer, the length of the Witt vectors to consider
         R:Ring
             a ring of positive characteristic
     Outputs
 	phi:WittRingMap
-            the Frobenius map on W
-	phi(w):WittRingElement
+            the Frobenius map on witt(n,R)
+    Description
+	Text
+            given a ring R and an integer n this gives the Frobenius map on W_n(R)
+	Example
+            R = ZZ/5[x]
+            phi = wittFrobenius(2,R)
+///
+
+doc ///
+    Key
+	(wittFrobenius, WittRingElement)
+    Usage
+	Fw = wittFrobenius w
+    Inputs
+	w:WittRingElement
+           an element of a Witt ring
+    Outputs
+        Fw:WittRingElement
             the image of w under the Frobenius map
     Description
 	Text
-            This gives the Frobenius map on the Witt ring W, or given a ring R and an integer n gives the Frobenius map on W_n(R), or given a Witt vector w gives the image w under the Frobenius map.
+            Given a Witt vector w, this gives the image w under the Frobenius map.
 	Example
             R = ZZ/5[x]
-            W = witt(2,R);
-            phi = wittFrobenius W;
-            w = witt {x,y,z};
-            phi(w)
+            W = witt(2,R)
+            w = witt{x,y,z}
+            phi(w) -- same as wittFrobenius(w)
 ///
+
+
 
 
 document { Key => WittPolynomialRing,
