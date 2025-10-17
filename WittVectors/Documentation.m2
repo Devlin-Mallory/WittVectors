@@ -111,19 +111,20 @@ doc///
 	Outputs
 	 v: WittRingElement
 	Description
-	 This crops w to have length i if i is less than or equal than the length of w.
-	Example
-	 S=ZZ/3[x,y]
-	 w=witt{x,y}
-	 truncate(1,w)
-	Text
-	 This should give {x}, a WittRingElement
-	Example 
-	 S=ZZ/3[x,y]
-	 w=witt{x,y}
-	 truncate(3,w)
-	Text
-	 This should give an error: Can't truncate to something longer
+         Text
+	    This crops w to have length i if i is less than or equal than the length of w.
+	  Example
+	    S=ZZ/3[x,y]
+	    w=witt{x,y}
+	    truncate(1,w)
+	 Text
+	  This should give {x}, a WittRingElement
+	 Example 
+	  S=ZZ/3[x,y]
+	  w=witt{x,y}
+	  truncate(3,w)
+	 Text
+	  This should give an error: Can't truncate to something longer
 ///
 
 
@@ -140,23 +141,23 @@ doc ///
 	 r: Number
 	Description
 	 Text
-		This gives the quasi-F-Splitting height r of S/I
+	    This gives the quasi-F-Splitting height r of S/I
 	 Example
-		S = ZZ/3[x,y,z, w]
-       	I = ideal(x^4 + y^4 + z^4 + w^4 + x^2*z^2 + x*y*z^2)
+	    S = ZZ/3[x,y,z, w]
+       	    I = ideal(x^4 + y^4 + z^4 + w^4 + x^2*z^2 + x*y*z^2)
 	    fSplittingHeight I
 	 Text
 	    This should give 4. 
 	 Example
 		S = ZZ/3[x,y,z,w]
 		S = ZZ/3[x,y,z,w]
-       	I = ideal(x^4 + y^4 + z^4 + w^4)
-	    fSplittingHeight I
+       	        I = ideal(x^4 + y^4 + z^4 + w^4)
+	        fSplittingHeight I
 	 Text
 	    This should give infinity. 
 	 Example
-		S = ZZ/3[x,y,z]
-       	I = ideal(x,y)
+	    S = ZZ/3[x,y,z]
+       	    I = ideal(x,y)
 	    fSplittingHeight I
 	 Text
 	    This should give 1. 
