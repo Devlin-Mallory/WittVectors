@@ -511,7 +511,7 @@ wittFrobenius(ZZ, Ring) := WittRingMap => (n, R) -> (
     wittFrobenius(witt(n, R))
     )
 
-wittFrobenius(WittRingElement) := WittRingMap => ww -> (
+wittFrobenius(WittRingElement) := WittRingElement => ww -> (
     wF := wittFrobenius(ring(ww));
     wF(ww)
     )
