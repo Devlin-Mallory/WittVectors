@@ -75,19 +75,59 @@
 --///
 
 
+-------------------------
+--- witt method
+-------------------------
+
 doc ///
     Key
-	WittRingElement
-    Headline
-	The Type for elements of WittPolynomialRing and WittQuotientRing.
+	(witt, ZZ, PolynomialRing)
+    Usage
+	witt(n, R)
+    Inputs
+	n: ZZ
+	R: PolynomialRing
+    Outputs
+	:WittPolynomialRing
     Description
 	Text
-	    Instances of WittRingElement can be built by using the witt method.
+	    Given an integer $n \geq 1$ and a polynomial ring $R$ of positive prime characteristic,
+	    this produces the $n$-th witt ring $W_n(R)$ of $R$.
 	Example
-	    R = (ZZ/3)[x,y];
-	    w = witt{x^2 + y^2, x}
+	    R = (ZZ/3)[x,y,z];
+	    WR = witt(2, R)
+///
+
+
+doc ///
+    Key
+	(witt, ZZ, QuotientRing)
+    Usage
+	witt(n, R)
+    Inputs
+	n: ZZ
+	R: QuotientRing
+    Outputs
+	:WittQuotientRing
+    Description
+	Text
+	    Given an integer $n \geq 1$ and a quotient ring $R$ of positive prime characteristic,
+	    this produces the $n$-th witt ring $W_n(R)$ of $R$.
+	Text
+	    Note that for this method to work, the ambient ring of $R$ must be a polynomial ring.
+	    If this is not the case, consider flattening before applying witt.
+	Example
+	    R = (ZZ/3)[x,y,z] / ideal(x^2, y^2, z^2);
+	    WR = witt(2, R)
+	Example
+	    S = (ZZ/2)[x,y,z] / ideal(x^2);
+	    R = S / ideal(y^2, z^2);
+	    WR = witt(2, (flattenRing R)#0)
+
 ///
 	
+
+
 
 doc ///
     Key
@@ -108,6 +148,25 @@ doc ///
             R = ZZ/5[x,y,z]/(x^3 + y^3 + z^3);
             x + y
 ///
+
+
+--------------------------------
+---------
+--------------------------------
+
+doc ///
+    Key
+	WittRingElement
+    Headline
+	The Type for elements of WittPolynomialRing and WittQuotientRing.
+    Description
+	Text
+	    Instances of WittRingElement can be built by using the witt method.
+	Example
+	    R = (ZZ/3)[x,y];
+	    w = witt{x^2 + y^2, x}
+///
+	
 
 
 doc///
