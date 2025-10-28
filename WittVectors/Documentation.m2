@@ -261,12 +261,8 @@ doc///
 	    truncate(1,w)
 	 Text
 	  This should give {x}, a WittRingElement
-	 Example 
-	  S=ZZ/3[x,y]
-	  w=witt{x,y}
-	  truncate(3,w)
-	 Text
-	  This should give an error: Can't truncate to something longer
+	 Text 
+	  We get an error if we try to truncate to something longer. For instance,  truncate(3,w) above would return an error.
 ///
 
 
