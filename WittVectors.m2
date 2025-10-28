@@ -18,7 +18,7 @@ newPackage(
 
 export{
 "witt", --in WittConstructor, documented modulo fixing witt(ZZ, ZZ, RingMap) number of inputs error
-"wittOverring",
+"wittOverring", --documented
 "WittRingElement",
 "wittTupleToOverring",
 "wittTupleToRing",
