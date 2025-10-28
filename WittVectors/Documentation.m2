@@ -180,6 +180,42 @@ doc ///
             x + y
 ///
 
+
+-------------------------
+--- wittOverring
+-------------------------
+
+
+doc ///
+    Key
+	wittOverring
+	(wittOverring, ZZ, Ring)
+    Usage
+	wittOverring(n, R)
+    Inputs
+	n: ZZ
+	R: Ring
+    Outputs
+	:Ring
+    Description
+	Text
+	    Given a polynomial ring $R = \mathbb{F}_p [x_1, \dots , x_n]$ over a
+	    finite prime field $\mathbb{F}_p$, and an integer $n \geq 1$, it returns
+	    and appropriately caches the polynomial ring $(ZZ / p^n)[T_1, \dots , T_n]$, which
+	    we call the wittOverring. The reason is that the $n$-th Witt ring of $R$ is a subring
+	    of this wittOverring.
+	Example
+	    R = (ZZ/2)[x,y];
+	    wittOverring(3, R)
+///	    
+
+
+
+----
+----
+----
+
+
 doc ///
     Key
 	(toList, WittRingElement)
