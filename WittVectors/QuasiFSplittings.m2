@@ -39,8 +39,8 @@ u0:= map(S^1 ,FS,transpose(transformS(v)));
 
 I:= ideal ff^(p-1);
 if not isSubset(I,MP) then return 1;
-elapsedTime if isSubset(ideal ff^(p-2),MP) then return infinity;
-elapsedTime if isSubset((ideal( ff^(p-2))+frobenius(1,I0))*ff^(p*(p-2))*Delta1(ff),frobenius(2,M)) then return infinity;
+if isSubset(ideal ff^(p-2),MP) then return infinity;
+if isSubset((ideal( ff^(p-2))+frobenius(1,I0))*ff^(p*(p-2))*Delta1(ff),frobenius(2,M)) then return infinity;
 
 del:=Delta1(ff^(p-1));
 K := pushmultiple(del,GS,transformS);

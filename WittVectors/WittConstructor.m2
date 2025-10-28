@@ -6,7 +6,6 @@ explicitOver = method()
 wittIdeal = method(Dispatch => Thing)
 verschiebung = method()
 wittFrobenius = method()
-truncation = method()
 makeCoefficientFieldPrime = method()
 charPCheck = method()
 
@@ -224,7 +223,18 @@ witt(ZZ,PolynomialRing) := (n,R)->(
 )
 
 
-witt(ZZ,GaloisField) := (n,R)-> witt(n, ambient R)
+-- Eamon: I think this needs more testing.
+-- For example, witt(3, GF(3)) and witt(3, ZZ/3) give different types.
+-- Let's either think about it carefully or discard.
+--
+-- witt(ZZ,GaloisField) := (n,R) -> (
+--     if isFinitePrimeField(R) then(
+-- 	return witt(n, R[]);
+-- 	)
+--     else(
+-- 	return witt(n, ambient R);
+-- 	);
+--     )
 
 unWitt(WittPolynomialRing) := WPR ->(
     WPR.unWitt
@@ -512,17 +522,17 @@ wittFrobenius(ZZ, Ring) := WittRingMap => (n, R) -> (
     wittFrobenius(witt(n, R))
     )
 
-wittFrobenius(WittRingElement) := WittRingMap => ww -> (
+wittFrobenius(WittRingElement) := WittRingElement => ww -> (
     wF := wittFrobenius(ring(ww));
     wF(ww)
     )
 
-truncation(ZZ, WittPolynomialRing) := (n, W) -> (
+truncate(ZZ, WittPolynomialRing) := (n, W) -> (
     if n > wittLength W then error "can't truncate to something longer";
     witt(n, wittLength W, map(unWitt W, unWitt W))
 )
 
-truncation(ZZ, WittQuotientRing) := (n, W) -> (
+truncate(ZZ, WittQuotientRing) := (n, W) -> (
     if n > wittLength W then error "can't truncate to something longer";
     witt(n, wittLength W, map(unWitt W, unWitt W))
 )
