@@ -97,6 +97,53 @@ doc ///
             x + y
 ///
 
+doc ///
+    Key
+	(toList, WittRingElement)
+    Usage
+	toList(w)
+    Inputs
+	w: WittRingElement
+    Outputs
+	:List
+    Description
+	Text
+	    Turns a WittRingElement back into a list.
+	Example
+	    R = (ZZ/5)[x,y];
+	    w = witt{x,y, x + y};
+	    toList(w)
+///
+
+doc ///
+    Key
+	(ring, WittRingElement)
+    Usage
+	ring(w)
+    Inputs
+	w: WittRingElement
+    Outputs
+        R: either a xx o ryy
+    Description
+	Text
+	    Returns the WittPolynomialRing or WittQuotientRing that the input belongs to.
+	Example
+	    R = (ZZ/5)[x,y]
+	    w = witt{x, x+y}
+	    ring(w)
+	Example
+	    R = (ZZ/5)[x,y,z] / ideal(x^2 + y^2 + z^2)
+	    w = witt{x, y, z}
+	    ring(w)
+///
+
+
+end -- sorry if I forget to remove this before commit!
+    
+
+	    
+	    
+
 
 doc ///
 	Key
@@ -131,12 +178,12 @@ doc ///
 	    	fSplittingHeight I
 	 Text
 	        This should give 1. 
-	 Example 
-		 S = (ZZ/2)[x,y,z,w,u]
-		 I = ideal(x^5 + y^5 + z^5 + w^5 + u^5 + x*z^3*w + y*z*w^3 + x^2*z*u^2 + y^2*z^2*w + x*y^2*w*u + y*z*w*u^2)
-		 fSplittingHeight I
-	 Text
-	        This should give 60
+--	 Example 
+--		 S = (ZZ/2)[x,y,z,w,u]
+--		 I = ideal(x^5 + y^5 + z^5 + w^5 + u^5 + x*z^3*w + y*z*w^3 + x^2*z*u^2 + y^2*z^2*w + x*y^2*w*u + y*z*w*u^2)
+--		 fSplittingHeight I
+--	 Text
+--	        This should give 60
 	 Example 
 		 S = ZZ/5[x,y,z]
 		 I = ideal(y*(1-x),z*(1-x)) --why not yx, zx?
