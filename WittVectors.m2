@@ -17,10 +17,8 @@ newPackage(
     )
 
 export{
-"rld",
-"witt",
+"witt", --in WittConstructor, 
 "wittOverring",
---"wittVectors",
 "WittRingElement",
 "wittTupleToOverring",
 "wittTupleToRing",

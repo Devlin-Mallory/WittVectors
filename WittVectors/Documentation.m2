@@ -79,6 +79,35 @@
 --- witt method
 -------------------------
 
+-- doc ///
+--     Key
+-- 	(witt, ZZ, RingMap)
+-- 	(witt, ZZ, ZZ, RingMap)
+--     Usage
+-- 	witt(n, R)
+-- 	witt(m,k,R)
+--     Inputs
+-- 	n: ZZ
+-- 	m: ZZ
+-- 	k: ZZ
+-- 	f: RingMap
+--     Outputs
+-- 	Wf: WittRingMap
+--     Description
+-- 	Text
+-- 	    Given $f: R \to S$ a RingMap between rings  of positive characteristic and an integer
+-- 	    $n \geq 1$, witt(n, f) returns the WittRingMap $W_n(f): W_n(R) \to W_n(S)$.
+-- 	    If two integers $m \geq n \geq 1$ are passed, witt(n, m, f) returns the WittRingMap
+-- 	    given by the composition $W_m(R) \to W_m(S) \to W_n(S)$, where the last map is
+-- 	    truncation.
+-- 	Example
+-- 	    R = (ZZ/5)[x,y];
+-- 	    S = (ZZ/5)[a,b,c,d];
+-- 	    f = map(S, R, {a*b, c*d});
+-- 	    witt(2, f)
+-- 	    witt(2, 3, f)
+-- ///
+
 doc ///
     Key
 	(witt, ZZ, PolynomialRing)
@@ -175,7 +204,7 @@ doc ///
     Inputs
 	w: WittRingElement
     Outputs
-        R: either a xx o ryy
+        R: --add??
     Description
 	Text
 	    Returns the WittPolynomialRing or WittQuotientRing that the input belongs to.
@@ -188,11 +217,6 @@ doc ///
 	    w = witt{x, y, z}
 	    ring(w)
 ///
-
-
-end -- sorry if I forget to remove this before commit!
-    
-
 	    
 	    
 
