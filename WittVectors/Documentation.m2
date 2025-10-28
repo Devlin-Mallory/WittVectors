@@ -79,6 +79,7 @@
 --- witt method
 -------------------------
 
+-- Eamon: this gives an error; please fix?
 -- doc ///
 --     Key
 -- 	(witt, ZZ, RingMap)
@@ -107,6 +108,7 @@
 -- 	    witt(2, f)
 -- 	    witt(2, 3, f)
 -- ///
+
 
 doc ///
     Key

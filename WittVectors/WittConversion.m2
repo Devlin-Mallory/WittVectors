@@ -30,6 +30,9 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 	return(OS)
 	);
     if class R === PolynomialRing or isField(R) then(
+	if not isFinitePrimeField( baseRing R ) then(
+	    error "baseRing of R must be a prime finite field"
+	    );
         Rvars := flatten entries vars R;
         p := char R;
         d := length Rvars;
