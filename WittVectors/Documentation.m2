@@ -7,7 +7,7 @@
 -- "wittTupleToRing",
 -- "wittRingToTuple",
 -- "wittOverringToTuple",
--- "verschiebung",
+-- "verschiebung", X 
 -- "wittOverringIdeal",
 -- "wittRingIdeal",
 -- "unWitt",
@@ -34,7 +34,7 @@
 -- "table2", --MAYBE
 -- "fSplittingHeight",
 -- "overring",
--- "wittFrobenius",
+-- "wittFrobenius", X
 -- "truncation",
 -- "makeBaseFieldPrime",
 -- }
@@ -269,7 +269,7 @@ doc ///
             the Frobenius map on W
     Description
 	Text
-            This gives the Frobenius map on the Witt ring W
+            This gives the Frobenius map on the Witt ring W (which in coordinates is just the entry-wise Frobenius)
 	Example
             R = ZZ/5[x]
             W = witt(2,R);
@@ -291,7 +291,7 @@ doc ///
             the Frobenius map on witt(n,R)
     Description
 	Text
-            given a ring R and an integer n this gives the Frobenius map on W_n(R)
+            given a ring R and an integer n this gives the Frobenius map on W_n(R) (which in coordinates is just the entry-wise Frobenius)
 	Example
             R = ZZ/5[x]
             phi = wittFrobenius(2,R)
@@ -310,15 +310,76 @@ doc ///
             the image of w under the Frobenius map
     Description
 	Text
-            Given a Witt vector w, this gives the image w under the Frobenius map.
+            Given a Witt vector w, this gives the image w under the Frobenius map (which in coordinates is just the entry-wise Frobenius)
 	Example
-            R = ZZ/5[x]
-            W = witt(2,R)
+            R = ZZ/5[x,y,z]
             w = witt{x,y,z}
-            phi(w) -- same as wittFrobenius(w)
+            wittFrobenius(w) -- same as (wittFrobenius(R))(w)
 ///
 
+doc ///
+    Key
+	(verschiebung, WittRingElement)
+    Usage
+	Vw = verschiebung w
+    Inputs
+	w:WittRingElement
+           an element of a Witt ring
+    Outputs
+        Vw:WittRingElement
+            the image of w under the Verschiebung map
+    Description
+	Text
+            Given a Witt vector w, this gives the image w under the Verschiebung map (which in coordinates simply prepends a zero)
+	Example
+            R = ZZ/5[x,y]
+            w = witt{x,y}
+            verschiebung(w) -- same as wittFrobenius(w)
+///
 
+doc ///
+    Key
+	(symbol +, WittRingElement, WittRingElement)
+    Usage
+	w = w1+w2
+    Inputs
+	w1:WittRingElement
+	w2:WittRingElement
+           elements of a Witt ring
+    Outputs
+        w:WittRingElement
+            the sum of w1 and w2
+    Description
+	Text
+            Given Witt vectors w1 and w2, this computes their sum (corresponding to the addition operation inherited via the ghost maps)
+	Example
+            R = ZZ/5[x,y,z,w]
+            w1 = witt{x,y}
+            w2 = witt{z,w}
+            w1+w2
+///
+
+doc ///
+    Key
+	(symbol *, WittRingElement, WittRingElement)
+    Usage
+	w = w1*w2
+    Inputs
+	w1:WittRingElement
+	w2:WittRingElement
+           elements of a Witt ring
+    Outputs
+        w:WittRingElement
+            the product of w1 and w2
+    Description
+	Text
+            Given Witt vectors w1 and w2, this computes their sum (corresponding to the multiplication operation inherited via the ghost maps)
+	Example
+            R = ZZ/5[x,y,z,w]
+            w1 = witt{x,y}
+            w2 = witt{z,w}
+            w1*w2
+///
 
 
 document { Key => WittPolynomialRing,
