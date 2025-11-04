@@ -31,7 +31,6 @@ export{
 "overringMap",
 "WittRing",
 "wittSub",
-"wittOverrings",
 "WittPolynomialRing",
 "WittRingMap",
 "baseMap",

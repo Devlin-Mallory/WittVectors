@@ -9,6 +9,9 @@ installPackage ("WittVectors", FileName => "~/GitHub/WittVectors/WittVectors.m2"
 ---Empty doc
 doc ///
     Key
+
+    Headline
+	
 	
     Usage
 	

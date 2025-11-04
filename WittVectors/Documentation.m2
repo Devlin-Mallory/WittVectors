@@ -11,10 +11,10 @@
 -- --we would want this to return an ideal of WOR. Maybe a cache issue?
 -- "wittRingIdeal", --documented
 -- "unWitt", --documented
--- "overringMap", --
--- "WittRing",
--- "wittSub",
--- "wittOverrings",
+-- "overringMap", --no need to document; this is just exported to avoid unexported unset symbol error
+-- "WittRing", --no need to document; this is just exported to avoid unexported unset symbol error
+-- "wittSub", --no need to document; this is just exported to avoid unexported unset symbol error
+-- "wittOverrings", --I think we don't even need to export this.
 -- "WittPolynomialRing",
 -- "WittRingMap",
 -- "baseMap",
@@ -37,41 +37,12 @@
 -- "wittFrobenius", X
 -- "truncation",
 -- "makeBaseFieldPrime",
-
-
---doc ///
---    Key 
---        WittVectors
---///
+-- OVERLOADED METHODS
+-- addition --documented
+-- multiplication --documented
+-- truncation --documented
 --
---
---doc ///
---    wittOverring
---///
---
---doc ///
---    wittTupleToOverring
---///
---
---doc /// 
---    wittVectors
---///
---
---doc ///
---    wittTupleToRing
---///
---
---doc ///
---    wittRingToTuple
---///
---
---doc ///
---    wittOverringToTuple
---///
---    
---doc ///
---    wittOverringIdeal
---///
+-- DOUBLE CHECK WE HAVE HEADLINES
 
 
 -------------------------
@@ -147,6 +118,7 @@ doc ///
 	    R = (ZZ/3)[x,y,z];
 	    WR = witt(2, R)
 ///
+
 
 
 doc ///
@@ -685,15 +657,19 @@ doc ///
 --------- WittPolynomialRing
 --------------------------------
 
-
-document { Key => WittPolynomialRing,
-    SeeAlso => {WittRing},
-    Headline => "the class of Witt rings of a polynomial ring",
-    EXAMPLE lines ///
-      S = (ZZ/3)[x,y]
-      W2S = witt(2,S)
-    ///
-    }
+doc ///
+    Key
+	WittPolynomialRing
+    Headline
+	The class of the n-th Witt ring of a polynomial ring.
+    Description
+	Text
+	    Can be built by using the witt method.
+	Example
+	    R = (ZZ/3)[x,y,z];
+	    WR = witt(2, R)
+///
+	    
 
 --------------------------------
 --------- 
