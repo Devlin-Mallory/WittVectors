@@ -78,26 +78,28 @@
 --- witt method
 -------------------------
 
+
 doc ///
     Key
-        (witt, ZZ, RingMap)
+	    (witt, ZZ, RingMap)
     Usage
-        witt(n,f)
+	    witt(n,f)
     Inputs
-	n: ZZ
-	f: RingMap
+	    n: ZZ
+	    f: RingMap
     Outputs
-	Wf: WittRingMap
+	    Wf: WittRingMap
     Description
-	Text
-	    Given $f: R \to S$ a RingMap between rings  of positive characteristic and an integer
-	    $n \geq 1$, witt(n, f) returns the WittRingMap $W_n(f): W_n(R) \to W_n(S)$.
-	Example
-	    R = (ZZ/5)[x,y];
-	    S = (ZZ/5)[a,b,c,d];
-	    f = map(S, R, {a*b, c*d});
-	    witt(2, f)
+	    Text
+	        Given $f: R \to S$ a RingMap between rings  of positive characteristic and an integer
+	        $n \geq 1$, witt(n, f) returns the WittRingMap $W_n(f): W_n(R) \to W_n(S)$.
+	    Example
+	        R = (ZZ/5)[x,y];
+            S = (ZZ/5)[a,b,c,d];
+	        f = map(S, R, {a*b, c*d});
+	        witt(2, f)
 ///
+
 
 
 doc ///
