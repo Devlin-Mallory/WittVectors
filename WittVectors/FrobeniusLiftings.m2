@@ -29,7 +29,7 @@ for i from 0 to n-1 list if opts.Homogeneous == false then sum for i from 0 to d
 )
 
 
-findFrobeniusLiftConstraints=method(Options=>{PerturbationTerm=>null})
+findFrobeniusLiftConstraints=method(Options=>{PerturbationTerm=>null,Homogeneous=>false})
 
 findFrobeniusLiftConstraints(RingElement) := opts -> f -> findFrobeniusLiftConstraints(ideal f, opts)
 
