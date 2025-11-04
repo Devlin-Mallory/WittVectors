@@ -95,7 +95,7 @@ doc ///
 	        $n \geq 1$, witt(n, f) returns the WittRingMap $W_n(f): W_n(R) \to W_n(S)$.
 	    Example
 	        R = (ZZ/5)[x,y];
-            S = (ZZ/5)[a,b,c,d];
+                S = (ZZ/5)[a,b,c,d];
 	        f = map(S, R, {a*b, c*d});
 	        witt(2, f)
 ///
