@@ -129,7 +129,7 @@ doc ///
 	m: ZZ
 	f: RingMap
     Outputs
-	Wf: WittRingMap
+        Wf: WittRingMap
     Description
 	Text
 	    Given $f: R \to S$ a RingMap between rings  of positive characteristic and an integer
@@ -263,7 +263,7 @@ doc ///
 	:List
     Description
 	Text
-	    Turns a WittRingElement back into a list.
+	    Turns a WittRingElement back into a List.
 	Example
 	    R = (ZZ/5)[x,y];
 	    w = witt{x,y, x + y};
@@ -274,14 +274,14 @@ doc ///
     Key
 	(ring, WittRingElement)
     Usage
-	ring(w)
+	R = ring(w)
     Inputs
 	w: WittRingElement
     Outputs
-        R: --add??
+        R:Ring
     Description
 	Text
-	    Returns the WittPolynomialRing or WittQuotientRing that the input belongs to.
+	    Returns the WittPolynomialRing or WittQuotientRing that the input belongs to
 	Example
 	    R = (ZZ/5)[x,y]
 	    w = witt{x, x+y}
@@ -400,6 +400,8 @@ doc ///
     Key
 	(wittFrobenius, WittPolynomialRing)
 	(wittFrobenius, WittQuotientRing)
+    Headline
+        The (Witt) Frobenius map of a Witt ring
     Usage
     	phi = wittFrobenius W
     Inputs
@@ -420,6 +422,8 @@ doc ///
 doc ///
     Key
 	(wittFrobenius, ZZ, Ring)
+    Headline
+	The (Witt) Frobenius map on the Witt vectors of a ring
     Usage
 	phi = wittFrobenius(n, R)
     Inputs
@@ -441,6 +445,8 @@ doc ///
 doc ///
     Key
 	(wittFrobenius, WittRingElement)
+    Headline
+	The (Witt) Frobenius map on an element
     Usage
 	Fw = wittFrobenius w
     Inputs
@@ -461,6 +467,8 @@ doc ///
 doc ///
     Key
 	(verschiebung, WittRingElement)
+    Headline
+	The Verschiebung map on an element
     Usage
 	Vw = verschiebung w
     Inputs
@@ -521,6 +529,97 @@ doc ///
             w2 = witt{z,w}
             w1*w2
 ///
+
+doc ///
+    Key
+	wittRingToTuple
+    Headline
+	Converts an element of the explicit presentation of a Witt ring into a tuple
+    Usage
+	w = wittRingToTuple r
+    Inputs
+	r:RingElement
+           an element of a ring that is of the form explicit(W) for W a Witt ring
+    Outputs
+        w:WittRingElement
+    Description
+	Text
+            Given an element r of a ring WR, which must be obtained as R = explicit(W) for a WittPolynomialRing or WittQuotientRing, this returns the corresponding tuple of W under the isomorphism between W and WR
+	Example
+            R = ZZ/5[x]
+            W = witt(2,R)
+            WR = explicit W
+            w = WR_0+WR_1+WR_2+WR_3
+            wittRingToTuple(w)
+///
+
+doc ///
+    Key
+	wittOverringToTuple
+    Headline
+	Converts an element of the explicit overring of a Witt ring into a tuple
+    Usage
+	w = wittOverringToTuple r
+    Inputs
+	r:RingElement
+           an element of a ring that is of the form wittOverring(n,R) a ring R
+    Outputs
+        w:WittRingElement
+    Description
+	Text
+            Given an element r of a ring OR, which must be obtained as OR = wittOverring(n,R), this returns the corresponding tuple of W 
+	Example
+            R = ZZ/5[x]
+            W = witt(2,R)
+            OR = wittOverring(2,R)
+            w = OR_0^5
+            wittOverringToTuple(w)
+///
+
+doc ///
+    Key
+	wittTupleToRing
+    Headline
+	Converts an element of a Witt ring to an element of its explicit presentation
+    Usage
+	r = wittTupleToRing w
+    Inputs
+        w:WittRingElement
+    Outputs
+	r:RingElement
+           an element of a ring that is of the form explicit(W) for W a Witt ring
+    Description
+	Text
+            Given a WittRingElement w of W (i.e., a tuple) this returns the corresponding element of the explicit presentation of W (i.e., an element of explicit(W))
+	Example
+            R = ZZ/5[x]
+            w = witt{x,x^5+x^4}
+            wittTupleToRing w
+///
+
+doc ///
+    Key
+	wittTupleToOverring 
+    Headline
+	Converts an element of a Witt ring to an element of the overring of its explicit presentation
+    Usage
+	r = wittTupleToOverring w
+    Inputs
+        w:WittRingElement
+    Outputs
+	r:RingElement
+           an element of a Witt overring
+    Description
+	Text
+            Given a WittRingElement w of W = witt(n,R) (i.e., a tuple) this returns the corresponding element of the overring of the explicit presentation of W (i.e., an element of wittOverring(n,R)))
+	Example
+            R = ZZ/5[x]
+            w = witt{x,x^5+x^4}
+            wittTupleToOverring w
+///
+
+
+
 
 
 document { Key => WittPolynomialRing,
