@@ -17,9 +17,9 @@ newPackage(
     )
 
 export{
-"witt", --in WittConstructor, documented modulo fixing witt(ZZ, ZZ, RingMap) number of inputs error
-"wittOverring", --documented
-"WittRingElement",
+"witt",
+"wittOverring",
+"WittRingElement", 
 "wittTupleToOverring",
 "wittTupleToRing",
 "wittRingToTuple",
@@ -36,7 +36,7 @@ export{
 "WittRingMap",
 "baseMap",
 "WittQuotientRing",
-"explicit",
+"explicit", -- Warning! For a quotient ring returns the explicit of the ambient.
 "wittLength",
 "wittRings",
 "WittIdeal",

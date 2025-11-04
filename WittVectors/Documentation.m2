@@ -1,16 +1,16 @@
--- export{
--- "witt",
--- "wittOverring",
--- --"wittVectors",
--- "WittRingElement",
--- "wittTupleToOverring",
--- "wittTupleToRing",
--- "wittRingToTuple",
--- "wittOverringToTuple",
--- "verschiebung", X 
--- "wittOverringIdeal",
--- "wittRingIdeal",
--- "unWitt",
+-- "witt", --in WittConstructor, documented modulo fixing witt(ZZ, ZZ, RingMap) number of inputs error
+-- "wittOverring", --documented
+-- "WittRingElement", -- documented
+-- "wittTupleToOverring", --documented
+-- "wittTupleToRing", --documented
+-- "wittRingToTuple", --documented
+-- "wittOverringToTuple", --documented
+-- "verschiebung", --documented
+-- "wittOverringIdeal", --documented, but WARNING! see
+-- --R = (ZZ/3)[x,y,z]; WOR = wittOverring(2, R); wittOverringIdeal(2, ideal(x))
+-- --we would want this to return an ideal of WOR. Maybe a cache issue?
+-- "wittRingIdeal", --documented
+-- "unWitt", --documented
 -- "overringMap",
 -- "WittRing",
 -- "wittSub",
@@ -19,7 +19,7 @@
 -- "WittRingMap",
 -- "baseMap",
 -- "WittQuotientRing",
--- "explicit",
+-- "explicit", -- Warning! For a quotient ring returns the explicit of the ambient.
 -- "wittLength",
 -- "wittRings",
 -- "WittIdeal",
@@ -73,24 +73,6 @@
 --doc ///
 --    wittOverringIdeal
 --///
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 -------------------------
@@ -293,12 +275,10 @@ doc ///
 ///
 	    
 	    
-
-
 --------------------------------
----------
+--------- WittRingElement
 --------------------------------
-
+ 
 doc ///
     Key
 	WittRingElement
@@ -313,32 +293,16 @@ doc ///
 ///
 	
 
+--------------------------------
+--------- 
+--------------------------------
 
-doc///
-	Key
-	 truncate
-	Headline 
-	 Crop Witt Vector to have a given length.
-	Usage 
-	 truncate(i, w)
-	Inputs
-	 i: ZZ
-	 w: WittRingElement
-	Outputs
-	 v: WittRingElement
-	Description
-         Text
-	    This crops w to have length i if i is less than or equal than the length of w.
-	  Example
-	    S=ZZ/3[x,y]
-	    w=witt{x,y}
-	    truncate(1,w)
-	 Text
-	  This should give {x}, a WittRingElement
-	 Text 
-	  We get an error if we try to truncate to something longer. For instance,  truncate(3,w) above would return an error.
-///
 
+
+
+--------------------------------
+--------- fSplittingHeight
+--------------------------------
 
 doc ///
 	Key
@@ -393,6 +357,36 @@ doc ///
 	 Text
 	    We get an error since S is not a polynomial ring over ZZ/p.
 	
+///
+
+
+--------------------------------
+--------- WittRingElement operations
+--------------------------------
+
+doc///
+	Key
+	 truncate
+	Headline 
+	 Crop Witt Vector to have a given length.
+	Usage 
+	 truncate(i, w)
+	Inputs
+	 i: ZZ
+	 w: WittRingElement
+	Outputs
+	 v: WittRingElement
+	Description
+         Text
+	    This crops w to have length i if i is less than or equal than the length of w.
+	  Example
+	    S=ZZ/3[x,y]
+	    w=witt{x,y}
+	    truncate(1,w)
+	 Text
+	  This should give {x}, a WittRingElement
+	 Text 
+	  We get an error if we try to truncate to something longer. For instance,  truncate(3,w) above would return an error.
 ///
 
 
@@ -530,6 +524,11 @@ doc ///
             w1*w2
 ///
 
+
+--------------------------------
+--------- Conversions
+--------------------------------
+
 doc ///
     Key
 	wittRingToTuple
@@ -619,7 +618,71 @@ doc ///
 ///
 
 
+--------------------------------
+--------- Conversions for ideals
+--------------------------------
 
+
+doc ///
+    Key
+	wittOverringIdeal
+	(wittOverringIdeal, ZZ, Ideal)
+    Headline
+	The expansion of the witt ideal to the witt overring.
+    Usage
+	WOI = wittOverringIdeal(n, I)
+    Inputs
+	n: ZZ
+	I: Ideal
+	    an ideal in a polynomial ring R of positive characteristic.
+    Outputs
+	WOI: Ideal
+	    an ideal in the nth witt overring of R
+    Description
+	Text
+	    If R is a polynomial ring of positive characteristic, I is an ideal of R, and
+	    $n \geq 1$ is an integer, one has an ideal W_n(I) of W_n(R) given as the kernel
+	    of $W_n(R) \to W_n(R / I)$. The method wittOverringIdeal(n, I) returns the expansion
+	    of W_n(I) to the n-th witt overring of R.
+	Example
+	    R = (ZZ / 3)[x,y,z];
+	    I = ideal(x^2, y^2, z^2);
+	    wittOverringIdeal(2, I)
+///
+
+doc ///
+    Key
+	wittRingIdeal
+        (wittRingIdeal, ZZ, Ideal)
+    Headline
+	Returns the n-th witt ideal in explicit form.
+    Usage
+	WI = witt(n, I)
+    Inputs
+	n: ZZ
+	I: Ideal
+	    an ideal in a polynomial ring R of positive characteristic.
+    Outputs
+	WI: Ideal
+	    the n-th witt of I, in explicit form.
+    Description
+	Text
+	    If R is a polynomial ring of positive characteristic, I is an ideal of R, and
+	    $n \geq 1$ is an integer, one has an ideal W_n(I) of W_n(R) given as the kernel
+	    of $W_n(R) \to W_n(R / I)$. The method wittRingIdeal(n, I) returns the ideal $W_n(I)$
+	    in explicit form. Note that these ideals tend to have many more generators than I.
+	Example
+	    R = (ZZ / 3)[x,y,z];
+	    I = ideal(x^2, y^2, z^2);
+	    WI = wittRingIdeal(2, I);
+///
+
+
+	    
+
+--------------------------------
+--------- WittPolynomialRing
+--------------------------------
 
 
 document { Key => WittPolynomialRing,
@@ -630,6 +693,31 @@ document { Key => WittPolynomialRing,
       W2S = witt(2,S)
     ///
     }
+
+--------------------------------
+--------- 
+--------------------------------
+
+doc ///
+    Key
+	unWitt
+	(unWitt, WittPolynomialRing)
+	(unWitt, WittQuotientRing)
+    Usage
+	R = unWitt(WR)
+    Inputs
+	WR: WittPolynomialRing
+	WR: WittQuotientRing
+    Outputs
+	R: Ring
+    Description
+	Text
+	    If $WR$ is one of the witt rings of $R$, unWitt(WR) returns the ring R.
+	Example
+	    R = (ZZ/3)[x,y,z] / ideal(x^2 + y^2 + z^2);
+	    WR = witt(2, R);
+	    unWitt(WR)
+///
 
 
 -- Eamon: this gives an error when not commented.
