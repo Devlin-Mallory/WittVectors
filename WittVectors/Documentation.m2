@@ -11,7 +11,7 @@
 -- --we would want this to return an ideal of WOR. Maybe a cache issue?
 -- "wittRingIdeal", --documented
 -- "unWitt", --documented
--- "overringMap",
+-- "overringMap", --
 -- "WittRing",
 -- "wittSub",
 -- "wittOverrings",
@@ -37,7 +37,6 @@
 -- "wittFrobenius", X
 -- "truncation",
 -- "makeBaseFieldPrime",
--- }
 
 
 --doc ///
@@ -81,9 +80,9 @@
 
 doc ///
     Key
-	(witt, ZZ, RingMap)
+        (witt, ZZ, RingMap)
     Usage
-	witt(n,f)
+        witt(n,f)
     Inputs
 	n: ZZ
 	f: RingMap
