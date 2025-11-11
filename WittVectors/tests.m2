@@ -159,15 +159,17 @@ dim createEquations(2,0_S,Homogeneous=>true) > 0
 
 TEST ///
 debug WittVectors
-S = GF 3[x,y]
+S = (ZZ/2) [x,y]
 S' = makeCoefficientFieldPrime S
 W = witt(2,S)
 W' = witt(2,S')
-w1 = random(2, W) 
-w2 = random(2, W)
+w1 = random(1, W) 
+w1-w1
+w2 = random(1, W)
 w1'= witt(apply(w1.tuple,i->sub(i,S')))
 w2'= witt(apply(w2.tuple,i->sub(i,S')))
 w = w1+w2
+w' = w1'+w2'
 witt(apply(w.tuple,i->sub(i,S'))) - (w1'+w2')
 ///
 

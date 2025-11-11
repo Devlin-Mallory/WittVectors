@@ -95,8 +95,7 @@ WittRingElement + WittRingElement := (w1, w2) -> (
     )
 
 - WittRingElement := ww -> (
-    newtuple := apply(ww.tuple, xx -> -xx);
-    witt(newtuple)
+    wittOverringToTuple(-wittTupleToOverring (ww))
     )
 
 WittRingElement - WittRingElement := (w1, w2) -> (
