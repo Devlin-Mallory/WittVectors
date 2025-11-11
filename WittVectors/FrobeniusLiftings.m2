@@ -14,6 +14,7 @@ findFrobeniusLift(ZZ,RingElement) := opts -> (d,f) -> findFrobeniusLift(d, ideal
 
 
 
+findFrobeniusLift(ZZ,Ring) := opts -> (d,R) -> findFrobeniusLift(d, ideal 0_R,opts)
 findFrobeniusLift(ZZ,Ideal) := opts -> (d,I) ->(
     S := ring I;
     R := S/I;
@@ -21,10 +22,14 @@ findFrobeniusLift(ZZ,Ideal) := opts -> (d,I) ->(
     J := findFrobeniusLiftConstraints(I, PerturbationTerm=>opts.PerturbationTerm, Homogeneous=>opts.Homogeneous);
     T := ring J;
     j := 0;
-if not opts.Nontrivial then L :=toList((n):0) else L = for i from 0 to n-1 list if opts.Homogeneous == false then sum for i from 0 to d list random(i,S) else random(d,S);
-    while (evalMap(L,I,T))(J) != 0 do ( if opts.Verbose then print j; j = j +1 ; L=
-for i from 0 to n-1 list if opts.Homogeneous == false then sum for i from 0 to d list random(i,S) else random(d,S);
-);
+--if not opts.Nontrivial then L :=toList((n):0) else L = for i from 0 to n-1 list if opts.Homogeneous == false then sum for i from 0 to d list random(i,S) else random(d,S);
+    L :=toList((n):0);
+    while (evalMap(L,I,T))(J) != 0 or (opts.Nontrivial and unique apply(L,i->sub(i,R)) == {0}) do ( 
+        if opts.Verbose then print j; 
+        j = j +1 ; 
+        L= for i from 0 to n-1 list 
+            if opts.Homogeneous == false then sum for i from 0 to d list random(i,S) 
+            else random(d,S););
     apply(L,i->sub(i,R))
 )
 
@@ -33,6 +38,7 @@ findFrobeniusLiftConstraints=method(Options=>{PerturbationTerm=>null,Homogeneous
 
 findFrobeniusLiftConstraints(RingElement) := opts -> f -> findFrobeniusLiftConstraints(ideal f, opts)
 
+findFrobeniusLiftConstraints(Ring) := opts -> R -> findFrobeniusLiftConstraints(ideal 0_R, opts)
 findFrobeniusLiftConstraints(Ideal) := opts -> I ->(
     c := numgens I;
     fp := toList(c:0);
@@ -47,6 +53,7 @@ d:=numgens S;
 aa:=symbol aa;
 T:=prune(S[aa_0..aa_(d-1)]);
 TR:=T/sub(I,T);
+if I == 0 then return ideal 0_TR;
 trim sum for r from 0 to numgens I-1 list (
 f:=I_r;
 g:=fp_r;
@@ -58,7 +65,8 @@ Efp :=flatten( exponents\ flatten entries first coefficients g);
 WCfp:=apply(Efp,i->product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j));
 if WCfp == {} then WCfp = {witt{0_T,0_T}};
 if Cfp == {} then Cfp = {0};
-sub(ideal last (p *Cfp_r*WCfp_r+sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tuple, TR)))
+sub(ideal last (p *Cfp_r*WCfp_r+sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tuple, TR))
+)
 
 
 
@@ -78,9 +86,9 @@ else
     apply(select( latticePoints hypercube(n, 0, d),i->sum entries i <= {d}),j->entries j) ;
 B := S[flatten for i in monomials list for j from 1 to n list c_(flatten i ,{j})];
 mapList := for j from 1 to n list sum apply(monomials,i->S_(flatten i)*c_(flatten i,{j}));
---expand:=map(B/sub(J,B),A,mapList|gens S);
+expand:=map(B/sub(J,B),A,mapList|gens S);
 --move the resulting ideal to B/fB?
-expand:=map(B,A,mapList|gens S);
+--expand:=map(B,A,mapList|gens S);
 expand I
 )
 
@@ -104,17 +112,10 @@ constraint:=ideal((genericElement)*transpose gens I-transpose sub(gens G,Bcc));
 C := ((ZZ/p)[gens T|gens Bcc])[gens S];
 Cflatmap:=inverse last flattenRing(C);
 Cflat :=source Cflatmap;
-J:=ideal for j in constraint_* list (inverse Cflatmap)( ideal last coefficients Cflatmap sub(j, Cflat));
+J:=sub(ideal for j in constraint_* list (inverse Cflatmap)( ideal last coefficients Cflatmap sub(j, Cflat)), Cflat);
 elimList := (for i in gens Bcc list sub(i,Cflat))|(for i in gens S list sub(i,Cflat));
 sub(eliminate(elimList,J),(ZZ/p)[gens T])
 )
-
-
-
-
---
---)
-
 
 
 evalMap=method()

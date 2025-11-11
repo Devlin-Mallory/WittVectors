@@ -144,7 +144,14 @@ assert(numgens explicit witt(2,B) == 2)
 assert(numgens explicit witt(2,R4) == 2)
 assert(numgens explicit witt(2,Rx4) == 5)
 assert(numgens explicit witt(2,B4) == 5)
+///
 
 
-
+TEST ///
+S = ZZ/2[x,y]
+I = ideal(x*y)
+J = ideal(0_S)
+dim createEquations(2,I,Homogeneous=>true) > 0
+dim createEquations(2,I,Homogeneous=>true, PerturbationTerm=>{1}) < 0
+dim createEquations(2,0_S,Homogeneous=>true) > 0
 ///
