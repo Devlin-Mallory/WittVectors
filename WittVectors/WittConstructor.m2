@@ -162,7 +162,7 @@ explicitOver(WittRingElement) := ww -> (
 -- Crop Witt vector to have a given length. We want that because that will allow us to
 -- add/multiply Witt vectors of different lengths by cropping the longer one.
 
-truncate(ZZ, WittRingElement) :=  opts -> (n, w) -> (
+truncate(ZZ, WittRingElement) :=  {} >> opts -> (n, w) -> (
     if length w<n then error "Can't truncate to something longer";
     witt drop(w.tuple, n-length w)
     ) 
@@ -526,12 +526,12 @@ wittFrobenius(WittRingElement) := WittRingElement => ww -> (
     wF(ww)
     )
 
-truncate(ZZ, WittPolynomialRing) := opts -> (n, W) -> (
+truncate(ZZ, WittPolynomialRing) := {} >> opts -> (n, W) -> (
     if n > wittLength W then error "can't truncate to something longer";
     witt(n, wittLength W, map(unWitt W, unWitt W))
 )
 
-truncate(ZZ, WittQuotientRing) := opts -> (n, W) ->  (
+truncate(ZZ, WittQuotientRing) := {} >> opts -> (n, W) ->  (
     if n > wittLength W then error "can't truncate to something longer";
     witt(n, wittLength W, map(unWitt W, unWitt W))
 )
