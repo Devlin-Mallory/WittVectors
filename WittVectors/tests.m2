@@ -156,16 +156,22 @@ dim createEquations(2,I,Homogeneous=>true, PerturbationTerm=>{1}) < 0
 dim createEquations(2,0_S,Homogeneous=>true) > 0
 ///
 
+TEST ///
+S = (GF 9) 
+w = wittTupleToOverring(witt{0,a_S}) +wittTupleToOverring( witt{0,1_S})
+wittTupleToOverring witt{0,a_S^2}
+wittOverringToTuple wittTupleToOverring w
+wittOverringToTuple wittTupleToOverring w'
+///
 
 TEST ///
 debug WittVectors
-S = (ZZ/2) [x,y]
+S = (GF 9)[]
 S' = makeCoefficientFieldPrime S
 W = witt(2,S)
 W' = witt(2,S')
-w1 = random(1, W) 
-w1-w1
-w2 = random(1, W)
+w1 = random(0, W) 
+w2 = random(0, W)
 w1'= witt(apply(w1.tuple,i->sub(i,S')))
 w2'= witt(apply(w2.tuple,i->sub(i,S')))
 w = w1+w2
