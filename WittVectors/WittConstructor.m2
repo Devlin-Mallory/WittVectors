@@ -239,7 +239,7 @@ unWitt(WittPolynomialRing) := WPR ->(
     )
 
 net(WittPolynomialRing) := WPR->(
-	return horizontalJoin("Witt", (net(WPR.wittLength))^-1, "(", net WPR.unWitt, ")");
+	horizontalJoin("Witt", (net(WPR.wittLength))^-1, "(", net WPR.unWitt, ")")
 )
 
 explicit(WittPolynomialRing) := WPR->(
@@ -300,7 +300,7 @@ wittLength(WittQuotientRing) := W -> W.wittLength
 wittLength(WittPolynomialRing) := W -> W.wittLength
 
 net(WittQuotientRing) := WQR -> (
-    return horizontalJoin("Witt", (net(WQR.wittLength))^-1, "(", net WQR.unWitt, ")")
+    horizontalJoin("Witt", (net(WQR.wittLength))^-1, "(", net WQR.unWitt, ")")
     )
 
 explicit(WittQuotientRing) := WQR->(
@@ -331,8 +331,7 @@ WittIdeal = new Type of MutableHashTable;
 protect wittGenerators
 
 wittIdeal(WittRingElement) := ww -> (
-    jj := new WittIdeal from {wittGenerators => toSequence{ww}};
-    return jj;
+    new WittIdeal from {wittGenerators => toSequence{ww}}
     )
 
 wittIdeal List := wittIdeal Sequence := LL -> (
@@ -342,8 +341,7 @@ wittIdeal List := wittIdeal Sequence := LL -> (
     if not length unique apply(LL, ll -> length(ll)) == 1 then(
 	error "the generators do not have the same length";
 	);
-    jj := new WittIdeal from {wittGenerators => toSequence(LL)};
-    return jj;
+    new WittIdeal from {wittGenerators => toSequence(LL)}
   )
 
 ---
@@ -417,12 +415,12 @@ addCommas := LL -> (
 net WittIdeal := WI -> (
     wgs := WI.wittGenerators;
     if #wgs == 1 then(
-	return horizontalJoin("ideal ", net (wgs#0));
+	 horizontalJoin("ideal ", net (wgs#0))
 	) else (
 	wgsnet := apply( wgs, net );
 	wgsnet = addCommas(wgsnet);
-	return horizontalJoin("ideal (", wgsnet, ")"  );
-    );
+	horizontalJoin("ideal (", wgsnet, ")"  )
+    )
 )
 
 
@@ -438,7 +436,7 @@ net WittIdeal := WI -> (
 WittRingMap = new Type of MutableHashTable;
 
 net(WittRingMap) := Wf->(
-	return horizontalJoin("WittRingMap ", net(Wf.target), " <-- ", net(Wf.source));
+	horizontalJoin("WittRingMap ", net(Wf.target), " <-- ", net(Wf.source))
 )
 
 witt(ZZ, ZZ , RingMap) := WittRingMap => (mm, nn, ff) -> (
@@ -533,7 +531,7 @@ truncate(ZZ, WittPolynomialRing) := opts -> (n, W) -> (
     witt(n, wittLength W, map(unWitt W, unWitt W))
 )
 
-truncate(ZZ, WittQuotientRing) := (n, W) -> opts ->  (
+truncate(ZZ, WittQuotientRing) := opts -> (n, W) ->  (
     if n > wittLength W then error "can't truncate to something longer";
     witt(n, wittLength W, map(unWitt W, unWitt W))
 )
