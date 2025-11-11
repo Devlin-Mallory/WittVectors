@@ -114,3 +114,37 @@ TEST ///
     assert( t(w) == witt{x,y})
 ///
 
+TEST ///
+R = ZZ/2
+Rx = R[x]
+B = Rx/(x^2)
+R4 = GF 4
+x=symbol x
+Rx4 = R4[x]
+B4 = Rx4/x^2
+
+
+assert(R === unWitt witt(2,R))
+assert(Rx === unWitt witt(2,Rx))
+assert(B === unWitt witt(2,B))
+assert(R4 === unWitt witt(2,R4))
+assert(Rx4 === unWitt witt(2,Rx4))
+assert(B4 === unWitt witt(2,B4))
+
+assert(witt{1_R,0_R}+witt{0_R,1_R} == witt{1_R,1})
+assert(witt{1_Rx,0_Rx}+witt{0_Rx,x_Rx} == witt{1_Rx,x_Rx})
+assert(witt{1_B,0_B}+witt{0_B,x_B}  == witt{1_B,x_B})
+assert(witt{a_R4+1,0_R4}+witt{0_R4,a_R4} == witt{a_R4+1,a_R4})
+assert(witt{1_Rx4,0_Rx4}+witt{0_Rx4,x_Rx4} == witt{1_Rx4,x_Rx4})
+assert(witt{1_B4,0_B4}+witt{0_B4,x_B4} == witt{1_B4,x_B4})
+
+assert(numgens explicit witt(2,R) == 0)
+assert(numgens explicit witt(2,Rx) == 2)
+assert(numgens explicit witt(2,B) == 2)
+assert(numgens explicit witt(2,R4) == 2)
+assert(numgens explicit witt(2,Rx4) == 5)
+assert(numgens explicit witt(2,B4) == 5)
+
+
+
+///
