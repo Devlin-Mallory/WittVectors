@@ -9,16 +9,21 @@ wittFrobenius = method()
 makeCoefficientFieldPrime = method()
 charPCheck = method()
 baseRing' = method()
+isFinitePrimeField' = method()
 
 
 ---
---- new baseRing' method
+--- new unexported methods
 ---
 baseRing'(Ring) := R -> (
     p := char R;
     if R === ZZ/p then return R;
     if class R === GaloisField then return R;
     if class R === PolynomialRing then baseRing R else baseRing'(ambient R)
+    )
+
+isFinitePrimeField'(Ring) := R -> (
+    if isFinitePrimeField R and class R =!= GaloisField then true else false
     )
 
 
@@ -187,7 +192,7 @@ protect coeffFieldMap
 makeCoefficientFieldPrime(GaloisField) := makeCoefficientFieldPrime(PolynomialRing) := R -> R.cache#(coeffFieldPrime) ??= (
     F := baseRing' R;
     if not isField F then error "expected a field as coefficient ring";
-    if isFinitePrimeField F then R else(
+    if isFinitePrimeField' F then R else(
 	FAmb := ambient(F);
         S' := if class R === GaloisField then FAmb else FAmb(monoid R);
         FS := flattenRing S';
@@ -199,7 +204,7 @@ makeCoefficientFieldPrime(GaloisField) := makeCoefficientFieldPrime(PolynomialRi
 makeCoefficientFieldPrime(QuotientRing) := R -> R.cache#(coeffFieldPrime) ??= (
     F := baseRing' R;
     if F =!= null and not isField F then error "expected a field as coefficient ring";
-    if isFinitePrimeField(F) then return R;
+    if isFinitePrimeField'(F) then return R;
     S := ambient(R);
     if class(S) =!= PolynomialRing then(
 	error "makeCoefficientFieldPrime is only implemented for quotients of polynomial rings. Consider flattening first";);
@@ -241,13 +246,14 @@ explicit(WittPolynomialRing) := WPR->(
 	if (not WPR.?explicit) then(
 		WPR.explicit = wittVectors(WPR.wittLength, WPR.unWitt);
 	);
-	return WPR.explicit;
+	WPR.explicit
 )
 
-explicitOver(WittPolynomialRing) := WPR -> (
+--DM 11/11: I don't think we ever store a value under WPR.explicitOver
+--explicitOver(WittPolynomialRing) := WPR -> (
     -- make cache!
-    WPR.explicitOver
-    )
+    --WPR.explicitOver
+    --)
 
 random(ZZ, WittPolynomialRing) := opts -> (nn, WPR) -> (
     R := WPR.unWitt;
@@ -266,10 +272,10 @@ random(ZZ, WittPolynomialRing) := opts -> (nn, WPR) -> (
 WittQuotientRing = new Type of MutableHashTable;
 
 
-witt(ZZ,GaloisField) := 
+witt(ZZ, GaloisField) := 
 witt(ZZ, QuotientRing) := (n,R)->(
     F := baseRing' R;
-    --if F =!= null and not isFinitePrimeField F then return witt(n, makeCoefficientFieldPrime(R));
+    --if F =!= null and not isFinitePrimeField' F then return witt(n, makeCoefficientFieldPrime(R));
     if not R.?cache then(
 	R.cache = new CacheTable;
 	);
@@ -277,7 +283,7 @@ witt(ZZ, QuotientRing) := (n,R)->(
 	R.cache.wittRings = new CacheTable;
 	);
     if not R.cache.wittRings#?n then(
-	W := new WittQuotientRing from MutableHashTable;
+	W := if isFinitePrimeField' R then new WittPolynomialRing from MutableHashTable else new WittQuotientRing from MutableHashTable;
 	W.wittLength = n;
 	W.unWitt = R;
 	W.overring = wittOverring(n, R);
@@ -301,7 +307,7 @@ explicit(WittQuotientRing) := WQR->(
 	if (not WQR.?explicit) then(
 		WQR.explicit = wittVectors(WQR.wittLength, WQR.unWitt);
 	);
-	return WQR.explicit;
+	WQR.explicit
 	)
 
 explicitOver(WittQuotientRing) := WQR -> (

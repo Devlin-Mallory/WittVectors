@@ -39,9 +39,6 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 	return(OS)
 	);
     if class R === PolynomialRing or isField(R) then(
-	--if not isFinitePrimeField( baseRing' R ) and not isFinitePrimeField(R) then(
-	    --error "baseRing of R must be a prime finite field"
-	    --);
         R' := makeCoefficientFieldPrime R;
         phi := if R' === R then id_R else R.cache.coeffFieldMap;
         Rvars := flatten entries vars R';
@@ -115,13 +112,10 @@ wittTupleToOverring(WittRingElement) := w -> (
 
 wittVectors(ZZ,Ring):=(n,R)->(
     --if n == 1 then return R;
-    --check if R is polynomial ring
-    if class R =!= PolynomialRing then( 
-        S := ambient R; 
-        --TODO: flattenRing S before checking its polynomial?
-        --if class S =!= PolynomialRing then( error "wittVectors currently only implemented for quotients of polynomial rings");
-        I:=ideal R; 
-        quotient wittRingIdeal(n,I)
+    --check if R is a quotient ring that is not a field or has GaloisField base ring
+    if (class R === QuotientRing and not isField R) or class baseRing' R === GaloisField then( 
+        I := ideal makeCoefficientFieldPrime R; 
+        return first flattenRing quotient wittRingIdeal(n,I)
     );
     --
     p := char R;
@@ -129,7 +123,8 @@ wittVectors(ZZ,Ring):=(n,R)->(
     baseVariables := apply(for i from 0 to d-1 list insert(i,1,toList(d-1:0)),j->{0}|{j});
     -- cubes is the list of indices; 
     -- T_{n,{a_1..a_d}} corresponds to p^n * x_1^{a_1/p^n}..x_d^{a_n/p^n}
-    cubes := baseVariables| sort select( flatten for i from 1 to n-1 list apply(flatten \ entries \ latticePoints hypercube(d, 0, p^(i) - 1),j->{i}|{j}), i->last i != toList(d:0));
+    cubes := try baseVariables| sort select( flatten for i from 1 to n-1 list apply(flatten \ entries \ latticePoints hypercube(d, 0, p^(i) - 1),j->{i}|{j}), i->last i != toList(d:0));
+    if class cubes === Nothing then cubes = baseVariables;
     T := symbol T;
     A := ZZ[for i in cubes list T_i]/p^n;
     t := symbol t;
@@ -206,7 +201,7 @@ wittRingToTuple(RingElement):=(F)->(
     takeRoot := (f, n) -> (
     --- in a ring of char p , takes the (1/p^n) root of a polynomial f
     R0 := ring f;
-    if isFinitePrimeField( baseRing' ring f) then(R := ring f; phi := id_R) 
+    if isFinitePrimeField'( baseRing' ring f) then(R := ring f; phi := id_R) 
         else( R = makeCoefficientFieldPrime ring f; phi = R0.cache#coeffFieldMap);
     p := char R;
     d := numgens R;
