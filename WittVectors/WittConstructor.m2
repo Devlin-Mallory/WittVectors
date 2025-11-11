@@ -8,6 +8,18 @@ verschiebung = method()
 wittFrobenius = method()
 makeCoefficientFieldPrime = method()
 charPCheck = method()
+baseRing' = method()
+
+
+---
+--- new baseRing' method
+---
+baseRing'(Ring) := R -> (
+    p := char R;
+    if R === ZZ/p then return R;
+    if class R === GaloisField then return R;
+    if class R === PolynomialRing then baseRing R else baseRing'(ambient R)
+    )
 
 
 ---
@@ -25,6 +37,7 @@ witt(List) := L0 -> (
     --check all elements of the list lie in ZZ or same ring
     L := apply(L0,i->ring i);
     BaseRing := unique select(L,i-> i =!= ZZ);
+    --BaseRing := unique L;
     if length (BaseRing) == 0 then error "must specify ring; e.g., use sub";
     if  length (BaseRing) > 1 then error "expected elements from the same ring";
     charPCheck(first BaseRing);
@@ -166,46 +179,39 @@ wittOverringToTuple(sub(f, matrix{Lexplicit}))
 WittPolynomialRing = new Type of MutableHashTable;
 
 protect overring
+protect coeffFieldPrime
+protect coeffFieldMap
 
 --EAMON 9/2: a bug? R = GF(9)[x]; R0 = makeCoefficientFieldPrime(R); use R; a
-makeCoefficientFieldPrime(PolynomialRing) := R -> (
-    F := try coefficientRing R;
-    if F =!= null and not isField F then error "expected a field as coefficient ring";
-    if isFinitePrimeField F then(
-	return R;
-	)
-    else(
+
+makeCoefficientFieldPrime(GaloisField) := makeCoefficientFieldPrime(PolynomialRing) := R -> R.cache#(coeffFieldPrime) ??= (
+    F := baseRing' R;
+    if not isField F then error "expected a field as coefficient ring";
+    if isFinitePrimeField F then R else(
 	FAmb := ambient(F);
-	FAmbVar := (vars FAmb)_(0,0);
-        S := ambient R;
-        S' := FAmb(monoid S);
-        return (flattenRing S')_0;
-    );
+        S' := if class R === GaloisField then FAmb else FAmb(monoid R);
+        FS := flattenRing S';
+        R.cache#coeffFieldMap = map(first FS,R);
+        first FS
+    )
     )
 
-makeCoefficientFieldPrime(QuotientRing) := R -> (
-    F := try coefficientRing R;
+makeCoefficientFieldPrime(QuotientRing) := R -> R.cache#(coeffFieldPrime) ??= (
+    F := baseRing' R;
     if F =!= null and not isField F then error "expected a field as coefficient ring";
-    if isFinitePrimeField(F) then(
-	return R;
-	);
+    if isFinitePrimeField(F) then return R;
     S := ambient(R);
     if class(S) =!= PolynomialRing then(
 	error "makeCoefficientFieldPrime is only implemented for quotients of polynomial rings. Consider flattening first";);
     S' := makeCoefficientFieldPrime(S);
-    varsS' := first entries vars S';
-    fieldVar := varsS'_(-1);
-    Rvars := first entries vars R;
-    Rvars2 := append(Rvars, fieldVar_R);
-    phi := map(R, S', Rvars2);
-    outputRing := S' / kernel(phi);
-    return ( (flattenRing outputRing)_0 )
-    )
+    FR := flattenRing quotient sub(ideal R, S');
+    R.cache#coeffFieldMap = map(first FR, R);
+    first FR
+        )
 
 witt(ZZ,PolynomialRing) := (n,R)->(
     charPCheck R;
-    F := try coefficientRing R;
-    if F =!= null and not isFinitePrimeField F then return witt(n, makeCoefficientFieldPrime(R));
+    F := baseRing' R;
     if not R.?cache then(
 	R.cache = new CacheTable;
 	);
@@ -216,7 +222,7 @@ witt(ZZ,PolynomialRing) := (n,R)->(
 	W := new WittPolynomialRing from MutableHashTable;
 	W.wittLength = n;
 	W.unWitt = R;
-	W.overring = wittOverring(n,R);
+        if not isFinitePrimeField F then W.overring = witt(n, makeCoefficientFieldPrime(R)) else W.overring = wittOverring(n,R);
 	R.cache.wittRings#n = W;
 	);
     R.cache.wittRings#n
@@ -227,14 +233,6 @@ witt(ZZ,PolynomialRing) := (n,R)->(
 -- For example, witt(3, GF(3)) and witt(3, ZZ/3) give different types.
 -- Let's either think about it carefully or discard.
 --
--- witt(ZZ,GaloisField) := (n,R) -> (
---     if isFinitePrimeField(R) then(
--- 	return witt(n, R[]);
--- 	)
---     else(
--- 	return witt(n, ambient R);
--- 	);
---     )
 
 unWitt(WittPolynomialRing) := WPR ->(
     WPR.unWitt
@@ -272,6 +270,8 @@ random(ZZ, WittPolynomialRing) := opts -> (nn, WPR) -> (
 
 WittQuotientRing = new Type of MutableHashTable;
 
+
+ witt(ZZ,GaloisField) := 
 witt(ZZ, QuotientRing) := (n,R)->(
     F := try coefficientRing R;
     if F =!= null and not isFinitePrimeField F then return witt(n, makeCoefficientFieldPrime(R));

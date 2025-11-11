@@ -17,23 +17,34 @@ wittOverringIdeal=method()
 
 
 wittOverring(ZZ, Ring) := (n, R) -> (
-    if class R =!= PolynomialRing and not isField(R) then(
-        S := ambient R;
-        if class S =!= PolynomialRing then(
-	    error "wittVectors currently only implemented for quotients of polynomial rings"
-	    );
-	OS := wittOverring(n, S);
+    if class R === GaloisField then(
+        S := ambient ambient R;
+        OS := wittOverring(n, S);
 	OSvars := flatten entries vars OS;
 	WittSub := map(OS, R, OSvars); -- WARNING: not a real map!
 	OS.cache.wittSub = WittSub;
 	OS.cache.unWitt = R;
 	return(OS)
 	);
-    if class R === PolynomialRing or isField(R) then(
-	if not isFinitePrimeField( baseRing R ) then(
-	    error "baseRing of R must be a prime finite field"
+    if class R =!= PolynomialRing and not isField(R) then(
+        S = ambient R;
+        if class S =!= PolynomialRing then(
+	    error "wittVectors currently only implemented for quotients of polynomial rings"
 	    );
-        Rvars := flatten entries vars R;
+	OS = wittOverring(n, S);
+	--OSvars := flatten entries vars OS;
+	WittSub = map(OS, R, OS.cache.wittSub); -- WARNING: not a real map!
+	OS.cache.wittSub = WittSub;
+	OS.cache.unWitt = R;
+	return(OS)
+	);
+    if class R === PolynomialRing or isField(R) then(
+	--if not isFinitePrimeField( baseRing' R ) and not isFinitePrimeField(R) then(
+	    --error "baseRing of R must be a prime finite field"
+	    --);
+        R' := makeCoefficientFieldPrime R;
+        phi := if R' === R then id_R else R.cache.coeffFieldMap;
+        Rvars := flatten entries vars R';
         p := char R;
         d := length Rvars;
         -- we create the WittOverring; called so because the n-th Witt ring of R
@@ -42,7 +53,7 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 	OR := ZZ[T_1 .. T_d] / p^n;
 	OR.cache = new CacheTable;
 	ORvars := flatten entries vars OR;
-	WittSub = map(OR, R, ORvars); -- WARNING: this is not a "real" map!
+	WittSub = map(OR, R', ORvars)*phi; -- WARNING: this is not a "real" map!
 	OR.cache.wittSub = WittSub;
 	OR.cache.unWitt = R;
 	return(OR)
@@ -108,7 +119,7 @@ wittVectors(ZZ,Ring):=(n,R)->(
     if class R =!= PolynomialRing then( 
         S := ambient R; 
         --TODO: flattenRing S before checking its polynomial?
-        if class S =!= PolynomialRing then( error "wittVectors currently only implemented for quotients of polynomial rings");
+        --if class S =!= PolynomialRing then( error "wittVectors currently only implemented for quotients of polynomial rings");
         I:=ideal R; 
         quotient wittRingIdeal(n,I)
     );
@@ -194,16 +205,18 @@ wittRingToTuple(RingElement):=(F)->(
 
     takeRoot := (f, n) -> (
     --- in a ring of char p , takes the (1/p^n) root of a polynomial f
-    R := ring f;
+    if isFinitePrimeField( baseRing' ring f) then(R := ring f; phi := id_R) 
+        else( R0 := ring f; R = makeCoefficientFieldPrime ring f; phi = R0.cache#coeffFieldMap);
     p := char R;
     d := numgens R;
-    S := ambient R;
+    S := if class R === QuotientRing then ambient R else R;
     yy := symbol yy;
     SY := (SY0 := S[yy_0 .. yy_(d-1)]) / sub(ideal( for i from 0 to d-1 list yy_i^(p^n) - S_i ), SY0);
     Ssub := map( SY, S, toList( yy_0..yy_(d-1)) );
     RY := quotient Ssub(ideal R);
     Rsub := (last flattenRing(RY))*map(RY,R,Ssub);
-    sub(Rsub(f),R)
+    root := sub(Rsub(phi(f)),R0);
+    if root^(p^n) == f then return root else error "no root found"
     );
 
 
@@ -245,7 +258,7 @@ wittRingToTuple(Ideal) := I -> (
 wittOverringIdeal(ZZ,Ideal):=(n,I)->(
     R:=ring I;
     d:=dim R;
-    if class R =!= PolynomialRing then(
+    if class R =!= PolynomialRing and R =!= ZZ then(
 	error "expected an ideal in a polynomial ring";
 	);
     --trim
