@@ -205,8 +205,9 @@ wittRingToTuple(RingElement):=(F)->(
 
     takeRoot := (f, n) -> (
     --- in a ring of char p , takes the (1/p^n) root of a polynomial f
+    R0 := ring f;
     if isFinitePrimeField( baseRing' ring f) then(R := ring f; phi := id_R) 
-        else( R0 := ring f; R = makeCoefficientFieldPrime ring f; phi = R0.cache#coeffFieldMap);
+        else( R = makeCoefficientFieldPrime ring f; phi = R0.cache#coeffFieldMap);
     p := char R;
     d := numgens R;
     S := if class R === QuotientRing then ambient R else R;
