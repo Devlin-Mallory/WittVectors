@@ -222,17 +222,12 @@ witt(ZZ,PolynomialRing) := (n,R)->(
 	W := new WittPolynomialRing from MutableHashTable;
 	W.wittLength = n;
 	W.unWitt = R;
-        if not isFinitePrimeField F then W.overring = witt(n, makeCoefficientFieldPrime(R)) else W.overring = wittOverring(n,R);
+        W.overring = wittOverring(n,R);
 	R.cache.wittRings#n = W;
 	);
     R.cache.wittRings#n
 )
 
-
--- Eamon: I think this needs more testing.
--- For example, witt(3, GF(3)) and witt(3, ZZ/3) give different types.
--- Let's either think about it carefully or discard.
---
 
 unWitt(WittPolynomialRing) := WPR ->(
     WPR.unWitt
@@ -271,10 +266,10 @@ random(ZZ, WittPolynomialRing) := opts -> (nn, WPR) -> (
 WittQuotientRing = new Type of MutableHashTable;
 
 
- witt(ZZ,GaloisField) := 
+witt(ZZ,GaloisField) := 
 witt(ZZ, QuotientRing) := (n,R)->(
-    F := try coefficientRing R;
-    if F =!= null and not isFinitePrimeField F then return witt(n, makeCoefficientFieldPrime(R));
+    F := baseRing' R;
+    --if F =!= null and not isFinitePrimeField F then return witt(n, makeCoefficientFieldPrime(R));
     if not R.?cache then(
 	R.cache = new CacheTable;
 	);
@@ -285,7 +280,7 @@ witt(ZZ, QuotientRing) := (n,R)->(
 	W := new WittQuotientRing from MutableHashTable;
 	W.wittLength = n;
 	W.unWitt = R;
-	W.overring = wittOverring(n,R);
+	W.overring = wittOverring(n, R);
 	R.cache.wittRings#n = W;
 	);
     R.cache.wittRings#n

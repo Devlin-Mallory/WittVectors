@@ -224,7 +224,10 @@ wittRingToTuple(RingElement):=(F)->(
 wittOverringToTuple(RingElement) := F -> (
     OR := ring F;
     R := OR.cache.unWitt;
-    unWittSub := map(R, OR, vars R); -- WARNING!! Fix when working with arbitrary finite fields?
+    k := baseRing' R;
+    unWittSub := if class k === GaloisField and (class R === PolynomialRing or class R === QuotientRing)
+        then map(R, OR, gens R|{k_0}) 
+        else map(R, OR, vars R); 
     wittSub := OR.cache.wittSub;
     (p, n) := toSequence (factor(char OR))#0;
     
