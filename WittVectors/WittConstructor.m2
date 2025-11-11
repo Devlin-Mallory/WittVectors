@@ -193,7 +193,7 @@ makeCoefficientFieldPrime(GaloisField) := makeCoefficientFieldPrime(PolynomialRi
     F := baseRing' R;
     if not isField F then error "expected a field as coefficient ring";
     if isFinitePrimeField' F then R else(
-	FAmb := ambient(F);
+	FAmb := newRing(ambient(F), DegreeRank => 0);
         S' := if class R === GaloisField then FAmb else FAmb(monoid R);
         FS := flattenRing S';
         R.cache#coeffFieldMap = map(first FS,R);

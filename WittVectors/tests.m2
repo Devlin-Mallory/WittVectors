@@ -155,3 +155,19 @@ dim createEquations(2,I,Homogeneous=>true) > 0
 dim createEquations(2,I,Homogeneous=>true, PerturbationTerm=>{1}) < 0
 dim createEquations(2,0_S,Homogeneous=>true) > 0
 ///
+
+
+TEST ///
+debug WittVectors
+S = GF 3[x,y]
+S' = makeCoefficientFieldPrime S
+W = witt(2,S)
+W' = witt(2,S')
+w1 = random(2, W) 
+w2 = random(2, W)
+w1'= witt(apply(w1.tuple,i->sub(i,S')))
+w2'= witt(apply(w2.tuple,i->sub(i,S')))
+w = w1+w2
+witt(apply(w.tuple,i->sub(i,S'))) - (w1'+w2')
+///
+
