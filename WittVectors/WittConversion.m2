@@ -21,7 +21,7 @@ wittOverring(ZZ, Ring) := (n, R) -> (
         S := ambient ambient R;
         OS := wittOverring(n, S);
 	OSvars := flatten entries vars OS;
-	WittSub := map(OS, R, OSvars); -- WARNING: not a real map!
+	WittSub := map(OS, makeCoefficientFieldPrime R, OSvars); -- WARNING: not a real map!
 	OS.cache.wittSub = WittSub;
 	OS.cache.unWitt = R;
 	return(OS)
@@ -33,7 +33,7 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 	    );
 	OS = wittOverring(n, S);
 	--OSvars := flatten entries vars OS;
-	WittSub = map(OS, R, OS.cache.wittSub); -- WARNING: not a real map!
+	WittSub = map(OS, makeCoefficientFieldPrime R, OS.cache.wittSub); -- WARNING: not a real map!
 	OS.cache.wittSub = WittSub;
 	OS.cache.unWitt = R;
 	return(OS)
@@ -50,7 +50,7 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 	OR := ZZ[T_1 .. T_d] / p^n;
 	OR.cache = new CacheTable;
 	ORvars := flatten entries vars OR;
-	WittSub = map(OR, R', ORvars)*phi; -- WARNING: this is not a "real" map!
+	WittSub = map(OR, R', ORvars); -- WARNING: this is not a "real" map!
 	OR.cache.wittSub = WittSub;
 	OR.cache.unWitt = R;
 	return(OR)
@@ -102,7 +102,9 @@ wittTupleToOverring(WittRingElement) := w -> (
     p := char R;
     OR := W.overring;
     WittSub := OR.cache.wittSub;
-    WittLL := apply(toList(w), ff -> WittSub(ff));
+    R' := makeCoefficientFieldPrime R;
+    phi := if R' === R then id_R else R.cache.coeffFieldMap;
+    WittLL := apply(toList(w), ff -> WittSub(phi(ff)));
     sum toList apply(0..(n-1), j -> p^j*(WittLL#j)^(p^(n-1-j)) )
     )
 
@@ -224,6 +226,8 @@ wittOverringToTuple(RingElement) := F -> (
         then map(R, OR, gens R|{k_0}) 
         else map(R, OR, vars R); 
     wittSub := OR.cache.wittSub;
+    R' := makeCoefficientFieldPrime R;
+    phi := if R' === R then id_R else R.cache.coeffFieldMap;
     (p, n) := toSequence (factor(char OR))#0;
     
     if n == 1 then(
@@ -235,7 +239,7 @@ wittOverringToTuple(RingElement) := F -> (
     F0 := F % ideal(sub(p, OR));
     f0 := takeRoot( unWittSub(F0), n-1 );
     
-    nextF := wittReduce( ( F - (wittSub f0)^(p^(n-1)) ) // p);
+    nextF := wittReduce( ( F - (wittSub (phi f0))^(p^(n-1)) ) // p);
     witt{f0} | wittOverringToTuple( nextF )
     )
 
