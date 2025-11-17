@@ -177,6 +177,6 @@ w1'= witt(apply(w1.tuple,i->sub(i,S')))
 w2'= witt(apply(w2.tuple,i->sub(i,S')))
 w = w1+w2
 w' = w1'+w2'
-witt(apply(w.tuple,i->sub(i,S'))) - (w1'+w2')
+assert(witt(apply(w.tuple,i->sub(i,S'))) - (w1'+w2') == 0)
 ///
 
