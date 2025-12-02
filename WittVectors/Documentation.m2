@@ -16,8 +16,8 @@
 -- "wittSub", --no need to document; this is just exported to avoid unexported unset symbol error
 -- "wittOverrings", --I think we don't even need to export this.
 -- "WittPolynomialRing", --documented
--- "WittRingMap",
--- "baseMap",
+-- "WittRingMap", --documented
+-- "baseMap", --documented
 -- "WittQuotientRing", --documented
 -- "explicit", --
 -- "wittLength",
