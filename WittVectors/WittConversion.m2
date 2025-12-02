@@ -117,7 +117,12 @@ wittVectors(ZZ,Ring):=(n,R)->(
     --check if R is a quotient ring that is not a field or has GaloisField base ring
     if (class R === QuotientRing and not isField R) or class baseRing' R === GaloisField then( 
         I := ideal makeCoefficientFieldPrime R; 
-        return first flattenRing quotient wittRingIdeal(n,I)
+        WS := wittVectors(n, ring I);
+        Phi := WS.cache.overringMap;
+        WR := first flattenRing quotient wittRingIdeal(n,I);
+        WR.cache.overringMap=Phi;
+        WR.cache.unWitt = R;
+        return WR
     );
     --
     p := char R;
@@ -139,8 +144,8 @@ wittVectors(ZZ,Ring):=(n,R)->(
     iA := ideal A;
     K := kernelZZ map(B, A, L);
     aK := sub(K, aA);
-    WR := quotient (iA + aK);
-    Phi := map(B,WR,L);
+    WR  = quotient (iA + aK);
+    Phi = map(B,WR,L);
     --cache overringMap and unWitt
     WR.cache.overringMap=Phi;
     WR.cache.unWitt = R;

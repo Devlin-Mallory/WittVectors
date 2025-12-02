@@ -180,3 +180,8 @@ w' = w1'+w2'
 assert(witt(apply(w.tuple,i->sub(i,S'))) - (w1'+w2') == 0)
 ///
 
+TEST ///
+needsPackage "WittVectors"
+S = GF 4
+wittRingToTuple wittTupleToRing witt{1_S,0_S} == 1
+///
