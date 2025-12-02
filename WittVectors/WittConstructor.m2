@@ -137,6 +137,10 @@ WittRingElement == WittRingElement := (w1, w2) -> (
     w1.tuple == w2.tuple
     )
 
+WittRingElement == ZZ := (w1, n) -> (
+    w1 == n*witt({1_(unWitt ring w1)}|for i from 0 to wittLength ring w1 -2 list 0)
+    )
+
 verschiebung(WittRingElement) := ww -> (
     R := (ring ww).unWitt;
     witt({0_R}|ww.tuple)
