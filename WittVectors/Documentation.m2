@@ -15,11 +15,11 @@
 -- "WittRing", --no need to document; this is just exported to avoid unexported unset symbol error
 -- "wittSub", --no need to document; this is just exported to avoid unexported unset symbol error
 -- "wittOverrings", --I think we don't even need to export this.
--- "WittPolynomialRing",
+-- "WittPolynomialRing", --documented
 -- "WittRingMap",
 -- "baseMap",
--- "WittQuotientRing",
--- "explicit", -- Warning! For a quotient ring returns the explicit of the ambient.
+-- "WittQuotientRing", --documented
+-- "explicit", --
 -- "wittLength",
 -- "wittRings",
 -- "WittIdeal",
@@ -678,6 +678,47 @@ doc ///
 ///
 
 
+--------------------------------
+--------- explicit method
+--------------------------------
+
+doc ///
+    Key
+        (explicit, WittRingElement)
+
+    Headline
+        Explicit version of a WittRingElement.
+	
+    Usage
+	e = explicit(w)
+	
+    Inputs
+        w:WittRingElement
+	
+    Outputs
+        e:RingElement
+	
+    Description
+	Text
+	    If WR is a WittPolynomialRing or WittQuotientRing, and w is a WittRingElement
+	    in WR, explicit(w) outputs the element corresponding to w in explicit(WR).
+	    
+	Example
+	    R = (ZZ/2)[x,y];
+	    WR = witt(2, R);
+	    w = witt{0,x};
+	    explicit(w)	    
+
+	SeeAlso
+	    (explicit, WittPolynomialRing)
+	    (explicit, WittQuotientRing)
+	    
+///
+
+
+
+
+
 	    
 
 -------------------------------------------------
@@ -726,7 +767,23 @@ doc ///
 ///
 
 
-	    
+--------------------------------
+--------- WittQuotientRing
+--------------------------------
+
+doc ///
+    Key
+	WittQuotientRing
+    Headline
+	The class of the n-th Witt ring of a quotient of a polynomial ring.
+    Description
+	Text
+	    Can be built by using the witt method.
+	Example
+	    R = (ZZ/3)[x,y,z] / ideal(x^2  + y^2 + z^2);
+	    WR = witt(4, R)
+///
+
 
 --------------------------------
 --------- 

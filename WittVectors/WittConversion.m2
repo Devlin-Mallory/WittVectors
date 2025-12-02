@@ -29,7 +29,8 @@ wittOverring(ZZ, Ring) := (n, R) -> (
     if class R =!= PolynomialRing and not isField(R) then(
         S = ambient R;
         if class S =!= PolynomialRing then(
-	    error "wittVectors currently only implemented for quotients of polynomial rings"
+	    error "wittVectors currently only implemented for quotients of polynomial rings;
+                    consider flattening before applying witt"
 	    );
 	OS = wittOverring(n, S);
 	--OSvars := flatten entries vars OS;
