@@ -19,7 +19,7 @@
 -- "WittRingMap", --documented
 -- "baseMap", --documented
 -- "WittQuotientRing", --documented
--- "explicit", --
+-- "explicit", --did PolynomialRing, QuotientRing, and RingElement. Devlin, please check.
 -- "wittLength",
 -- "wittRings",
 -- "WittIdeal",
@@ -732,6 +732,81 @@ doc ///
 --------------------------------
 --------- explicit method
 --------------------------------
+
+
+
+doc ///
+    Key
+        (explicit, WittPolynomialRing)
+
+    Headline
+        Express a WittPolynomialRing as a finitely generated algebra over the integers.
+	
+    Usage
+        E = explicit(WR)
+	
+    Inputs
+        WR:WittPolynomialRing
+        
+    Outputs
+        E:Ring
+	
+    Description
+	Text
+	    If $R = \mathbb{F}_p [x_1, \dots , x_d]$ is a polynomial ring over a prime field
+	    $\mathbb{F}_p$, and $n \geq 1$ is an integer, then $W_n(R)$ can be identified
+	    with a certain $\mathbb{Z} / p^n$ subalgebra of a polynomial ring in $d$ variables
+	    over $\mathbb{Z} / p^n$. This method finds the relations between these generators
+	    in order to express $W_n(R)$ as a finitely generated $\mathbb{Z}$-algebra. Note that
+	    the number of generators and relations grows very fast with $p$ and $d$.
+
+	    When the method is applied when $R$ is a polynomial ring over a finite
+	    but not prime field, the package essentially treats $R$ as a quotient of a
+	    polynomial ring over its prime subfield. --Devlin please check? 
+	    
+	Example
+	    R = (ZZ/2)[x];
+	    WR = witt(2, R);
+	    explicit(WR);
+	    
+	    
+///
+
+doc ///
+    Key
+        (explicit, WittQuotientRing)
+
+    Headline
+        Express a WittQuotientRing as a finitely generated algebra over the integers.
+       
+    Usage
+        E = explicit(WR)
+	
+    Inputs
+        WR:WittQuotientRing
+	
+    Outputs
+        E:Ring
+	
+    Description
+	Text
+            If $R$ is a finitely generated algebra over a prime field $\mathbb{F}_p$, and
+	    WR = witt(n, R) for some $n \geq 1$, then explicit(WR) returns the ring WR
+            as a finitely generated $\mathbb{Z}$-algebra.
+
+	    When the base field of $R$ is a finite field, but not prime, the package essentially first
+            writes $R$ as a finitely generated algebra over its prime subfield, and then applies
+	    the method. -- Devlin please check?
+	    
+	Example
+	    R = GF(4)[x];
+	    WR = witt(2, R);
+	    explicit(WR);
+	    
+///
+
+
+
 
 doc ///
     Key
