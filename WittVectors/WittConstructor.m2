@@ -227,14 +227,9 @@ witt(ZZ,PolynomialRing) := (n,R)->(
 -- For example, witt(3, GF(3)) and witt(3, ZZ/3) give different types.
 -- Let's either think about it carefully or discard.
 --
--- witt(ZZ,GaloisField) := (n,R) -> (
---     if isFinitePrimeField(R) then(
--- 	return witt(n, R[]);
--- 	)
---     else(
--- 	return witt(n, ambient R);
--- 	);
---     )
+witt(ZZ,GaloisField) := (n,R) -> (
+	return witt(n, ambient R);
+    )
 
 unWitt(WittPolynomialRing) := WPR ->(
     WPR.unWitt
