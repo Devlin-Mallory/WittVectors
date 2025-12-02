@@ -16,10 +16,10 @@
 -- "wittSub", --no need to document; this is just exported to avoid unexported unset symbol error
 -- "wittOverrings", --I think we don't even need to export this.
 -- "WittPolynomialRing",
--- "WittRingMap",
--- "baseMap",
+-- "WittRingMap", --documented
+-- "baseMap", --documented
 -- "WittQuotientRing",
--- "explicit", -- Warning! For a quotient ring returns the explicit of the ambient.
+-- "explicit",
 -- "wittLength",
 -- "wittRings",
 -- "WittIdeal",
@@ -34,7 +34,7 @@
 -- "table2", --MAYBE
 -- "fSplittingHeight",
 -- "overring",
--- "wittFrobenius", X
+-- "wittFrobenius", --documented
 -- "truncate", -- documented
 -- "makeBaseFieldPrime",
 -- OVERLOADED METHODS
@@ -53,6 +53,8 @@
 doc ///
     Key
 	    (witt, ZZ, RingMap)
+    Headline
+        The map induced on Witt rings by a RingMap
     Usage
 	    witt(n,f)
     Inputs
@@ -119,11 +121,51 @@ doc ///
 	    WR = witt(2, R)
 ///
 
+doc ///
+    Key
+	WittRingMap
+    Headline
+	The class of maps between Witt rings.
+    Description
+	Text
+            In our implementation, a map of WittRings is always induced by a map between the underlying rings. WittRingMaps can operate on WittRingElements.
+	Example
+            R = (ZZ/5)[x,y];
+            S = (ZZ/5)[a,b,c,d];
+            f = map(S, R, {a*b, c*d});
+            Wf = witt(2, f);
+///
+
+
 
 
 doc ///
     Key
+        (baseMap, WittRingMap)
+    Headline
+        Returns the underlying RingMap of a WittRingMap
+    Usage
+        f = baseMap Wf
+    Inputs
+        Wf: WittRingMap
+    Outputs
+        f: RingMap
+    Description
+        Text
+            Given a WittRingMap $W(f): W_n(R) \to W_n(S)$ induced by $f:R\to S$, this returns the underlying RingMap $f: R \to S$.
+        Example
+            R = (ZZ/5)[x,y];
+            S = (ZZ/5)[a,b,c,d];
+            f = map(S, R, {a*b, c*d});
+            Wf = witt(2, f);
+            f === baseMap Wf
+///
+
+doc ///
+    Key
 	(witt, ZZ, QuotientRing)
+    Headline
+        Forms the n-th Witt ring of a quotient ring
     Usage
 	witt(n, R)
     Inputs
@@ -148,13 +190,13 @@ doc ///
 
 ///
 	
---- I put this here because it is next to WittQuotientRing but I am happy moving it later. 
+--- I put this here because it is next to WittQuotientRing but I am happy moving it later.
 doc ///
     Key
      (truncate,ZZ,WittQuotientRing)
-    Headline 
+    Headline
         Crop Witt Quotient ring to the ring of Witt vectors of a given length
-    Usage 
+    Usage
         V=truncate(n,W)
     Inputs
         n: ZZ
@@ -170,7 +212,7 @@ doc ///
             truncate(2,W)
         Text
             This should give V a WittQuotientRing with WittLength 2
-        Text 
+        Text
             We get an error if we try to truncate to something longer. For instance,  truncate(4,W) above would return an error.
 ///
 
@@ -179,6 +221,8 @@ doc ///
 doc ///
     Key
 	(witt, List)
+    Headline
+        Forms a WittRingElement from a list of ring elements
     Usage
 	witt L
     Inputs
@@ -206,6 +250,8 @@ doc ///
     Key
 	wittOverring
 	(wittOverring, ZZ, Ring)
+    Headline
+        Returns the n-th WittOverring of a ring R
     Usage
 	wittOverring(n, R)
     Inputs
@@ -220,10 +266,11 @@ doc ///
 	    and appropriately caches the polynomial ring $(ZZ / p^n)[T_1, \dots , T_n]$, which
 	    we call the wittOverring. The reason is that the $n$-th Witt ring of $R$ is a subring
 	    of this wittOverring.
+            Note: given a quotient ring R = S/I, where S is a polynomial ring over a finite prime field, it returns the wittOverring of S
 	Example
 	    R = (ZZ/2)[x,y];
 	    wittOverring(3, R)
-///	    
+///	   
 
 
 
@@ -235,6 +282,8 @@ doc ///
 doc ///
     Key
 	(toList, WittRingElement)
+    Headline
+        Converts a WittRingElement into a List
     Usage
 	toList(w)
     Inputs
@@ -253,6 +302,8 @@ doc ///
 doc ///
     Key
 	(ring, WittRingElement)
+    Headline
+        Returns the Witt ring that a WittRingElement belongs to
     Usage
 	R = ring(w)
     Inputs
@@ -271,12 +322,12 @@ doc ///
 	    w = witt{x, y, z}
 	    ring(w)
 ///
-	    
-	    
+	   
+	   
 --------------------------------
 --------- WittRingElement
 --------------------------------
- 
+
 doc ///
     Key
 	WittRingElement
@@ -737,6 +788,8 @@ doc ///
 	unWitt
 	(unWitt, WittPolynomialRing)
 	(unWitt, WittQuotientRing)
+    Headline
+        Returns the underlying ring R of a Witt ring W_n(R)
     Usage
 	R = unWitt(WR)
     Inputs
