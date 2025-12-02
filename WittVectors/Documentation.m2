@@ -707,11 +707,11 @@ doc ///
 	    R = (ZZ/2)[x,y];
 	    WR = witt(2, R);
 	    w = witt{0,x};
-	    explicit(w)	    
+	    explicit(w);
 
-	SeeAlso
-	    (explicit, WittPolynomialRing)
-	    (explicit, WittQuotientRing)
+    SeeAlso
+	(explicit, WittPolynomialRing)
+	(explicit, WittQuotientRing)
 	    
 ///
 
