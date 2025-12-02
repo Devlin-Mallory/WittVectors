@@ -46,6 +46,7 @@ export{
 "Nontrivial",
 "PerturbationTerm",
 "findFrobeniusLiftConstraints",
+"expandFrobeniusConstraints",
 "findFrobeniusLift",
 "createEquations",
 "table2", --MAYBE

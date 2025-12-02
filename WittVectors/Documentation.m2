@@ -35,7 +35,7 @@
 -- "fSplittingHeight",
 -- "overring",
 -- "wittFrobenius", X
--- "truncation",
+-- "truncate", -- documented
 -- "makeBaseFieldPrime",
 -- OVERLOADED METHODS
 -- addition --documented
@@ -148,6 +148,31 @@ doc ///
 
 ///
 	
+--- I put this here because it is next to WittQuotientRing but I am happy moving it later. 
+doc ///
+    Key
+     (truncate,ZZ,WittQuotientRing)
+    Headline 
+        Crop Witt Quotient ring to the ring of Witt vectors of a given length
+    Usage 
+        V=truncate(n,W)
+    Inputs
+        n: ZZ
+        W: WittQuotientRing
+    Outputs
+        V: WittQuotientRing
+    Description
+        Text
+            This crops W to have length n if n is less than or equal than the length of W.
+        Example
+            S = (ZZ/5)[x,y,z] / ideal(x^2 + y^2 + z^2)
+            W=witt(3,S)
+            truncate(2,W)
+        Text
+            This should give V a WittQuotientRing with WittLength 2
+        Text 
+            We get an error if we try to truncate to something longer. For instance,  truncate(4,W) above would return an error.
+///
 
 
 
@@ -339,7 +364,7 @@ doc ///
 
 doc///
 	Key
-	 truncate
+	 (truncate,ZZ,WittRingElement)
 	Headline 
 	 Crop Witt Vector to have a given length.
 	Usage 
@@ -361,6 +386,8 @@ doc///
 	 Text 
 	  We get an error if we try to truncate to something longer. For instance,  truncate(3,w) above would return an error.
 ///
+
+
 
 
 doc ///
@@ -653,9 +680,9 @@ doc ///
 
 	    
 
---------------------------------
---------- WittPolynomialRing
---------------------------------
+-------------------------------------------------
+--------- WittPolynomialRing and operation on it
+-------------------------------------------------
 
 doc ///
     Key
@@ -669,6 +696,36 @@ doc ///
 	    R = (ZZ/3)[x,y,z];
 	    WR = witt(2, R)
 ///
+
+
+
+
+doc ///
+    Key
+     (truncate,ZZ,WittPolynomialRing)
+    Headline 
+        Crop Witt ring to the ring of Witt vectors of a given length
+    Usage 
+        V=truncate(n,W)
+    Inputs
+        n: ZZ
+        W: WittPolynomialRing
+    Outputs
+        V: WittPolynomialRing
+    Description
+        Text
+            This crops W to have length n if n is less than or equal than the length of W.
+        Example
+            S=ZZ/3[x,y]
+            W=witt(3,S)
+            truncate(2,W)
+        Text
+            This should give V a Witt ring with WittLength 2
+        Text 
+            We get an error if we try to truncate to something longer. For instance,  truncate(4,W) above would return an error.
+///
+
+
 	    
 
 --------------------------------

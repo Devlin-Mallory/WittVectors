@@ -8,6 +8,23 @@ verschiebung = method()
 wittFrobenius = method()
 makeCoefficientFieldPrime = method()
 charPCheck = method()
+baseRing' = method()
+isFinitePrimeField' = method()
+
+
+---
+--- new unexported methods
+---
+baseRing'(Ring) := R -> (
+    p := char R;
+    if R === ZZ/p then return R;
+    if class R === GaloisField then return R;
+    if class R === PolynomialRing then baseRing R else baseRing'(ambient R)
+    )
+
+isFinitePrimeField'(Ring) := R -> (
+    if isFinitePrimeField R and class R =!= GaloisField then true else false
+    )
 
 
 ---
@@ -25,6 +42,7 @@ witt(List) := L0 -> (
     --check all elements of the list lie in ZZ or same ring
     L := apply(L0,i->ring i);
     BaseRing := unique select(L,i-> i =!= ZZ);
+    --BaseRing := unique L;
     if length (BaseRing) == 0 then error "must specify ring; e.g., use sub";
     if  length (BaseRing) > 1 then error "expected elements from the same ring";
     charPCheck(first BaseRing);
@@ -77,8 +95,7 @@ WittRingElement + WittRingElement := (w1, w2) -> (
     )
 
 - WittRingElement := ww -> (
-    newtuple := apply(ww.tuple, xx -> -xx);
-    witt(newtuple)
+    wittOverringToTuple(-wittTupleToOverring (ww))
     )
 
 WittRingElement - WittRingElement := (w1, w2) -> (
@@ -144,7 +161,7 @@ explicitOver(WittRingElement) := ww -> (
 -- Crop Witt vector to have a given length. We want that because that will allow us to
 -- add/multiply Witt vectors of different lengths by cropping the longer one.
 
-truncate(ZZ, WittRingElement) :=  opts -> (n, w) -> (
+truncate(ZZ, WittRingElement) :=  {} >> opts -> (n, w) -> (
     if length w<n then error "Can't truncate to something longer";
     witt drop(w.tuple, n-length w)
     ) 
@@ -166,46 +183,39 @@ wittOverringToTuple(sub(f, matrix{Lexplicit}))
 WittPolynomialRing = new Type of MutableHashTable;
 
 protect overring
+protect coeffFieldPrime
+protect coeffFieldMap
 
 --EAMON 9/2: a bug? R = GF(9)[x]; R0 = makeCoefficientFieldPrime(R); use R; a
-makeCoefficientFieldPrime(PolynomialRing) := R -> (
-    F := try coefficientRing R;
-    if F =!= null and not isField F then error "expected a field as coefficient ring";
-    if isFinitePrimeField F then(
-	return R;
-	)
-    else(
-	FAmb := ambient(F);
-	FAmbVar := (vars FAmb)_(0,0);
-        S := ambient R;
-        S' := FAmb(monoid S);
-        return (flattenRing S')_0;
-    );
+
+makeCoefficientFieldPrime(GaloisField) := makeCoefficientFieldPrime(PolynomialRing) := R -> R.cache#(coeffFieldPrime) ??= (
+    F := baseRing' R;
+    if not isField F then error "expected a field as coefficient ring";
+    if isFinitePrimeField' F then R else(
+	FAmb := newRing(ambient(F), DegreeRank => 0);
+        S' := if class R === GaloisField then FAmb else FAmb(monoid R);
+        FS := flattenRing S';
+        R.cache#coeffFieldMap = map(first FS,R);
+        first FS
+    )
     )
 
-makeCoefficientFieldPrime(QuotientRing) := R -> (
-    F := try coefficientRing R;
+makeCoefficientFieldPrime(QuotientRing) := R -> R.cache#(coeffFieldPrime) ??= (
+    F := baseRing' R;
     if F =!= null and not isField F then error "expected a field as coefficient ring";
-    if isFinitePrimeField(F) then(
-	return R;
-	);
+    if isFinitePrimeField'(F) then return R;
     S := ambient(R);
     if class(S) =!= PolynomialRing then(
 	error "makeCoefficientFieldPrime is only implemented for quotients of polynomial rings. Consider flattening first";);
     S' := makeCoefficientFieldPrime(S);
-    varsS' := first entries vars S';
-    fieldVar := varsS'_(-1);
-    Rvars := first entries vars R;
-    Rvars2 := append(Rvars, fieldVar_R);
-    phi := map(R, S', Rvars2);
-    outputRing := S' / kernel(phi);
-    return ( (flattenRing outputRing)_0 )
-    )
+    FR := flattenRing quotient sub(ideal R, S');
+    R.cache#coeffFieldMap = map(first FR, R);
+    first FR
+        )
 
 witt(ZZ,PolynomialRing) := (n,R)->(
     charPCheck R;
-    F := try coefficientRing R;
-    if F =!= null and not isFinitePrimeField F then return witt(n, makeCoefficientFieldPrime(R));
+    F := baseRing' R;
     if not R.?cache then(
 	R.cache = new CacheTable;
 	);
@@ -216,40 +226,33 @@ witt(ZZ,PolynomialRing) := (n,R)->(
 	W := new WittPolynomialRing from MutableHashTable;
 	W.wittLength = n;
 	W.unWitt = R;
-	W.overring = wittOverring(n,R);
+        W.overring = wittOverring(n,R);
 	R.cache.wittRings#n = W;
 	);
     R.cache.wittRings#n
 )
 
 
--- Eamon: I think this needs more testing.
--- For example, witt(3, GF(3)) and witt(3, ZZ/3) give different types.
--- Let's either think about it carefully or discard.
---
-witt(ZZ,GaloisField) := (n,R) -> (
-	return witt(n, ambient R);
-    )
-
 unWitt(WittPolynomialRing) := WPR ->(
     WPR.unWitt
     )
 
 net(WittPolynomialRing) := WPR->(
-	return horizontalJoin("Witt", (net(WPR.wittLength))^-1, "(", net WPR.unWitt, ")");
+	horizontalJoin("Witt", (net(WPR.wittLength))^-1, "(", net WPR.unWitt, ")")
 )
 
 explicit(WittPolynomialRing) := WPR->(
 	if (not WPR.?explicit) then(
 		WPR.explicit = wittVectors(WPR.wittLength, WPR.unWitt);
 	);
-	return WPR.explicit;
+	WPR.explicit
 )
 
-explicitOver(WittPolynomialRing) := WPR -> (
+--DM 11/11: I don't think we ever store a value under WPR.explicitOver
+--explicitOver(WittPolynomialRing) := WPR -> (
     -- make cache!
-    WPR.explicitOver
-    )
+    --WPR.explicitOver
+    --)
 
 random(ZZ, WittPolynomialRing) := opts -> (nn, WPR) -> (
     R := WPR.unWitt;
@@ -267,9 +270,11 @@ random(ZZ, WittPolynomialRing) := opts -> (nn, WPR) -> (
 
 WittQuotientRing = new Type of MutableHashTable;
 
+
+witt(ZZ, GaloisField) := 
 witt(ZZ, QuotientRing) := (n,R)->(
-    F := try coefficientRing R;
-    if F =!= null and not isFinitePrimeField F then return witt(n, makeCoefficientFieldPrime(R));
+    F := baseRing' R;
+    --if F =!= null and not isFinitePrimeField' F then return witt(n, makeCoefficientFieldPrime(R));
     if not R.?cache then(
 	R.cache = new CacheTable;
 	);
@@ -277,10 +282,10 @@ witt(ZZ, QuotientRing) := (n,R)->(
 	R.cache.wittRings = new CacheTable;
 	);
     if not R.cache.wittRings#?n then(
-	W := new WittQuotientRing from MutableHashTable;
+	W := if isFinitePrimeField' R then new WittPolynomialRing from MutableHashTable else new WittQuotientRing from MutableHashTable;
 	W.wittLength = n;
 	W.unWitt = R;
-	W.overring = wittOverring(n,R);
+	W.overring = wittOverring(n, R);
 	R.cache.wittRings#n = W;
 	);
     R.cache.wittRings#n
@@ -294,14 +299,14 @@ wittLength(WittQuotientRing) := W -> W.wittLength
 wittLength(WittPolynomialRing) := W -> W.wittLength
 
 net(WittQuotientRing) := WQR -> (
-    return horizontalJoin("Witt", (net(WQR.wittLength))^-1, "(", net WQR.unWitt, ")")
+    horizontalJoin("Witt", (net(WQR.wittLength))^-1, "(", net WQR.unWitt, ")")
     )
 
 explicit(WittQuotientRing) := WQR->(
 	if (not WQR.?explicit) then(
 		WQR.explicit = wittVectors(WQR.wittLength, WQR.unWitt);
 	);
-	return WQR.explicit;
+	WQR.explicit
 	)
 
 explicitOver(WittQuotientRing) := WQR -> (
@@ -325,8 +330,7 @@ WittIdeal = new Type of MutableHashTable;
 protect wittGenerators
 
 wittIdeal(WittRingElement) := ww -> (
-    jj := new WittIdeal from {wittGenerators => toSequence{ww}};
-    return jj;
+    new WittIdeal from {wittGenerators => toSequence{ww}}
     )
 
 wittIdeal List := wittIdeal Sequence := LL -> (
@@ -336,8 +340,7 @@ wittIdeal List := wittIdeal Sequence := LL -> (
     if not length unique apply(LL, ll -> length(ll)) == 1 then(
 	error "the generators do not have the same length";
 	);
-    jj := new WittIdeal from {wittGenerators => toSequence(LL)};
-    return jj;
+    new WittIdeal from {wittGenerators => toSequence(LL)}
   )
 
 ---
@@ -411,12 +414,12 @@ addCommas := LL -> (
 net WittIdeal := WI -> (
     wgs := WI.wittGenerators;
     if #wgs == 1 then(
-	return horizontalJoin("ideal ", net (wgs#0));
+	 horizontalJoin("ideal ", net (wgs#0))
 	) else (
 	wgsnet := apply( wgs, net );
 	wgsnet = addCommas(wgsnet);
-	return horizontalJoin("ideal (", wgsnet, ")"  );
-    );
+	horizontalJoin("ideal (", wgsnet, ")"  )
+    )
 )
 
 
@@ -432,7 +435,7 @@ net WittIdeal := WI -> (
 WittRingMap = new Type of MutableHashTable;
 
 net(WittRingMap) := Wf->(
-	return horizontalJoin("WittRingMap ", net(Wf.target), " <-- ", net(Wf.source));
+	horizontalJoin("WittRingMap ", net(Wf.target), " <-- ", net(Wf.source))
 )
 
 witt(ZZ, ZZ , RingMap) := WittRingMap => (mm, nn, ff) -> (
@@ -522,12 +525,12 @@ wittFrobenius(WittRingElement) := WittRingElement => ww -> (
     wF(ww)
     )
 
-truncate(ZZ, WittPolynomialRing) := opts -> (n, W) -> (
+truncate(ZZ, WittPolynomialRing) := {} >> opts -> (n, W) -> (
     if n > wittLength W then error "can't truncate to something longer";
     witt(n, wittLength W, map(unWitt W, unWitt W))
 )
 
-truncate(ZZ, WittQuotientRing) := (n, W) -> opts ->  (
+truncate(ZZ, WittQuotientRing) := {} >> opts -> (n, W) ->  (
     if n > wittLength W then error "can't truncate to something longer";
     witt(n, wittLength W, map(unWitt W, unWitt W))
 )

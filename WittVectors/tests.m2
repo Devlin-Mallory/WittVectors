@@ -114,3 +114,69 @@ TEST ///
     assert( t(w) == witt{x,y})
 ///
 
+TEST ///
+R = ZZ/2
+Rx = R[x]
+B = Rx/(x^2)
+R4 = GF 4
+x=symbol x
+Rx4 = R4[x]
+B4 = Rx4/x^2
+
+
+assert(R === unWitt witt(2,R))
+assert(Rx === unWitt witt(2,Rx))
+assert(B === unWitt witt(2,B))
+assert(R4 === unWitt witt(2,R4))
+assert(Rx4 === unWitt witt(2,Rx4))
+assert(B4 === unWitt witt(2,B4))
+
+assert(witt{1_R,0_R}+witt{0_R,1_R} == witt{1_R,1})
+assert(witt{1_Rx,0_Rx}+witt{0_Rx,x_Rx} == witt{1_Rx,x_Rx})
+assert(witt{1_B,0_B}+witt{0_B,x_B}  == witt{1_B,x_B})
+assert(witt{a_R4+1,0_R4}+witt{0_R4,a_R4} == witt{a_R4+1,a_R4})
+assert(witt{1_Rx4,0_Rx4}+witt{0_Rx4,x_Rx4} == witt{1_Rx4,x_Rx4})
+assert(witt{1_B4,0_B4}+witt{0_B4,x_B4} == witt{1_B4,x_B4})
+
+assert(numgens explicit witt(2,R) == 0)
+assert(numgens explicit witt(2,Rx) == 2)
+assert(numgens explicit witt(2,B) == 2)
+assert(numgens explicit witt(2,R4) == 2)
+assert(numgens explicit witt(2,Rx4) == 5)
+assert(numgens explicit witt(2,B4) == 5)
+///
+
+
+TEST ///
+S = ZZ/2[x,y]
+I = ideal(x*y)
+J = ideal(0_S)
+dim createEquations(2,I,Homogeneous=>true) > 0
+dim createEquations(2,I,Homogeneous=>true, PerturbationTerm=>{1}) < 0
+dim createEquations(2,0_S,Homogeneous=>true) > 0
+///
+
+TEST ///
+S = (GF 9) 
+S'= makeCoefficientFieldPrime S
+w = wittTupleToOverring(witt{0,a_S}) +wittTupleToOverring( witt{0,1_S})
+wittTupleToOverring witt{0,a_S^2}
+w = witt{a_S-1,0}
+length terms wittTupleToOverring witt{a_S-1,0}  == 4
+///
+
+TEST ///
+debug WittVectors
+S = (GF 9)[x,y]
+S' = makeCoefficientFieldPrime S
+W = witt(3,S)
+W' = witt(3,S')
+w1 = random(3, W) 
+w2 = random(3, W)
+w1'= witt(apply(w1.tuple,i->sub(i,S')))
+w2'= witt(apply(w2.tuple,i->sub(i,S')))
+w = w1+w2
+w' = w1'+w2'
+assert(witt(apply(w.tuple,i->sub(i,S'))) - (w1'+w2') == 0)
+///
+
