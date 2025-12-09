@@ -35,9 +35,9 @@ export{
 "WittRingMap",
 "baseMap",
 "WittQuotientRing",
-"explicit", -- Warning! For a quotient ring returns the explicit of the ambient.
+"explicit",
 "wittLength",
-"wittRings",
+--"wittRings",
 "WittIdeal",
 "wittIdeal",
 "wittGenerators",
@@ -58,6 +58,7 @@ export{
 }
 
 protect tuple
+protect wittRings
 
 needsPackage "TestIdeals"
 needsPackage "Polyhedra"

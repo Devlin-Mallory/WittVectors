@@ -20,9 +20,8 @@
 -- "baseMap", --documented
 -- "WittQuotientRing", --documented
 -- "explicit", --done.
--- "wittLength", --done
--- "wittRings",
--- "WittIdeal",
+-- "wittLength", --done.
+-- "WittIdeal", --add a SeeAlso for wittIdeal
 -- "wittIdeal",
 -- "wittGenerators",
 -- "explicitOver",
@@ -964,6 +963,33 @@ doc ///
 	    R = (ZZ/3)[x,y,z] / ideal(x^2  + y^2 + z^2);
 	    WR = witt(4, R)
 ///
+
+--------------------------------
+--------- WittIdeal
+--------------------------------
+
+doc ///
+    Key
+        WittIdeal
+
+    Headline
+        Ideals in Witt rings.
+	
+    Description
+	Text
+	    A class for ideals in WittPolynomialRing and WittQuotientRing.
+	    It can be built using the wittIdeal method.
+	    
+	Example
+	    R = (ZZ/5)[x,y];
+	    WR = witt(2, R);
+	    w1 = witt{x,y};
+	    w2 = witt{x^2, y^2};
+	    w3 = witt{x^3, y^3};
+	    WI = wittIdeal(w1, w2, w3)
+	    
+///
+
 
 
 --------------------------------
