@@ -740,7 +740,7 @@ doc ///
         (explicit, WittPolynomialRing)
 
     Headline
-        Express a WittPolynomialRing as a finitely generated algebra over the integers.
+        Expresses a WittPolynomialRing as a finitely generated algebra over the integers.
 	
     Usage
         E = explicit(WR)
@@ -767,9 +767,11 @@ doc ///
 	Example
 	    R = (ZZ/2)[x];
 	    WR = witt(2, R);
+	    explicit(WR)
+        Example
+	    R = GF(4)[x];
+	    WR = witt(2, R);
 	    explicit(WR);
-	    
-	    
 ///
 
 doc ///
@@ -777,7 +779,7 @@ doc ///
         (explicit, WittQuotientRing)
 
     Headline
-        Express a WittQuotientRing as a finitely generated algebra over the integers.
+        Expresses a WittQuotientRing as a finitely generated algebra over the integers.
        
     Usage
         E = explicit(WR)
@@ -799,21 +801,17 @@ doc ///
 	    the method. -- Devlin please check?
 	    
 	Example
-	    R = GF(4)[x];
+	    R = (ZZ/2)[x] / ideal(x^2);
 	    WR = witt(2, R);
-	    explicit(WR);
-	    
+	    explicit(WR)	    
 ///
-
-
-
 
 doc ///
     Key
         (explicit, WittRingElement)
 
     Headline
-        Explicit version of a WittRingElement.
+        Obtains the explicit version of a WittRingElement.
 	
     Usage
 	e = explicit(w)
@@ -841,6 +839,31 @@ doc ///
 	    
 ///
 
+
+doc ///
+    Key
+        (explicit, WittIdeal)
+
+    Headline
+        Obtains the explicit version of a WittIdeal.
+	
+    Usage
+        J := explicit(WI)
+	
+    Inputs
+	WI:WittIdeal
+    Outputs
+        J:Ideal
+    Description
+	Text
+	    If WR is a WittPolynomialRing or WittQuotientRing, and WI is an WittIdeal in WR,
+	    explicit(WI) gives the ideal corresponding to WI in explicit(WR)
+	Example
+	    R := (ZZ/2)[x,y];
+	    w1 := witt{x,y};
+	    w2 := witt{x^2, y^2};
+	    I := wittIdeal(w1, w2)
+///
 
 
 
