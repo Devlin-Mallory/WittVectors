@@ -7,7 +7,7 @@
 -- "wittOverringToTuple", --documented
 -- "verschiebung", --documented
 -- "wittOverringIdeal", --documented, but WARNING! see
--- --R = (ZZ/3)[x,y,z]; WOR = wittOverring(2, R); wittOverringIdeal(2, ideal(x))
+-- --R = (ZZ/3)[x,y,z]; WOR = wittOverring(2, R); wittOverringIdeal(2,ideal(x))
 -- --we would want this to return an ideal of WOR. Maybe a cache issue?
 -- "wittRingIdeal", --documented
 -- "unWitt", --documented
@@ -19,7 +19,7 @@
 -- "WittRingMap", --documented
 -- "baseMap", --documented
 -- "WittQuotientRing", --documented
--- "explicit", --did PolynomialRing, QuotientRing, and RingElement. Devlin, please check.
+-- "explicit", --done.
 -- "wittLength",
 -- "wittRings",
 -- "WittIdeal",
@@ -274,9 +274,9 @@ doc ///
 
 
 
-----
-----
-----
+-------------------------
+--- some random stuff
+-------------------------
 
 
 doc ///
@@ -321,6 +321,32 @@ doc ///
 	    R = (ZZ/5)[x,y,z] / ideal(x^2 + y^2 + z^2)
 	    w = witt{x, y, z}
 	    ring(w)
+///
+
+doc ///
+    Key
+        wittLength
+        (wittLength, WittPolynomialRing)
+	(wittLength, WittQuotientRing)
+    Headline
+        Returns the length of the Witt vectors in a given Witt ring
+	
+	
+    Usage
+        n = wittLength(WR)
+    Inputs
+        WR:WittPolynomialRing
+	WR:WittQuotientRing
+    Outputs
+        n:ZZ
+    Description
+	Text
+	    If $WR = W_n(R)$ for some polynomial or quotient ring $R$, and some integer $n \geq 1$,
+	    wittLength(WR) returns the integer $n$.
+	Example
+	    R = GF(9)[x,y];
+	    WR = witt(5, R);
+	    wittLength(WR)	    
 ///
 	   
 	   
