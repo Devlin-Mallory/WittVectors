@@ -20,7 +20,7 @@
 -- "baseMap", --documented
 -- "WittQuotientRing", --documented
 -- "explicit", --done.
--- "wittLength",
+-- "wittLength", --done
 -- "wittRings",
 -- "WittIdeal",
 -- "wittIdeal",
