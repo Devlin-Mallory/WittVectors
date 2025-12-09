@@ -286,7 +286,7 @@ witt(ZZ, QuotientRing) := (n,R)->(
 	R.cache.wittRings = new CacheTable;
 	);
     if not R.cache.wittRings#?n then(
-	W := if isFinitePrimeField' R then new WittPolynomialRing from MutableHashTable else new WittQuotientRing from MutableHashTable;
+	W := if isFinitePrimeField' R or class R === GaloisField then new WittPolynomialRing from MutableHashTable else new WittQuotientRing from MutableHashTable;
 	W.wittLength = n;
 	W.unWitt = R;
 	W.overring = wittOverring(n, R);
