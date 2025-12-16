@@ -7,6 +7,7 @@ wittOverringToTuple = method()
 wittRingIdeal=method()
 wittOverringIdeal=method()
 
+export{"WittOverring"}
 -----------------------------
 -----------------------------
 -----------------------------
@@ -16,7 +17,7 @@ wittOverringIdeal=method()
 -- don't think this will break anything, but we should test.
 
 
-wittOverring(ZZ, Ring) := (n, R) -> (
+wittOverring(ZZ, Ring) := (n, R) -> R.cache#(symbol WittOverring, n) ??= (
     if class R === GaloisField then(
         S := ambient ambient R;
         OS := wittOverring(n, S);
@@ -24,6 +25,7 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 	WittSub := map(OS, makeCoefficientFieldPrime R, OSvars); -- WARNING: not a real map!
 	OS.cache.wittSub = WittSub;
 	OS.cache.unWitt = R;
+        R.cache#(symbol WittOverring, n) = OS;
 	return(OS)
 	);
     if class R =!= PolynomialRing and not isField(R) then(
@@ -37,6 +39,7 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 	WittSub = map(OS, makeCoefficientFieldPrime R, OS.cache.wittSub); -- WARNING: not a real map!
 	OS.cache.wittSub = WittSub;
 	OS.cache.unWitt = R;
+        R.cache#(symbol WittOverring, n) = OS;
 	return(OS)
 	);
     if class R === PolynomialRing or isField(R) then(
@@ -54,6 +57,7 @@ wittOverring(ZZ, Ring) := (n, R) -> (
 	WittSub = map(OR, R', ORvars); -- WARNING: this is not a "real" map!
 	OR.cache.wittSub = WittSub;
 	OR.cache.unWitt = R;
+        R.cache#(symbol WittOverring, n) = OR;
 	return(OR)
 	);
 )
