@@ -11,10 +11,7 @@
 findFrobeniusLift=method(Options=>{Nontrivial=>false, Homogeneous => false, Verbose=>false, PerturbationTerm => null})
 
 findFrobeniusLift(ZZ,RingElement) := opts -> (d,f) -> findFrobeniusLift(d, ideal f,opts)
-
-
-
-findFrobeniusLift(ZZ,Ring) := opts -> (d,R) -> findFrobeniusLift(d, ideal 0_R,opts)
+findFrobeniusLift(ZZ,Ring) := opts -> (d,R) -> findFrobeniusLift(d, ideal R,opts)
 findFrobeniusLift(ZZ,Ideal) := opts -> (d,I) ->(
     S := ring I;
     R := S/I;
@@ -93,6 +90,7 @@ expand I
 )
 
 createEquations = method(Options => {Homogeneous => false, PerturbationTerm=>null})
+createEquations(ZZ,Ring) := opts -> (d,R)->createEquations(d,ideal R,opts)
 createEquations(ZZ,RingElement) := opts -> (d,f)->createEquations(d,ideal f,opts)
 createEquations(ZZ,Ideal) := opts -> (d,I) -> (
 G:=expandFrobeniusConstraints(d,I,opts);
