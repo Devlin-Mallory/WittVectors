@@ -205,3 +205,10 @@ w = random(2, WR)
 (1_WR)*w == w
 (0_WR)*w == 0_WR
 ///
+
+TEST ///
+R = GF(2)[x]
+WR = witt(2, R)
+w = random(2, WR)
+wittIdeal(w, sub(0, WR)) == wittIdeal(w)
+///
