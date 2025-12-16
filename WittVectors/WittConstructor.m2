@@ -220,6 +220,9 @@ makeCoefficientFieldPrime(QuotientRing) := R -> R.cache#(coeffFieldPrime) ??= (
 witt(ZZ,PolynomialRing) := (n,R)->(
     charPCheck R;
     F := baseRing' R;
+    if n <= 0 then(
+	error "witt vectors must have positive length";
+	);
     if not R.?cache then(
 	R.cache = new CacheTable;
 	);
@@ -258,16 +261,10 @@ explicit(WittPolynomialRing) := WPR->(
     --WPR.explicitOver
     --)
 
-random(ZZ, WittPolynomialRing) := opts -> (nn, WPR) -> (
-    R := WPR.unWitt;
-    ll := WPR.wittLength;
-    witt apply(toList(1..ll), xx -> random(nn, R))
-    )
-
 
 
 -------------------------------
--------------WittQuotientRing
+------------- WittQuotientRing
 -------------------------------
 
 --TODO: make sure arithmetic of witt vectors in WittQuotientRing work fine.
@@ -279,6 +276,10 @@ witt(ZZ, GaloisField) :=
 witt(ZZ, QuotientRing) := (n,R)->(
     F := baseRing' R;
     --if F =!= null and not isFinitePrimeField' F then return witt(n, makeCoefficientFieldPrime(R));
+    if n <= 0 then(
+	error "witt vectors must have positive length";
+	);
+
     if not R.?cache then(
 	R.cache = new CacheTable;
 	);
@@ -318,12 +319,33 @@ explicitOver(WittQuotientRing) := WQR -> (
     WQR.explicitOver
     )
 
-random(ZZ, WittQuotientRing) := opts -> (nn, WQR) -> (
-    R := WQR.unWitt;
-    ll := WQR.wittLength;
+
+------
+------
+------
+
+random(ZZ, WittPolynomialRing) :=
+random(ZZ, WittQuotientRing) := opts -> (nn, WPR) -> (
+    R := WPR.unWitt;
+    ll := WPR.wittLength;
     witt apply(toList(1..ll), xx -> random(nn, R))
     )
 
+sub(ZZ, WittPolynomialRing) :=
+sub(ZZ, WittQuotientRing) := (nn, WR) -> (
+    if nn === 1 then(
+	ll := wittLength(WR);
+	R := unWitt(WR);
+	zeroes := toList apply( 1..(ll-1), xx -> 0_R );
+	return witt( {1_R} | zeroes)
+    ) else(
+	return nn*sub(1, WR)
+	);
+    )
+
+ZZ_WittPolynomialRing := ZZ_WittQuotientRing := (nn, WR) -> (
+    sub(nn, WR)
+    )
 
 -------------
 ------------- WittIdeal
@@ -444,6 +466,7 @@ net(WittRingMap) := Wf->(
 
 witt(ZZ, ZZ , RingMap) := WittRingMap => (mm, nn, ff) -> (
     if mm > nn then error "wittLength of target is bigger than wittLength of source";
+    if mm <= 0 or nn<=0 then error "witt vectors must have positive length";
     R := source ff;
     S := target ff;
     WR := witt(nn, R);

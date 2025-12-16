@@ -21,8 +21,8 @@
 -- "WittQuotientRing", --documented
 -- "explicit", --done.
 -- "wittLength", --done.
--- "WittIdeal", --add a SeeAlso for wittIdeal
--- "wittIdeal",
+-- "WittIdeal", --done.
+-- "wittIdeal", --done.
 -- "wittGenerators",
 -- "explicitOver",
 -- "Nontrivial",
@@ -988,8 +988,56 @@ doc ///
 	    w2 = witt{x^2, y^2};
 	    w3 = witt{x^3, y^3};
 	    WI = wittIdeal(w1, w2, w3)
+    SeeAlso
+        wittIdeal
 	    
 ///
+
+
+
+--------------------------------
+--------- wittIdeal 
+--------------------------------
+
+doc ///
+    Key
+        wittIdeal
+	(wittIdeal, List)
+	(wittIdeal, Sequence)
+	(wittIdeal, WittRingElement)
+    Headline
+        Make an ideal in a Witt ring.
+	
+    Usage
+        WI = wittIdeal(L)
+	WI = wittIdeal(S)
+	WI = wittIdeal(w)
+	
+    Inputs
+        L:List
+	    of WittRingElements.
+	S:Sequence
+	    of WittRingElements.
+	w:WittRingElement
+	
+    Outputs
+        WI:WittIdeal
+	
+    Description
+	Text
+	    This method builds a wittIdeal from a list or sequence of WittRingElements.
+	    Passing a WittRingElement alone gives the principal ideal generated
+	    by that WittRingElement.
+	    
+	Example
+	    R = (ZZ/5)[x,y];
+	    WR = witt(2, R);
+	    w1 = witt{x,y};
+	    w2 = witt{x^2, y^2};
+	    w3 = witt{x^3, y^3};
+	    WI = wittIdeal(w1, w2, w3)
+///
+
 
 
 

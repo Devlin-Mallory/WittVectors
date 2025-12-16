@@ -22,5 +22,7 @@ doc ///
 	Text
 	    
 	Example
+	
+    SeeAlso
 	    
 ///

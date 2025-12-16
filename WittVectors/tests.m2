@@ -185,3 +185,24 @@ needsPackage "WittVectors"
 S = GF 4
 wittRingToTuple wittTupleToRing witt{1_S,0_S} == 1
 ///
+
+TEST ///
+R = GF(3)[x,y]
+WR = witt(2, R)
+elapsedTime(
+for xx in -2..2 do(
+    for yy in -2..2 do(
+	assert( sub(xx, WR) + sub(yy, WR) == sub(xx + yy, WR) );
+	assert( sub(xx, WR)*sub(yy, WR) == sub(xx*yy, WR) );
+	);
+    );
+)
+///
+
+TEST ///
+R = GF(5)[x,y]
+WR = witt(3, R)
+w = random(2, WR)
+(1_WR)*w == w
+(0_WR)*w == 0_WR
+///
