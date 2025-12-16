@@ -11,10 +11,7 @@
 findFrobeniusLift=method(Options=>{Nontrivial=>false, Homogeneous => false, Verbose=>false, PerturbationTerm => null})
 
 findFrobeniusLift(ZZ,RingElement) := opts -> (d,f) -> findFrobeniusLift(d, ideal f,opts)
-
-
-
-findFrobeniusLift(ZZ,Ring) := opts -> (d,R) -> findFrobeniusLift(d, ideal 0_R,opts)
+findFrobeniusLift(ZZ,Ring) := opts -> (d,R) -> findFrobeniusLift(d, ideal R,opts)
 findFrobeniusLift(ZZ,Ideal) := opts -> (d,I) ->(
     S := ring I;
     R := S/I;
@@ -65,7 +62,7 @@ Efp :=flatten( exponents\ flatten entries first coefficients g);
 WCfp:=apply(Efp,i->product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j));
 if WCfp == {} then WCfp = {witt{0_T,0_T}};
 if Cfp == {} then Cfp = {0};
-sub(ideal last (p *Cfp_r*WCfp_r+sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tuple, TR))
+sub(ideal last (p *Cfp_0*WCfp_0+sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tuple, TR))
 )
 
 
@@ -93,6 +90,7 @@ expand I
 )
 
 createEquations = method(Options => {Homogeneous => false, PerturbationTerm=>null})
+createEquations(ZZ,Ring) := opts -> (d,R)->createEquations(d,ideal R,opts)
 createEquations(ZZ,RingElement) := opts -> (d,f)->createEquations(d,ideal f,opts)
 createEquations(ZZ,Ideal) := opts -> (d,I) -> (
 G:=expandFrobeniusConstraints(d,I,opts);
