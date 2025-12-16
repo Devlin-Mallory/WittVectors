@@ -65,7 +65,7 @@ Efp :=flatten( exponents\ flatten entries first coefficients g);
 WCfp:=apply(Efp,i->product for j from 0 to d-1 list (witt{T_(d+j),T_j})^(i_j));
 if WCfp == {} then WCfp = {witt{0_T,0_T}};
 if Cfp == {} then Cfp = {0};
-sub(ideal last (p *Cfp_r*WCfp_r+sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tuple, TR))
+sub(ideal last (p *Cfp_0*WCfp_0+sum flatten (for i from 0 to length Cf - 1 list Cf_i*WCf_i)).tuple, TR))
 )
 
 

@@ -1020,31 +1020,68 @@ doc ///
 	    unWitt(WR)
 ///
 
+doc ///
+    Key
+        findFrobeniusLiftConstraints
+    Headline
+        Finds the equations satisfied by a delta structure on a ring R
+    Usage
+        J = findFrobeniusLiftConstraints I
+        J = findFrobeniusLiftConstraints R
+    Inputs
+        I: Ideal
+        f: RingElement
+        R: QuotientRing
+    Outputs
+        J: Ideal
+    Description
+        Text
+            Given an ideal I in a characteristic-p polynomial ring S = (ZZ/p)[x_1..x_n], or a quotient ring R = S/I or a generator f of I, this method returns an ideal J in (S/I)[aa_1,...,aa_n]. The generators for J give the equations satisfied by the values of delta(x_i)=aa_i for the resulting Frobenius lift to descend from W_2(k)[x_1..x_n] to W_2(k)[x_1..x_n]/I. 
+        Example
+            S = (ZZ/2)[x,y]
+            I = ideal(x*y)
+            J = findFrobeniusLiftConstraints I
+            J = findFrobeniusLiftConstraints (S/I)
+        Text
+            If the user wants to lift the Frobenius to a different lifting of I to W_2(k)[x_1..x_n], one can use the PerturbationTerm option to specify the coefficients of p in the lift of the defining equations.
+        Example
+            S = (ZZ/2)[x,y,z]
+            I = ideal(x*y,z)
+            J = findFrobeniusLiftConstraints(I,PerturbationTerm=>{1,0})
+///
 
--- Eamon: this gives an error when not commented.
+
+doc ///
+    
+
 -- document {
 --     Key => {findFrobeniusLift, (RingElement, ZZ)},
 --     Headline => "find a lift of the Frobenius",
 --     Usage => "findFrobeniusLift(d, f)",
 --     Inputs => {"(d,f)"},
 --     Outputs => {{"find a lift of the Frobenius on the ring", TT "W_2(S/f)" "using polynomials of degree", TT " < d+1"}},
--- 	Text This methods tries random polynomials of the given degree and checks if they give Frobenius lifts. This might not terminate since there might not be one that is a Frobenius lift.
+--     Text This methods tries random polynomials of the given degree and checks if they give Frobenius lifts. This might not terminate since there might not be one that is a Frobenius lift.
 --     Example 
 -- 		S = (ZZ/2)[x,y]
 -- 		I = ideal(x^2 +y^3)
 -- 		L = findFrobeniusLift(2,I)
 -- 	Text This should give a list whose second entry is y^2
--- 	Text To see which options the algorithm is trying, set verbose to true
+-- 	Text To see how many tries have been attempted, set verbose to true
 -- 	Example 
 -- 		S = (ZZ/2)[x,y]
 -- 		I = ideal(x^3+y^5)
 -- 		findFrobeniusLift(2,I,Verbose=>true)
 -- 	Text This can give a couple of values like (x^2,0) or (0,y^2). Time and number of tries will vary since the polynomials the algorithm tries are random.
 -- 	Text If there is no Frobenius lift, the algorithm will run without ending. 
--- 		Example S= (ZZ/7)[x,y,z]
+-- 	Example 
+--                S= (ZZ/7)[x,y,z]
 -- 		I= ideal(x^3+y^3+z^3)
--- 		L= findFrobeniusLift(14,I)
--- 	Text This will not end. By Serre-Tate, there is only one (canonical) lifting of S/I that has a Frobenius morphism compatible with that of S/I. However, this is not the lifting we are working with.
+-- 		L= findFrobeniusLift(7,I,Verbose=>true,Homogeneous=>true,PerturbationTerm=>{3})
+-- 	Text This will not end. By Serre--Tate theory, there is only one (canonical) lifting of S/I that has a Frobenius morphism compatible with that of S/I. However, this is not the lifting we are working with.
+--        Text One can also specify a different lift than the default one (which simply lifts the coefficients naively to W_2(ZZ/p)) by using the PerturbationTerm option, which specifies coefficients of p in the lift of the defining equations
+--        Example
+--                S=(ZZ/3)[x,y,z]
+--                
 --     ///
 --     }
 
