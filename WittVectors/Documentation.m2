@@ -41,7 +41,7 @@
 -- multiplication --documented
 -- truncation --documented
 --
--- DOUBLE CHECK WE HAVE HEADLINES
+-- DOUBLE CHECK WE HAVE HEADLINES -- done I think, Eamon. 
 
 
 -------------------------
@@ -53,7 +53,7 @@ doc ///
     Key
 	    (witt, ZZ, RingMap)
     Headline
-        The map induced on Witt rings by a RingMap
+        The map induced on Witt rings by a RingMap.
     Usage
 	    witt(n,f)
     Inputs
@@ -77,6 +77,8 @@ doc ///
 doc ///
     Key
 	(witt, ZZ, ZZ, RingMap)
+    Headline
+        The map induced on Witt rings by a RingMap.
     Usage
 	witt(n, m, f)
     Inputs
@@ -104,6 +106,8 @@ doc ///
 doc ///
     Key
 	(witt, ZZ, PolynomialRing)
+    Headline
+        Builds a Witt ring.
     Usage
 	witt(n, R)
     Inputs
@@ -329,7 +333,6 @@ doc ///
 	(wittLength, WittQuotientRing)
     Headline
         Returns the length of the Witt vectors in a given Witt ring
-	
 	
     Usage
         n = wittLength(WR)
@@ -566,6 +569,8 @@ doc ///
 doc ///
     Key
 	(symbol +, WittRingElement, WittRingElement)
+    Headline
+        Addition of WittRingElements.
     Usage
 	w = w1+w2
     Inputs
@@ -588,6 +593,8 @@ doc ///
 doc ///
     Key
 	(symbol *, WittRingElement, WittRingElement)
+    Headline
+        Multiplication of WittRingElements.
     Usage
 	w = w1*w2
     Inputs
@@ -616,7 +623,7 @@ doc ///
     Key
 	wittRingToTuple
     Headline
-	Converts an element of the explicit presentation of a Witt ring into a tuple
+	Converts an element of the explicit presentation of a Witt ring into a tuple.
     Usage
 	w = wittRingToTuple r
     Inputs
@@ -639,7 +646,7 @@ doc ///
     Key
 	wittOverringToTuple
     Headline
-	Converts an element of the explicit overring of a Witt ring into a tuple
+	Converts an element of the explicit overring of a Witt ring into a tuple.
     Usage
 	w = wittOverringToTuple r
     Inputs
@@ -662,7 +669,7 @@ doc ///
     Key
 	wittTupleToRing
     Headline
-	Converts an element of a Witt ring to an element of its explicit presentation
+	Converts an element of a Witt ring to an element of its explicit presentation.
     Usage
 	r = wittTupleToRing w
     Inputs
@@ -683,7 +690,7 @@ doc ///
     Key
 	wittTupleToOverring 
     Headline
-	Converts an element of a Witt ring to an element of the overring of its explicit presentation
+	Converts an element of a Witt ring to an element of the overring of its explicit presentation.
     Usage
 	r = wittTupleToOverring w
     Inputs
