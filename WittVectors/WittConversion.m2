@@ -187,9 +187,10 @@ wittTupleToRing(WittRingElement):= w-> (
 	if degree m == {0} then sub(m,source Phi) else(
 	    (B,pi):=flattenRing quotient ideal m;
 	    --the below method doesn't always work to find a preimage... we should figure out a better way    
-	    preimages := (kernelZZ(pi*map(source pi,WR,Phi)))_*;
+            Phi':=map(source pi,WR,apply(Phi \ gens source Phi, f-> sub(f,source pi)));
+	    preimages := (kernelZZ(pi*Phi'))_*;
 	    multiplied:=flatten for i in preimages list for j from 1 to p^n-1 list i*j;
-	    first select(multiplied,i->Phi(i)==m)
+	    first select(multiplied,i->Phi'(i)==m)
 	    )    
 	)
     --G//Phi(vars source Phi)
