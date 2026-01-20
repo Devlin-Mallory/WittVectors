@@ -491,7 +491,8 @@ explicit(WittRingMap) := Wf -> (
     Wse := explicit source Wf;
     Wte := explicit target Wf;
     l := wittLength target Wf;
-    mapList := for i in gens Wse list wittTupleToRing (truncate(l, witt apply((wittRingToTuple i).tuple, j->(baseMap Wf)(j) )));
+    WteTuples := for i in gens Wse list witt apply((wittRingToTuple i).tuple, j->(baseMap Wf)(j) );
+    mapList := for i in WteTuples list wittTupleToRing (truncate(l, i));
     map(Wte, Wse, mapList)
 )
 

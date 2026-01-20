@@ -34,7 +34,7 @@ wittOverring(ZZ, Ring) := (n, R) -> R.cache#(symbol WittOverring, n) ??= (
 	    error "wittVectors currently only implemented for quotients of polynomial rings;
                     consider flattening before applying witt"
 	    );
-	OS = wittOverring(n, S);
+	OS = wittOverring(n, newRing S);
 	--OSvars := flatten entries vars OS;
 	WittSub = map(OS, makeCoefficientFieldPrime R, OS.cache.wittSub); -- WARNING: not a real map!
 	OS.cache.wittSub = WittSub;
@@ -234,8 +234,7 @@ wittOverringToTuple(RingElement) := F -> (
     R := OR.cache.unWitt;
     k := baseRing' R;
     unWittSub := if class k === GaloisField and (class R === PolynomialRing or class R === QuotientRing)
-        then map(R, OR, gens R|{k_0}) 
-        else map(R, OR, vars R); 
+        then map(R, OR, gens R|{k_0}) else map(R, OR, vars R); 
     wittSub := OR.cache.wittSub;
     R' := makeCoefficientFieldPrime R;
     phi := if R' === R then id_R else R.cache.coeffFieldMap;

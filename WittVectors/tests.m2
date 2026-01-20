@@ -83,6 +83,7 @@ TEST ///
 
 TEST ///
     S = (ZZ/3)[x,y]
+    assert(wittOverringToTuple((wittOverring(2,S))_0^3) != 0)
     w = witt{x,x^2}
     R = S/x
     p = map(R,S)
@@ -93,6 +94,7 @@ TEST ///
     assert((try w21*w21) == null)
     use S
     f = map(S,S,{x^2,y})
+    assert(wittOverringToTuple((wittOverring(2,S))_0^3) != 0)
     Wf = witt(1,2,f)
     explicit Wf
 ///
