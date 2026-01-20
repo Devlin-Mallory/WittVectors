@@ -1177,7 +1177,7 @@ doc ///
  	    I= ideal(x^3+y^3+z^3)
  	    --L= findFrobeniusLift(7,I,Verbose=>true,Homogeneous=>true,PerturbationTerm=>{3})
  	Text 
-            This will not end. By Serre--Tate theory, there is only one (canonical) lifting of S/I that has a Frobenius morphism compatible with that of S/I. However, this is not the lifting we are working with.
+            This will not end. By Serre-Tate theory, there is only one (canonical) lifting of S/I that has a Frobenius morphism compatible with that of S/I. However, this is not the lifting we are working with.
         Text 
             One can also specify a different lift than the default one (which simply lifts the coefficients naively to W_2(k)) by using the PerturbationTerm option, which specifies coefficients of p in the lift of the defining equations
         Example
