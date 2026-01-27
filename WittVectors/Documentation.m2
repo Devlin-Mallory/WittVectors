@@ -31,7 +31,6 @@
 -- "createEquations", --documented
 -- "table2", --documented
 -- "fSplittingHeight", -- Documented
--- We get a warning with a missing node for MaxHeight but it is documented as an example in fSplitting height. Not sure how to fix that.
 -- "overring",
 -- "wittFrobenius", --documented
 -- "truncate", -- documented
