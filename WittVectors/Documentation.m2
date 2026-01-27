@@ -23,7 +23,7 @@
 -- "wittLength", --done.
 -- "WittIdeal", --done.
 -- "wittIdeal", --done.
--- "wittGenerators",
+-- "wittGenerators", --this is a protected symbol, but should document generators.
 -- "explicitOver",
 -- "Nontrivial",
 -- "findFrobeniusLiftConstraints", --documented
@@ -1000,12 +1000,6 @@ doc ///
 	    
 ///
 
-
-
---------------------------------
---------- wittIdeal 
---------------------------------
-
 doc ///
     Key
         wittIdeal
@@ -1044,6 +1038,31 @@ doc ///
 	    w3 = witt{x^3, y^3};
 	    WI = wittIdeal(w1, w2, w3)
 ///
+
+doc ///
+    Key
+        (generators, WittIdeal)
+    Headline
+        Extract the generators of a WittIdeal.
+    Usage
+        L = generators(WI)
+    Inputs
+        WI:WittIdeal
+    Outputs
+        L:List
+    Description
+	Text
+	    Returns the generators of the WittIdeal. Please note these are returned as a list, as
+	    opposed to a matrix.
+	Example
+	    R = GF(3)[x,y];
+	    WR = witt(2, R);
+	    w1 = witt{x,y};
+	    w2 = witt{x^2,y^2};
+	    WI = wittIdeal(w1, w2);
+	    generators(WI)
+///
+
 
 
 
