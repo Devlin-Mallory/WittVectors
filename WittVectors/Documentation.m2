@@ -29,10 +29,8 @@
 -- "findFrobeniusLiftConstraints", --documented
 -- "findFrobeniusLift", --documented
 -- "createEquations", --documented
--- "table2", --MAYBE
+-- "table2", --documented
 -- "fSplittingHeight", -- Documented
--- We get a warning with a missing node for MaxHeight but it is documented as an
--- example in fSplitting height. Not sure how to fix that.
 -- "overring",
 -- "wittFrobenius", --documented
 -- "truncate", -- documented
@@ -449,6 +447,22 @@ doc ///
 	 -- 	fSplittingHeight I
 	 -- Text
 	 --    This should give 60
+///
+
+doc ///
+    Key
+        (table2, ZZ)
+    Headline
+        Examples with known F-splitting height. It is table2 in the Fedder criterion for quasi-F-Splitting paper. 
+    Usage
+        table2(i)
+    Inputs
+        i: ZZ
+    Description
+        Example
+            u=table2(1)
+        Text
+            This should give x^4 + y^4 + z^4 + 2*w^4 + x^2* y*w + y*z^2*w
 ///
 
 

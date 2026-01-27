@@ -396,7 +396,7 @@ trim (WittIdeal) := opts -> I -> (
     )
 
 generators (WittIdeal) := opts -> I -> (
-    toSequence I.wittGenerators
+    toList I.wittGenerators
     )
 
 ---- containment: TODO

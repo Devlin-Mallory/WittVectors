@@ -182,9 +182,18 @@ assert(witt(apply(w.tuple,i->sub(i,S'))) - (w1'+w2') == 0)
 ///
 
 TEST ///
+S = ZZ/2
+wittRingToTuple wittTupleToRing witt{1_S,0_S} == 1
+wittRingToTuple wittTupleToRing witt{1_S,0_S,0_S} == 1
 S = GF 4
 wittRingToTuple wittTupleToRing witt{1_S,0_S} == 1
+S = (ZZ/2)[x]
+wittRingToTuple wittTupleToRing witt{1_S,x_S} == witt{1_S,x_S}
+S = GF 4[x]
+wittRingToTuple wittTupleToRing witt{1_S,x_S} == witt{1_S,x_S}
+wittRingToTuple wittTupleToRing witt{1_S,x_S,x^2_S} == witt{1_S,x_S,x^2_S}
 ///
+
 
 TEST ///
 R = GF(3)[x,y]
@@ -205,6 +214,13 @@ WR = witt(3, R)
 w = random(2, WR)
 (1_WR)*w == w
 (0_WR)*w == 0_WR
+///
+
+TEST ///
+R = ZZ/2[x]
+WR = witt(2, R)
+w = random(2, WR)
+wittIdeal(w, sub(0, WR)) == wittIdeal(w)
 ///
 
 TEST ///
