@@ -11,14 +11,13 @@ assert( (try witt(2,QQ)) == null)
 assert( (try witt(2,QQ[x])) == null)
 ///
 
---TEST /// -- Check that the fSplittingHeight method gives back the correct number
---    for i from 1 to 11 do (
---        I=ideal table2(i);
---        j=i;
---        if i==6 or i==11 then j=infinity;
---        assert(fSplittingHeight(I)==j)
---    )
---    ///
+TEST /// -- Check that the fSplittingHeight method gives back the correct number
+    for i from 1 to 4 do (
+        I=ideal table2(i);
+        j=i;
+        assert(fSplittingHeight(I)==j)
+    )
+    ///
 
 TEST ///
     S = (ZZ/5)[x,y]
