@@ -62,6 +62,13 @@ wittOverring(ZZ, Ring) := (n, R) -> R.cache#(symbol WittOverring, n) ??= (
 	);
 )
 
+wittOverring(WittPolynomialRing) := WR -> (
+    WR.overring
+    )
+
+wittOverring(WittQuotientRing) := WS -> (
+    WS.overring
+    )
 
 --OLD VERSION
 

@@ -23,7 +23,7 @@
 -- "wittLength", --done.
 -- "WittIdeal", --done.
 -- "wittIdeal", --done.
--- "wittGenerators", --this is a protected symbol, but should document generators.
+-- "wittGenerators", --this is a protected symbol, but should document generators. This is done now.
 -- "explicitOver",
 -- "Nontrivial",
 -- "findFrobeniusLiftConstraints", --documented
@@ -31,7 +31,8 @@
 -- "createEquations", --documented
 -- "table2", --MAYBE
 -- "fSplittingHeight", -- Documented
--- We get a warning with a missing node for MaxHeight but it is documented as an example in fSplitting height. Not sure how to fix that.
+-- We get a warning with a missing node for MaxHeight but it is documented as an
+-- example in fSplitting height. Not sure how to fix that.
 -- "overring",
 -- "wittFrobenius", --documented
 -- "truncate", -- documented
@@ -253,13 +254,18 @@ doc ///
     Key
 	wittOverring
 	(wittOverring, ZZ, Ring)
+	(wittOverring, WittPolynomialRing)
+	(wittOverring, WittQuotientRing)
     Headline
-        Returns the n-th WittOverring of a ring R
+        Returns the n-th WittOverring of a ring R, or the overring of a witt ring.
     Usage
 	wittOverring(n, R)
+	wittOverring(WR)
     Inputs
 	n: ZZ
 	R: Ring
+	WR:WittPolynomialRing
+	WR:WittQuotientRing
     Outputs
 	:Ring
     Description
@@ -269,12 +275,15 @@ doc ///
 	    and appropriately caches the polynomial ring $(ZZ / p^n)[T_1, \dots , T_n]$, which
 	    we call the wittOverring. The reason is that the $n$-th Witt ring of $R$ is a subring
 	    of this wittOverring.
-            Note: given a quotient ring R = S/I, where S is a polynomial ring over a finite prime field, it returns the wittOverring of S
+            Note: given a quotient ring R = S/I, where S is a polynomial ring over a finite prime field,
+	    it returns the wittOverring of S. That is to say, the Witt overring does not keep track
+	    of relations in the ring. As a consequence, for a prime $p$  wittOverring will return different answers
+	    for witt(n, (ZZ/p)[x_1, .. ,x_d]) and witt(n, GF(p)[x_1 .. x_d]); the latter will have one more variable.
+	    
 	Example
 	    R = (ZZ/2)[x,y];
 	    wittOverring(3, R)
-///	   
-
+///
 
 
 -------------------------
