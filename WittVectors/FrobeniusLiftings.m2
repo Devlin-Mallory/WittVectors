@@ -1,11 +1,5 @@
---TODO: add methods to check flatness of families over W(n,k), and to find liftings to these rings
---TODO: try to write down equations for Raynaud's example
-
---TODO: isFlatLift
-
 --TODO: remove duplicated lines
 
---TODO: make this work for a nonprincipal ideal
 
 
 findFrobeniusLift=method(Options=>{Nontrivial=>false, Homogeneous => false, Verbose=>false, PerturbationTerm => null})
