@@ -2,7 +2,6 @@ witt = method()
 unWitt = method()
 wittLength = method()
 explicit = method()
-explicitOver = method()
 wittIdeal = method(Dispatch => Thing)
 verschiebung = method()
 wittFrobenius = method()
@@ -88,8 +87,8 @@ length WittRingElement := ww -> (
 WittRingElement + WittRingElement := (w1, w2) -> (
     if length w1 != length w2 then error "expected vectors of the same length";
     if (ring w1) =!= (ring w2) then error "expected vectors over the same ring";
-    w1over := explicitOver(w1);
-    w2over := explicitOver(w2);
+    w1over := wittTupleToOverring(w1);
+    w2over := wittTupleToOverring(w2);
     outputover := w1over + w2over;
     wittOverringToTuple outputover
     )
@@ -105,26 +104,26 @@ WittRingElement - WittRingElement := (w1, w2) -> (
     )
     
 ZZ * WittRingElement := (nn, ww) -> (
-    wwover := explicitOver(ww);
+    wwover := wittTupleToOverring(ww);
     wittOverringToTuple(nn*wwover)
     )
 
 WittRingElement * ZZ := (ww, nn) -> (
-    wwover := explicitOver(ww);
+    wwover := wittTupleToOverring(ww);
     wittOverringToTuple(nn*wwover)
     )
 
 WittRingElement * WittRingElement := (w1, w2) -> (
     if length w1 != length w2 then error "expected vectors of the same length";
     if ring w1 =!= ring w2 then error "expected elements of the same ring";
-    w1over := explicitOver(w1);
-    w2over := explicitOver(w2);
+    w1over := wittTupleToOverring(w1);
+    w2over := wittTupleToOverring(w2);
     outputover := w1over * w2over;
     wittOverringToTuple outputover
     )
 
 WittRingElement ^ ZZ := (ww, nn) -> (
-    wwover := explicitOver(ww);
+    wwover := wittTupleToOverring(ww);
     outputover := wwover^nn;
     wittOverringToTuple outputover
     )
@@ -153,15 +152,6 @@ explicit(WittRingElement) := w -> (
     w.explicit
     )
 
-
---TODO: redo explicitOver
-explicitOver(WittRingElement) := ww -> (
-    if not ww.?explicitOver then(
-	ww.explicitOver = wittTupleToOverring(ww);
-	);
-    ww.explicitOver
-    )
-
 -- Crop Witt vector to have a given length. We want that because that will allow us to
 -- add/multiply Witt vectors of different lengths by cropping the longer one.
 
@@ -175,7 +165,7 @@ subInWittRing = method()
 subInWittRing(List,RingElement) := (L,f) -> (
 Lrings := unique apply(L,ring);
 if length Lrings > 1 then error "expected all WittRingElements to live in the same ring";
-Lexplicit := apply(L,explicitOver);
+Lexplicit := apply(L,wittTupleToOverring);
 wittOverringToTuple(sub(f, matrix{Lexplicit}))
 )
 
@@ -255,12 +245,6 @@ explicit(WittPolynomialRing) := WPR->(
 	WPR.explicit
 )
 
---DM 11/11: I don't think we ever store a value under WPR.explicitOver
---explicitOver(WittPolynomialRing) := WPR -> (
-    -- make cache!
-    --WPR.explicitOver
-    --)
-
 
 
 -------------------------------
@@ -270,7 +254,6 @@ explicit(WittPolynomialRing) := WPR->(
 --TODO: make sure arithmetic of witt vectors in WittQuotientRing work fine.
 
 WittQuotientRing = new Type of MutableHashTable;
-
 
 witt(ZZ, GaloisField) := 
 witt(ZZ, QuotientRing) := (n,R)->(
@@ -313,11 +296,6 @@ explicit(WittQuotientRing) := WQR->(
 	);
 	WQR.explicit
 	)
-
-explicitOver(WittQuotientRing) := WQR -> (
-    -- make cache!
-    WQR.explicitOver
-    )
 
 
 ------
@@ -378,15 +356,6 @@ explicit(WittIdeal) := I -> (
 	I.explicit = ideal(Igensover);
 	);
     I.explicit
-    )
-
-explicitOver(WittIdeal) := I -> (
-    if not I.?explicitOver then(
-	Igens := I.wittGenerators;
-	Igensover := apply(Igens, explicitOver );
-	I.explicitOver = ideal(Igensover);
-	);
-    I.explicitOver
     )
 
 trim (WittIdeal) := opts -> I -> (

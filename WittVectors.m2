@@ -41,7 +41,6 @@ export{
 "WittIdeal",
 "wittIdeal",
 "wittGenerators",
-"explicitOver",
 "MaxHeight",
 "Nontrivial",
 "PerturbationTerm",
