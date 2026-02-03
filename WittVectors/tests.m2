@@ -229,3 +229,16 @@ WR = witt(2, R)
 w = random(2, WR)
 assert(wittIdeal(w, sub(0, WR)) == wittIdeal(w))
 ///
+
+TEST ///
+R = GF(4)[x,y,z]
+WR = witt(3, R)
+w1 = random(2, WR)
+w2 = random(3, WR)
+w3 = random(4, WR)
+assert(2*w2 == w2 + w2)
+assert(w2 - w2 == 0_WR)
+assert(1_WR*w3 == w3)
+assert( (w1 + w2) + w3 == w1 + (w2 + w3) )
+assert( (w1*w2)*w3 == w1*(w2*w3) )
+///
