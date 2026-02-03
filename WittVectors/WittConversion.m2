@@ -8,6 +8,7 @@ wittRingIdeal=method()
 wittOverringIdeal=method()
 
 export{"WittOverring"}
+protect symbol overringRep
 -----------------------------
 -----------------------------
 -----------------------------
@@ -107,7 +108,7 @@ wittOverring(WittQuotientRing) := WS -> (
 -----------------------------
 -----------------------------
 
-wittTupleToOverring(WittRingElement) := w -> (
+wittTupleToOverring(WittRingElement) := (cacheValue (symbol overringRep)) (w -> (
     W := ring w;
     R := W.unWitt;
     n := W.wittLength;
@@ -118,7 +119,7 @@ wittTupleToOverring(WittRingElement) := w -> (
     phi := if R' === R then id_R else R.cache.coeffFieldMap;
     WittLL := apply(toList(w), ff -> WittSub(phi(ff)));
     sum toList apply(0..(n-1), j -> p^j*(WittLL#j)^(p^(n-1-j)) )
-    )
+    ))
 
 -----------------------------
 -----------------------------

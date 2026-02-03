@@ -822,9 +822,9 @@ doc ///
 	    in order to express $W_n(R)$ as a finitely generated $\mathbb{Z}$-algebra. Note that
 	    the number of generators and relations grows very fast with $p$ and $d$.
 
-	    When the method is applied when $R$ is a polynomial ring over a finite
-	    but not prime field, the package essentially treats $R$ as a quotient of a
-	    polynomial ring over its prime subfield. --Devlin please check? 
+	    When $R$ is a polynomial ring over a finite field of the form GF(p^e), 
+            explicit first converts $R$ into a quotient ring of a polynomial ring 
+            over its prime subfield, and then returns explicit of that quotient ring.
 	    
 	Example
 	    R = (ZZ/2)[x];
