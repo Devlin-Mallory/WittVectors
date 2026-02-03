@@ -24,14 +24,14 @@
 -- "WittIdeal", --done.
 -- "wittIdeal", --done.
 -- "wittGenerators", --this is a protected symbol, but should document generators. This is done now.
--- "explicitOver",
+-- "explicitOver", -- not needed once Devlin redoes explicitOver.
 -- "Nontrivial", -- documented
 -- "findFrobeniusLiftConstraints", --documented
 -- "findFrobeniusLift", --documented
 -- "createEquations", --documented
 -- "table2", --documented
--- "fSplittingHeight", -- Documented
--- "overring",
+-- "fSplittingHeight", -- documented
+-- "overring", --not even exported.
 -- "wittFrobenius", --documented
 -- "truncate", -- documented
 -- "makeBaseFieldPrime",
