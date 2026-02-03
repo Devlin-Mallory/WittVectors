@@ -1,7 +1,3 @@
---TODO: remove duplicated lines
-
-
-
 findFrobeniusLift=method(Options=>{Nontrivial=>false, Homogeneous => false, Verbose=>false, PerturbationTerm => null})
 
 findFrobeniusLift(ZZ,RingElement) := opts -> (d,f) -> findFrobeniusLift(d, ideal f,opts)
@@ -13,7 +9,7 @@ findFrobeniusLift(ZZ,Ideal) := opts -> (d,I) ->(
     J := findFrobeniusLiftConstraints(I, PerturbationTerm=>opts.PerturbationTerm, Homogeneous=>opts.Homogeneous);
     T := ring J;
     j := 0;
---if not opts.Nontrivial then L :=toList((n):0) else L = for i from 0 to n-1 list if opts.Homogeneous == false then sum for i from 0 to d list random(i,S) else random(d,S);
+if not opts.Nontrivial then L :=toList((n):0) else L = for i from 0 to n-1 list if opts.Homogeneous == false then sum for i from 0 to d list random(i,S) else random(d,S);
     L :=toList((n):0);
     while (evalMap(L,I,T))(J) != 0 or (opts.Nontrivial and unique apply(L,i->sub(i,R)) == {0}) do ( 
         if opts.Verbose then print j; 
@@ -78,8 +74,6 @@ else
 B := S[flatten for i in monomials list for j from 1 to n list c_(flatten i ,{j})];
 mapList := for j from 1 to n list sum apply(monomials,i->S_(flatten i)*c_(flatten i,{j}));
 expand:=map(B/sub(J,B),A,mapList|gens S);
---move the resulting ideal to B/fB?
---expand:=map(B,A,mapList|gens S);
 expand I
 )
 
@@ -100,7 +94,6 @@ else
 Bcc := T[flatten flatten for k1 from 0 to numgens G -1 list for k2 from 0 to numgens I -1 list for i in monomials list cc_(flatten i,{k1,k2})];
 genericElement:=matrix for k1 from 0 to numgens G -1 list for k2 from 0 to numgens I -1 list sum apply(monomials,j->S_(flatten j)*cc_(flatten j,{k1,k2}));
 constraint:=ideal((genericElement)*transpose gens I-transpose sub(gens G,Bcc));
---Bflatmap:=last flattenRing(Bcc);
 C := ((ZZ/p)[gens T|gens Bcc])[gens S];
 Cflatmap:=inverse last flattenRing(C);
 Cflat :=source Cflatmap;
@@ -114,7 +107,6 @@ evalMap=method()
 evalMap(List,Ideal,Ring):= (L,I,T)->(
 S:=ring I;
 if length L != numgens S then return "error: needed a list with as many entries as the variables of S";
---mapVals:=for i from 0 to numgens S - 1 list (S_i-(L_i)_S);
 map(S/I,T,L|gens S)
 )
 

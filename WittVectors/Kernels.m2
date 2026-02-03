@@ -1,9 +1,5 @@
 graphIdealZZ=method()
-   --graphIdealZZ RingMap := Ideal => opts -> (cacheValue (symbol graphIdeal => opts)) ((f) -> (
    graphIdealZZ RingMap := f-> (
-            -- return the ideal in the tensor product of the graph of f.
-            -- if f is graded, then set the degrees correctly in the tensor ring.
-            -- return the ideal (y_i - f_i : all i) in this ring.
             S := source f;
             R := target f;
             m := numgens R;
@@ -11,8 +7,6 @@ graphIdealZZ=method()
             k := coefficientRing R;
             if not isCommutative S then error "expected source of ring map to be a commutative ring";
             if S === k then return ideal map(R^1,R^0,0);
-            --if not isAffineRing R then error "expected an affine ring";
-            --if not isAffineRing S then error "expected an affine ring";
             if not ( k === coefficientRing S ) then error "expected polynomial rings over the same ring";
             gensk := generators(k, CoefficientRing => ZZ);
             if not all(gensk, x -> promote(x,R) == f promote(x,S)) then error "expected ring map to be identity on coefficient ring";
@@ -29,40 +23,24 @@ graphIdealZZ=method()
             assert(not isHomogeneous f or isHomogeneous I);
             I)
 
---the below is what kernel ``should do'': it should call the hooks of kernel etc.
---kernelZZ= method()
---kernelZZ(RingMap) := Ideal => opts -> (cacheValue (symbol kernel => opts)) (f -> (
---          (F, R) := (target f, source f);
---          if 0_F == 1_F then return ideal 1_R;
---          -- the actual computation occurs here
---          I := runHooks((kernel, RingMap), (opts, f));
---          I))
-
 
 
 kernelZZ=method()
 kernelZZ(RingMap) := f->(
---"AffineRing" => (opts, f) -> (
               (F, R) := (target f, source f);
               if 
---not isAffineRing R
---or not isAffineRing F
               not instance(ambient R, PolynomialRing)
               or not instance(ambient F, PolynomialRing)
-              --or not isField coefficientRing R
               or not coefficientRing R === coefficientRing F
               then return null;
                      graph := generators graphIdealZZ f;
                      assert( not isHomogeneous f or isHomogeneous graph );
                      SS := ring graph;
-                     --chh := checkHilbertHint graph;
 chh:=false;
                      if chh then (
-                         -- compare with pushNonLinear
                          hf := poincare module target f;
                          T := degreesRing SS;
                          hf = hf * product(degrees source graph, d -> 1 - T_d);
-                         -- cache poincare
                          poincare cokernel graph = hf;
                          );
               n1 := numgens F;
@@ -83,5 +61,5 @@ protect symbol kernelZZ;
 ----------
 
 end
-p=3;
-kernelZZ map(ZZ[t]/p^2,ZZ[T,S]/p^2,{t^p,p*t});
+--p=3;
+--kernelZZ map(ZZ[t]/p^2,ZZ[T,S]/p^2,{t^p,p*t});
