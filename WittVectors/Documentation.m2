@@ -25,7 +25,7 @@
 -- "wittIdeal", --done.
 -- "wittGenerators", --this is a protected symbol, but should document generators. This is done now.
 -- "explicitOver",
--- "Nontrivial",
+-- "Nontrivial", -- documented
 -- "findFrobeniusLiftConstraints", --documented
 -- "findFrobeniusLift", --documented
 -- "createEquations", --documented
@@ -1192,6 +1192,7 @@ doc ///
        [findFrobeniusLift, Homogeneous]
        [findFrobeniusLift, PerturbationTerm] 
        [findFrobeniusLift, Nontrivial] 
+       [findFrobeniusLift, Verbose]
     Headline
         Finds a random lift of the Frobenius
     Usage
@@ -1206,24 +1207,30 @@ doc ///
     Description
         Text
             This methods tries random polynomials of the given degree and checks if they give Frobenius lifts. 
- 	Example 
- 	    S = (ZZ/2)[x,y]
- 	    I = ideal(x^3+y^5)
- 	    findFrobeniusLift(2,I,Verbose=>true)
- 	Text 
-            This can give a couple of values like (x^2,0) or (0,y^2). Time and number of tries will vary since the polynomials the algorithm tries are random.
- 	Text 
-            If there is no Frobenius lift, the algorithm will run without ending. 
- 	Example 
-            S= (ZZ/7)[x,y,z]
- 	    I= ideal(x^3+y^3+z^3)
- 	    --L= findFrobeniusLift(7,I,Verbose=>true,Homogeneous=>true,PerturbationTerm=>{3})
- 	Text 
-            This will not end. By Serre-\-Tate theory, there is only one (canonical) lifting of S/I that has a Frobenius morphism compatible with that of S/I. However, this is not the lifting we are working with.
+ 	    Example 
+ 	        S = (ZZ/2)[x,y]
+ 	        I = ideal(x^3+y^5)
+            findFrobeniusLift(2,I,Verbose=>true)
         Text 
-            One can also specify a different lift than the default one (which simply lifts the coefficients naively to W_2(k)) by using the PerturbationTerm option, which specifies coefficients of p in the lift of the defining equations
-        Example
-            S=(ZZ/3)[x,y,z]
+                This can give a couple of values like (x^2,0) or (0,y^2). Time and number of tries will vary since the polynomials the algorithm tries are random.
+        Example 
+            S = (ZZ/2)[x,y]
+            I = ideal(x^3+y^5)
+            findFrobeniusLift(2,I,Nontrivial=>true)
+        Text 
+                This forces the lift to be nontrivial. Here, it can give a couple of values like (x^2,0) or (0,y^2). 
+        Text 
+                If there is no Frobenius lift, the algorithm will run without ending. 
+        Example 
+                S= (ZZ/7)[x,y,z]
+            I= ideal(x^3+y^3+z^3)
+            --L= findFrobeniusLift(7,I,Verbose=>true,Homogeneous=>true,PerturbationTerm=>{3})
+        Text 
+                This will not end. By Serre-\-Tate theory, there is only one (canonical) lifting of S/I that has a Frobenius morphism compatible with that of S/I. However, this is not the lifting we are working with.
+            Text 
+                One can also specify a different lift than the default one (which simply lifts the coefficients naively to W_2(k)) by using the PerturbationTerm option, which specifies coefficients of p in the lift of the defining equations
+            Example
+                S=(ZZ/3)[x,y,z]
 ///
 
 end
