@@ -13,7 +13,6 @@ if class S =!= PolynomialRing then error "needed an element of a polynomial ring
 n:=numgens S;
 p:=char S;
 termsf := terms f;
---exponentsf := flatten apply(termsf, exponents);
 sum apply( select(termsf, i-> ((flatten exponents i) % p^e) == toList(n:p^e-1)), i-> (last coefficients(i)  ) * S_(flatten exponents(i)//p^e))
 )
 
@@ -104,16 +103,4 @@ I#10=x^4 + 2*x^2*y*z + x^2*y*w + x*y^2*w + y^4 + y^3*w + y^2*z^2 +2*y^2*z*w + y^
 I#11=x^4 + y^4 + z^4 + w^4;
 if n>10 then return I#11 else return I#n
 )
-
-artinMazur60 = () -> (
-x:=symbol x;
-y:=symbol y;
-z:=symbol z;
-w:=symbol w;
-u:=symbol u;
-S:=(ZZ/2)[x,y,z,w,u];
-x^5 + y^5 + z^5 + w^5 + u^5 + x*z^3*w + y*z*w^3 + x^2*z*u^2 + y^2*z^2*w + x*y^2*w*u + y*z*w*u^2)
-
-
-
 
