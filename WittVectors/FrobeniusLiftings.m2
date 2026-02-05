@@ -10,7 +10,7 @@ findFrobeniusLift(ZZ,Ideal) := opts -> (d,I) ->(
     T := ring J;
     j := 0;
 if not opts.Nontrivial then L :=toList((n):0) else L = for i from 0 to n-1 list if opts.Homogeneous == false then sum for i from 0 to d list random(i,S) else random(d,S);
-    L :=toList((n):0);
+    L =toList((n):0);
     while (evalMap(L,I,T))(J) != 0 or (opts.Nontrivial and unique apply(L,i->sub(i,R)) == {0}) do ( 
         if opts.Verbose then print j; 
         j = j +1 ; 
