@@ -131,8 +131,10 @@ wittVectors(ZZ,Ring):=(n,R)->(
     if (class R === QuotientRing and not isField R) or class baseRing' R === GaloisField then( 
         I := ideal makeCoefficientFieldPrime R; 
         WS := wittVectors(n, ring I);
-        Phi := WS.cache.overringMap;
+        Phi0 := WS.cache.overringMap;
+        iso := map(wittOverring(n,R), target Phi0, gens wittOverring(n,R));
         WR := first flattenRing quotient wittRingIdeal(n,I);
+        Phi := map(target iso, WR, iso*Phi0); 
         WR.cache.overringMap=Phi;
         WR.cache.unWitt = R;
         return WR
@@ -151,7 +153,7 @@ wittVectors(ZZ,Ring):=(n,R)->(
     --t_i is x_i^(1/p^n)
     --B := ZZ[t_0..t_(d-1)]/p^n;
     wittR := witt(n,R);
-    B:=wittR.overring;
+    B := wittR.overring;
     L := for i in cubes list p^(first i)*(product for j from 0 to d - 1 list B_j^((last i)_j*p^(n-first i -1)));
     aA := ambient A;
     iA := ideal A;
@@ -187,19 +189,24 @@ wittTupleToRing(WittRingElement):= w-> (
     p := char R;
     WR := explicit W;
     G := wittTupleToOverring(w);
+    if G == 0 then return 0_WR;
+    Gcons := sum select(terms G, i-> degree i == {0});
+    G = G-Gcons;
     Phi := WR.cache.overringMap;
-    if G == 0 then return 0_WR else ( if degree G == {0} then sub(G, source Phi) 
-            else(
+    --note: this doesn't appear to be the right map! it doesn't have source WR
+    Grem := if G == 0 then 0 else (
 	    (B,pi) := flattenRing quotient ideal G;
             subMap := map (source pi, target Phi, gens source pi);
             L := subMap \ Phi \ gens source Phi;
             Phi' := map(source pi, source Phi,L);
 	    preimages := (kernelZZ(pi*Phi'))_*;
-	    multiplied := flatten for i in preimages list for j from 1 to p^n-1 list i*j;
-	    first select(multiplied, i->Phi'(i) == G)
-	    )    
+	    multiplied := unique flatten for i in preimages list for j from 1 to p^n-1 list i*j;
+	    Preim := select(multiplied, i->Phi(i) == G);
+            if length Preim == 1 then first Preim else error "no preimage found"
+	    );    
+sub(Gcons, source Phi) + Grem
 	)
-    )
+    
 
 -----------------------------
 -----------------------------

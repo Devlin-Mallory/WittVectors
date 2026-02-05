@@ -230,20 +230,13 @@ witt(ZZ,PolynomialRing) := (n,R)->(
 )
 
 
-unWitt(WittPolynomialRing) := WPR ->(
-    WPR.unWitt
-    )
+unWitt(WittPolynomialRing) := WPR -> WPR.unWitt
 
 net(WittPolynomialRing) := WPR->(
 	horizontalJoin("Witt", (net(WPR.wittLength))^-1, "(", net WPR.unWitt, ")")
 )
 
-explicit(WittPolynomialRing) := WPR->(
-	if (not WPR.?explicit) then(
-		WPR.explicit = wittVectors(WPR.wittLength, WPR.unWitt);
-	);
-	WPR.explicit
-)
+explicit(WittPolynomialRing) := (cacheValue (symbol explicit)) (WPR->wittVectors(WPR.wittLength, WPR.unWitt))
 
 
 
@@ -290,12 +283,8 @@ net(WittQuotientRing) := WQR -> (
     horizontalJoin("Witt", (net(WQR.wittLength))^-1, "(", net WQR.unWitt, ")")
     )
 
-explicit(WittQuotientRing) := WQR->(
-	if (not WQR.?explicit) then(
-		WQR.explicit = wittVectors(WQR.wittLength, WQR.unWitt);
-	);
-	WQR.explicit
-	)
+
+explicit(WittQuotientRing) := (cacheValue (symbol explicit)) (WPR->wittVectors(WPR.wittLength, WPR.unWitt))
 
 
 ------
@@ -367,6 +356,8 @@ trim (WittIdeal) := opts -> I -> (
 generators (WittIdeal) := opts -> I -> (
     toList I.wittGenerators
     )
+
+--- ambient ring: TODO
 
 ---- containment: TODO
 

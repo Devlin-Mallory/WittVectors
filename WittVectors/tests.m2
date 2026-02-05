@@ -182,6 +182,17 @@ assert(witt(apply(w.tuple,i->sub(i,S'))) - (w1'+w2') == 0)
 ///
 
 TEST ///
+S = GF 4[x]
+E = explicit(witt(2,S))
+assert((target E.cache.overringMap).cache.unWitt === S)
+w = witt{1_S,x_S}
+Ow = wittTupleToOverring w
+assert((ring Ow).cache.unWitt === S)
+Rw = wittTupleToRing w
+assert(target (ring Rw).cache.overringMap === ring Ow)
+///
+
+TEST ///
 S = ZZ/2
 assert(wittRingToTuple wittTupleToRing witt{1_S,0_S} == 1)
 assert(wittRingToTuple wittTupleToRing witt{1_S,0_S,0_S} == 1)
@@ -190,7 +201,10 @@ assert(wittRingToTuple wittTupleToRing witt{1_S,0_S} == 1)
 S = (ZZ/2)[x]
 assert(wittRingToTuple wittTupleToRing witt{1_S,x_S} == witt{1_S,x_S})
 S = GF 4[x]
+Phi = (explicit(witt(2,S))).cache.overringMap
+assert( Phi wittTupleToRing witt{1_S,x_S} == wittTupleToOverring witt{1_S,x_S})
 assert(wittRingToTuple wittTupleToRing witt{1_S,x_S} == witt{1_S,x_S})
+assert(wittOverringToTuple wittTupleToOverring witt{1_S,x_S} == witt{1_S,x_S})
 assert(wittRingToTuple wittTupleToRing witt{1_S,x_S,x^2_S} == witt{1_S,x_S,x^2_S})
 ///
 
@@ -227,6 +241,12 @@ TEST ///
 R = GF(2)[x]
 WR = witt(2, R)
 w = random(2, WR)
+assert(ring wittTupleToOverring w === wittOverring(2,R))
+EWR = explicit WR
+Phi = EWR.cache.overringMap
+assert(target Phi === wittOverring(2,R))
+assert(Phi wittTupleToRing witt{0_R,x_R} == wittTupleToOverring witt{0_R,x_R})
+assert(ring first w === ring first wittRingToTuple wittTupleToRing w)
 assert(wittIdeal(w, sub(0, WR)) == wittIdeal(w))
 ///
 
