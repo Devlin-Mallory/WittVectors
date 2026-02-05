@@ -183,25 +183,22 @@ wittTupleToRing(WittRingElement):= w-> (
     W := ring w;
     n := W.wittLength;
     --if n == 1 then return first L;
-    L := w.tuple;
     R := W.unWitt;
     p := char R;
     WR := explicit W;
-    use R;
-    G:=wittTupleToOverring(w);
+    G := wittTupleToOverring(w);
     Phi := WR.cache.overringMap;
-    --print G;
-    sum for m in terms G list(
-	if degree m == {0} then sub(m,source Phi) else(
-	    (B,pi):=flattenRing quotient ideal m;
-	    --the below method doesn't always work to find a preimage... we should figure out a better way    
-            Phi':=map(source pi,WR,apply(Phi \ gens source Phi, f-> sub(f,source pi)));
+    if G == 0 then return 0_WR else ( if degree G == {0} then sub(G, source Phi) 
+            else(
+	    (B,pi) := flattenRing quotient ideal G;
+            subMap := map (source pi, target Phi, gens source pi);
+            L := subMap \ Phi \ gens source Phi;
+            Phi' := map(source pi, source Phi,L);
 	    preimages := (kernelZZ(pi*Phi'))_*;
-	    multiplied:=flatten for i in preimages list for j from 1 to p^n-1 list i*j;
-	    first select(multiplied,i->Phi'(i)==m)
+	    multiplied := flatten for i in preimages list for j from 1 to p^n-1 list i*j;
+	    first select(multiplied, i->Phi'(i) == G)
 	    )    
 	)
-    --G//Phi(vars source Phi)
     )
 
 -----------------------------
