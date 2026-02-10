@@ -2,8 +2,7 @@
 
 uninstallPackage "WittVectors"
 restart
-path = append(path, "~/Github/WittVectors")
-installPackage ("WittVectors", FileName => "~/Github/WittVectors/WittVectors.m2")
+installPackage ("WittVectors", FileName => "~/GitHub/WittVectors/WittVectors.m2")
 
 
 ---Empty doc

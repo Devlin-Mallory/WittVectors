@@ -1,4 +1,5 @@
 
+--TEST 0
 TEST ///
 witt(2,ZZ/3)
 witt(2,ZZ/3[x])
@@ -9,16 +10,19 @@ witt(2, (GF 9)[x]/x^2)
 assert( (try witt(2,ZZ/15)) == null)
 assert( (try witt(2,QQ)) == null)
 assert( (try witt(2,QQ[x])) == null)
+print("1")
 ///
 
+--TEST 1
 TEST /// -- Check that the fSplittingHeight method gives back the correct number
     for i from 1 to 4 do (
         I=ideal table2(i);
         j=i;
         assert(fSplittingHeight(I)==j)
     )
-    ///
+///
 
+--TEST 2
 TEST ///
     S = (ZZ/5)[x,y]
     I = ideal(x^2-y^3)
@@ -30,7 +34,7 @@ TEST ///
 ///
 
 
-
+--TEST 3
 TEST ///
     S = (ZZ/5)[x_1,x_2,x_3,y_1,y_2,y_3]
     W3S = witt(3,S)
@@ -40,7 +44,7 @@ TEST ///
     assert(w1*w2 == witt{x_1*y_1, x_2*y_1^5+x_1^5*y_2, -x_1^5*x_2^4*y_1^20*y_2-2*x_1^10*x_2^3*y_1^15*y_2^2-2*x_1^15*x_2^2*y_1^10*y_2^3-x_1^20*x_2*y_1^5*y_2^4+x_3*y_1^25+x_1^25*y_3+x_2^5*y_2^5})
 	///
 
-
+--TEST 4
 TEST ///
     S = (ZZ/3)[x,y,z,w]
     I = ideal(x^2+y^2+z^2+w^2, x*y+x*z+x*w+y*z+y*w+z*w)
@@ -51,6 +55,7 @@ TEST ///
     assert isSubset(ideal wittTupleToOverring witt f, J)
 ///
 
+--TEST 5
 TEST ///
     S = (ZZ/5)[x_1,x_2,x_3,y_1,y_2,y_3]
     W3S = witt(3,S)
@@ -58,7 +63,7 @@ TEST ///
     assert(wittFrobenius(w1) == witt{x_1^5,x_2^5,x_3^5})
 ///
 
-
+--TEST 6
 TEST ///
     S = (ZZ/2)[x,y]
     f = x^2 + y^3
@@ -69,7 +74,7 @@ TEST ///
     assert(J == ideal(c*x^2*y+x^4))
 ///
 
-
+--TEST 7
 TEST ///
     S = (ZZ/2)[x,y]
     f = x^2 + y^3
@@ -79,7 +84,7 @@ TEST ///
 ///
 
 
-
+--TEST 8
 TEST ///
     S = (ZZ/3)[x,y]
     assert(wittOverringToTuple((wittOverring(2,S))_0^3) != 0)
@@ -98,6 +103,8 @@ TEST ///
     explicit Wf
 ///
 
+
+--TEST 9
 TEST ///
 R = GF(5)[x,y,z]
     f1 = random(3, R)
@@ -107,6 +114,7 @@ R = GF(5)[x,y,z]
     assert( witt tt == wittOverringToTuple wittTupleToOverring witt tt)
 ///
 
+--TEST 10
 TEST ///
     R = GF(7)[x,y,z]
     WR = witt(3, R)
@@ -115,6 +123,7 @@ TEST ///
     assert( t(w) == witt{x,y})
 ///
 
+--TEST 11
 TEST ///
 R = ZZ/2
 Rx = R[x]
@@ -147,7 +156,7 @@ assert(numgens explicit witt(2,Rx4) == 5)
 assert(numgens explicit witt(2,B4) == 5)
 ///
 
-
+--TEST 12
 TEST ///
 S = ZZ/2[x,y]
 I = ideal(x*y)
@@ -157,6 +166,7 @@ assert(dim createEquations(2,I,Homogeneous=>true, PerturbationTerm=>{1}) < 0)
 assert(dim createEquations(2,0_S,Homogeneous=>true) > 0)
 ///
 
+--TEST 13
 TEST ///
 S = (GF 9) 
 S'= makeCoefficientFieldPrime S
@@ -166,6 +176,7 @@ w = witt{a_S-1,0}
 assert(length terms wittTupleToOverring witt{a_S-1,0}  == 4)
 ///
 
+--TEST 14
 TEST ///
 debug WittVectors
 S = (GF 9)[x,y]
@@ -181,6 +192,7 @@ w' = w1'+w2'
 assert(witt(apply(w.tuple,i->sub(i,S'))) - (w1'+w2') == 0)
 ///
 
+--TEST 15
 TEST ///
 S = GF 4[x]
 E = explicit(witt(2,S))
@@ -192,6 +204,7 @@ Rw = wittTupleToRing w
 assert(target (ring Rw).cache.overringMap === ring Ow)
 ///
 
+--TEST 16
 TEST ///
 S = ZZ/2
 assert(wittRingToTuple wittTupleToRing witt{1_S,0_S} == 1)
@@ -208,7 +221,7 @@ assert(wittOverringToTuple wittTupleToOverring witt{1_S,x_S} == witt{1_S,x_S})
 assert(wittRingToTuple wittTupleToRing witt{1_S,x_S,x^2_S} == witt{1_S,x_S,x^2_S})
 ///
 
-
+--TEST 17
 TEST ///
 R = GF(3)[x,y]
 WR = witt(2, R)
@@ -217,11 +230,12 @@ for xx in -2..2 do(
     for yy in -2..2 do(
 	assert( sub(xx, WR) + sub(yy, WR) == sub(xx + yy, WR) );
 	assert( sub(xx, WR)*sub(yy, WR) == sub(xx*yy, WR) );
-	);
-    );
+	)
+    )
 )
 ///
 
+--TEST 18
 TEST ///
 R = GF(5)[x,y]
 WR = witt(3, R)
@@ -230,6 +244,7 @@ assert(1_WR*w == w)
 assert(0_WR*w == 0_WR)
 ///
 
+--TEST 19
 TEST ///
 R = ZZ/2[x]
 WR = witt(2, R)
@@ -237,6 +252,7 @@ w = random(2, WR)
 assert(wittIdeal(w, sub(0, WR)) == wittIdeal(w))
 ///
 
+--TEST 20
 TEST ///
 R = GF(2)[x]
 WR = witt(2, R)
@@ -250,6 +266,7 @@ assert(ring first w === ring first wittRingToTuple wittTupleToRing w)
 assert(wittIdeal(w, sub(0, WR)) == wittIdeal(w))
 ///
 
+--TEST 21
 TEST ///
 R = GF(4)[x,y,z]
 WR = witt(3, R)
@@ -258,6 +275,7 @@ w2 = random(3, WR)
 w3 = random(4, WR)
 assert(2*w2 == w2 + w2)
 assert(w2 - w2 == 0_WR)
+assert(0_WR*w2 == 0_WR)
 assert(1_WR*w3 == w3)
 assert( (w1 + w2) + w3 == w1 + (w2 + w3) )
 assert( (w1*w2)*w3 == w1*(w2*w3) )
