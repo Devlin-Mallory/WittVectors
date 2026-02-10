@@ -280,3 +280,20 @@ assert(1_WR*w3 == w3)
 assert( (w1 + w2) + w3 == w1 + (w2 + w3) )
 (w1*w2)*w3 - w1*(w2*w3) 
 ///
+
+
+--TEST 22
+TEST ///
+R=ZZ/3[x_0,x_1,x_2,x_3]
+I=ideal(x_0^8*x_1+x_1^6*x_2+x_2^3+x_3^2*x_0)
+assert(fSplittingHeight I == 8)
+///
+
+
+--TEST 23
+TEST ///
+R=ZZ/3[x_0,x_1,x_2,x_3]
+I=ideal((x_0^4+x_1^4+x_2^4+x_3^4)^2)
+assert(fSplittingHeight I == infinity)
+///
+
