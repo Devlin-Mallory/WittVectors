@@ -291,7 +291,7 @@ assert( (w1 + w2) + w3 == w1 + (w2 + w3) )
 ( (w1*w2)*w3 - w1*(w2*w3) )
 ///
 
-
+--TEST 22
 TEST ///
 R = GF(4)[z]
 w = witt{(a+1)*z^4,0,0,0}
@@ -304,7 +304,7 @@ assert(wp - wp == 0)
 assert(wS-wS == 0)
 ///
 
-
+--TEST 23
 TEST ///
 R = GF(4)[x,y,z]
 WR = witt(4, R)
@@ -319,6 +319,7 @@ assert( (w1 + w2) + w3 == w1 + (w2 + w3) )
 ///
 
 
+--TEST 24
 TEST ///
 R = ZZ/2[x,y,z]/(x^3+y^3+z^3)
 WR = witt(3, R)
@@ -333,7 +334,7 @@ assert( (w1 + w2) + w3 == w1 + (w2 + w3) )
 ///
 
 
---TEST 22
+--TEST 25
 TEST ///
 R=ZZ/3[x_0,x_1,x_2,x_3]
 I=ideal(x_0^8*x_1+x_1^6*x_2+x_2^3+x_3^2*x_0)
@@ -341,7 +342,7 @@ assert(fSplittingHeight I == 8)
 ///
 
 
---TEST 23
+--TEST 26
 TEST ///
 R=ZZ/3[x_0,x_1,x_2,x_3]
 I=ideal((x_0^4+x_1^4+x_2^4+x_3^4)^2)
