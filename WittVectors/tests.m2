@@ -207,6 +207,15 @@ assert(target (ring Rw).cache.overringMap === ring Ow)
 --TEST 16
 TEST ///
 S = ZZ/2
+isWellDefined (explicit witt(2,S)).cache.overringMap 
+S = ZZ/2[x]
+isWellDefined (explicit witt(2,S)).cache.overringMap 
+S = ZZ/2[x]/x^2
+isWellDefined (explicit witt(2,S)).cache.overringMap 
+///
+
+TEST ///
+S = ZZ/2
 assert(wittRingToTuple wittTupleToRing witt{1_S,0_S} == 1)
 assert(wittRingToTuple wittTupleToRing witt{1_S,0_S,0_S} == 1)
 S = GF 4
@@ -268,8 +277,51 @@ assert(wittIdeal(w, sub(0, WR)) == wittIdeal(w))
 
 --TEST 21
 TEST ///
+R = ZZ/3[x,y]/x^2
+WR = witt(3, R)
+w = witt{0,x,0}
+assert(wittOverringToTuple wittTupleToOverring w == w)
+w1 = random(2, WR)
+w2 = random(2, WR)
+w3 = random(2, WR)
+assert(2*w2 == w2 + w2)
+assert(w2 - w2 == 0_WR)
+assert(1_WR*w3 == w3)
+assert( (w1 + w2) + w3 == w1 + (w2 + w3) )
+( (w1*w2)*w3 - w1*(w2*w3) )
+///
+
+
+TEST ///
+R = GF(4)[z]
+w = witt{(a+1)*z^4,0,0,0}
+Rp = makeCoefficientFieldPrime R
+wp = witt{(a_Rp+1)*z_Rp^4,0,0,0}
+S = ambient Rp
+wS = witt{(a_S+1)*z_S^4,0,0,0}
+assert(w - w  == 0)
+assert(wp - wp == 0)
+assert(wS-wS == 0)
+///
+
+
+TEST ///
 R = GF(4)[x,y,z]
 WR = witt(4, R)
+w1 = random(1, WR)
+w2 = random(1, WR)
+w3 = random(3, WR)
+assert(2*w2 == w2 + w2)
+assert(w2 - w2 == 0_WR)
+assert(1_WR*w3 == w3)
+assert( (w1 + w2) + w3 == w1 + (w2 + w3) )
+( (w1*w2)*w3 - w1*(w2*w3) )
+///
+
+
+TEST ///
+R = ZZ/2[x,y,z]/(x^3+y^3+z^3)
+WR = witt(3, R)
 w1 = random(2, WR)
 w2 = random(3, WR)
 w3 = random(4, WR)
@@ -278,7 +330,6 @@ assert(w2 - w2 == 0_WR)
 assert(0_WR*w2 == 0_WR)
 assert(1_WR*w3 == w3)
 assert( (w1 + w2) + w3 == w1 + (w2 + w3) )
-(w1*w2)*w3 - w1*(w2*w3) 
 ///
 
 
