@@ -207,8 +207,8 @@ wittTupleToRing(WittRingElement):= w-> (
             L := subMap \ Phi \ gens source Phi;
             Phi' := map(source pi, source Phi,L);
 	    preimages := (kernelZZ(pi*Phi'))_*;
-	    multiplied := flatten for i in preimages list for j from 1 to p^n-1 list { j,i,j*Phi i };
-	    Preim := last \ select(multiplied, i->(last i) == G);
+	    multiplied := flatten for i in preimages list for j from 1 to p^n-1 list { j*i,j*Phi i };
+	    Preim := first \ select(multiplied, i->(last i) == G);
             if length Preim == 1 then first Preim else error "no preimage found"
 	    );    
 sub(Gcons, source Phi) + Grem
