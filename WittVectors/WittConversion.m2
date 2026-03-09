@@ -189,7 +189,7 @@ wittTupleToRing(WittRingElement):= w-> (
     p := char R;
     WR := explicit W;
     Phi := WR.cache.overringMap;
-    if class R === QuotientRing or baseRing' R === GaloisField then(
+    if (not isField R and class R === QuotientRing) or class baseRing' R === GaloisField then(
     IOR := wittOverringIdeal(n,ideal makeCoefficientFieldPrime R);
     subIOR := (map(target Phi, ring IOR, gens target Phi))(IOR);
     piI := map(quotient subIOR, target Phi);
@@ -207,7 +207,7 @@ wittTupleToRing(WittRingElement):= w-> (
             L := subMap \ Phi \ gens source Phi;
             Phi' := map(source pi, source Phi,L);
 	    preimages := (kernelZZ(pi*Phi'))_*;
-	    multiplied := unique flatten for i in preimages list for j from 1 to p^n-1 list { j*i,j*Phi i };
+	    multiplied := unique flatten for i in preimages list for j from 0 to p^n-1 list { j*i,j*Phi i };
 	    Preim := first \ select(multiplied, i->(last i) == G);
             if length Preim == 1 then first Preim else error "no preimage found"
 	    );    
