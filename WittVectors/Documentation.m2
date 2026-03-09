@@ -868,38 +868,38 @@ doc ///
 	    explicit(WR)	    
 ///
 
-doc ///
-    Key
-        (explicit, WittRingElement)
-
-    Headline
-        Obtains the explicit version of a WittRingElement.
-	
-    Usage
-	e = explicit(w)
-	
-    Inputs
-        w:WittRingElement
-	
-    Outputs
-        e:RingElement
-	
-    Description
-	Text
-	    If WR is a WittPolynomialRing or WittQuotientRing, and w is a WittRingElement
-	    in WR, explicit(w) outputs the element corresponding to w in explicit(WR).
-	    
-	Example
-	    R = (ZZ/2)[x,y];
-	    WR = witt(2, R);
-	    w = witt{0,x};
-	    explicit(w);
-
-    SeeAlso
-	(explicit, WittPolynomialRing)
-	(explicit, WittQuotientRing)
-	    
-///
+--doc ///
+--    Key
+--        (explicit, WittRingElement)
+--
+--    Headline
+--        Obtains the explicit version of a WittRingElement.
+--	
+--    Usage
+--	e = explicit(w)
+--	
+--    Inputs
+--        w:WittRingElement
+--	
+--    Outputs
+--        e:RingElement
+--	
+--    Description
+--	Text
+--	    If WR is a WittPolynomialRing or WittQuotientRing, and w is a WittRingElement
+--	    in WR, explicit(w) outputs the element corresponding to w in explicit(WR).
+--	    
+--	Example
+--	    R = (ZZ/2)[x,y];
+--	    WR = witt(2, R);
+--	    w = witt{0,x};
+--	    explicit(w);
+--
+--    SeeAlso
+--	(explicit, WittPolynomialRing)
+--	(explicit, WittQuotientRing)
+--	    
+--///
 
 
 doc ///

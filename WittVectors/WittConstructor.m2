@@ -145,12 +145,12 @@ verschiebung(WittRingElement) := ww -> (
     witt({0_R}|ww.tuple)
     )
 
-explicit(WittRingElement) := w -> (
-    if not w.?explicit then( 
-	w.explicit = wittTupleToRing(w);
-	);
-    w.explicit
-    )
+--explicit(WittRingElement) := w -> (
+--    if not w.?explicit then( 
+--	w.explicit = wittTupleToRing(w);
+--	);
+--    w.explicit
+--    )
 
 -- Crop Witt vector to have a given length. We want that because that will allow us to
 -- add/multiply Witt vectors of different lengths by cropping the longer one.
