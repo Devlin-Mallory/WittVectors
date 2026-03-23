@@ -47,7 +47,6 @@ export{
 --"expandFrobeniusConstraints",
 "findFrobeniusLift",
 "createEquations",
-"table2", --MAYBE
 "fSplittingHeight",
 "overring",
 "wittFrobenius",

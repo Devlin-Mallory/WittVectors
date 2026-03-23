@@ -15,6 +15,7 @@ print("1")
 
 --TEST 1
 TEST /// -- Check that the fSplittingHeight method gives back the correct number
+    debug WittVectors
     for i from 1 to 4 do (
         I=ideal table2(i);
         j=i;
