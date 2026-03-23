@@ -1,7 +1,7 @@
 newPackage(
     "WittVectors",
     Version => "0.01",
-    Date => "December 4, 2023",
+    Date => "April 1st, 2026",
     Authors => {
     	{Name => "Anne Fayolle", Email => "anne.fayolle@utah.edu", HomePage => "https://annefayolle.github.io/"},
 	{Name => "Abhay Goel", Email => "u1421426@utah.edu", HomePage => "https://abhayg11.github.io/"},
