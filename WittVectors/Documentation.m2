@@ -1,48 +1,3 @@
--- "witt", --in WittConstructor, documented modulo fixing witt(ZZ, ZZ, RingMap) number of inputs error
--- "wittOverring", --documented
--- "WittRingElement", -- documented
--- "wittTupleToOverring", --documented
--- "wittTupleToRing", --documented
--- "wittRingToTuple", --documented
--- "wittOverringToTuple", --documented
--- "verschiebung", --documented
--- "wittOverringIdeal", --documented, but WARNING! see
--- --R = (ZZ/3)[x,y,z]; WOR = wittOverring(2, R); wittOverringIdeal(2,ideal(x))
--- --we would want this to return an ideal of WOR. Maybe a cache issue?
--- "wittRingIdeal", --documented
--- "unWitt", --documented
--- "overringMap", --no need to document; this is just exported to avoid unexported unset symbol error
--- "WittRing", --no need to document; this is just exported to avoid unexported unset symbol error
--- "wittSub", --no need to document; this is just exported to avoid unexported unset symbol error
--- "wittOverrings", --I think we don't even need to export this.
--- "WittPolynomialRing", --documented
--- "WittRingMap", --documented
--- "baseMap", --documented
--- "WittQuotientRing", --documented
--- "explicit", --done.
--- "wittLength", --done.
--- "WittIdeal", --done.
--- "wittIdeal", --done.
--- "wittGenerators", --this is a protected symbol, but should document generators. This is done now.
--- "explicitOver", -- not needed once Devlin redoes explicitOver.
--- "Nontrivial", -- documented
--- "findFrobeniusLiftConstraints", --documented
--- "findFrobeniusLift", --documented
--- "createEquations", --documented
--- "table2", --documented
--- "fSplittingHeight", -- documented
--- "overring", --not even exported.
--- "wittFrobenius", --documented
--- "truncate", -- documented
--- "makeBaseFieldPrime",
--- OVERLOADED METHODS
--- addition --documented
--- multiplication --documented
--- truncation --documented
---
--- DOUBLE CHECK WE HAVE HEADLINES -- done I think, Eamon. 
-
-
 -------------------------
 --- witt method
 -------------------------
@@ -192,7 +147,6 @@ doc ///
 
 ///
 	
---- I put this here because it is next to WittQuotientRing but I am happy moving it later.
 doc ///
     Key
      (truncate,ZZ,WittQuotientRing)
@@ -285,7 +239,7 @@ doc ///
 
 
 -------------------------
---- some random stuff
+--- Random operations 
 -------------------------
 
 
@@ -375,13 +329,6 @@ doc ///
 	    R = (ZZ/3)[x,y];
 	    w = witt{x^2 + y^2, x}
 ///
-	
-
---------------------------------
---------- 
---------------------------------
-
-
 
 
 --------------------------------
@@ -440,13 +387,6 @@ doc ///
 		fSplittingHeight I
 	 Text
 	    We get an error since S is not a polynomial ring over ZZ/p.
-	 --Let's please keep this commented while we are working on the package.
-	 -- Example 
-	 -- 	S = (ZZ/2)[x,y,z,w,u]
-	 -- 	I = ideal(x^5 + y^5 + z^5 + w^5 + u^5 + x*z^3*w + y*z*w^3 + x^2*z*u^2 + y^2*z^2*w + x*y^2*w*u + y*z*w*u^2)
-	 -- 	fSplittingHeight I
-	 -- Text
-	 --    This should give 60
 ///
 
 doc ///
@@ -1059,7 +999,7 @@ doc ///
 
 
 --------------------------------
---------- 
+--------- unWitt
 --------------------------------
 
 doc ///
@@ -1084,6 +1024,10 @@ doc ///
 	    WR = witt(2, R);
 	    unWitt(WR)
 ///
+
+--------------------------------
+--------- Frobenius Lifts
+--------------------------------
 
 doc ///
     Key
@@ -1152,6 +1096,8 @@ doc ///
             J = createEquations(2, I,Homogeneous=>true,PerturbationTerm=>{0})
             J = createEquations(2, I,Homogeneous=>true,PerturbationTerm=>{1}) -- no solutions!
 ///
+
+
 
 
 doc ///

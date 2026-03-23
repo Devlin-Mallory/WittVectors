@@ -57,28 +57,13 @@ net(WittRingElement) := w -> net(w.tuple)
 
 toList(WittRingElement) := w -> w.tuple
 
---
--- TODO: here I would like R = GF(3)[x]; W = witt(2, R); w = witt({x, x+1}); ring w
--- to return W instead of Witt_2(R). Tried to do it with caching below but failed. 
---
---
+
 
 ring(WittRingElement) := W -> (
     R := ring(W.tuple#0); -- note that witt subs every entry into R so this is good enough
     n := length W;
     witt(n, R)
     )
-
--- cache version: does not work.
---ring(WittRingElement) := W -> (
---    R := ring(W#0);
---    n := length W;
---    if not R.cache.wittRings#n then(
---	return witt(length W, ring(W#0));
---	) else (
---	return R.cache.wittRings#n;
---	);
---)
 
 length WittRingElement := ww -> (
     length ww.tuple
@@ -144,23 +129,11 @@ verschiebung(WittRingElement) := ww -> (
     R := (ring ww).unWitt;
     witt({0_R}|ww.tuple)
     )
-
---explicit(WittRingElement) := w -> (
---    if not w.?explicit then( 
---	w.explicit = wittTupleToRing(w);
---	);
---    w.explicit
---    )
-
--- Crop Witt vector to have a given length. We want that because that will allow us to
--- add/multiply Witt vectors of different lengths by cropping the longer one.
-
 truncate(ZZ, WittRingElement) :=  {} >> opts -> (n, w) -> (
     if length w<n then error "Can't truncate to something longer";
     witt drop(w.tuple, n-length w)
     ) 
 
---should this be WittRingElement?
 subInWittRing = method()
 subInWittRing(List,RingElement) := (L,f) -> (
 Lrings := unique apply(L,ring);
@@ -180,7 +153,6 @@ protect overring
 protect coeffFieldPrime
 protect coeffFieldMap
 
---EAMON 9/2: a bug? R = GF(9)[x]; R0 = makeCoefficientFieldPrime(R); use R; a
 
 makeCoefficientFieldPrime(GaloisField) := makeCoefficientFieldPrime(PolynomialRing) := R -> R.cache#(coeffFieldPrime) ??= (
     F := baseRing' R;
@@ -357,11 +329,6 @@ generators (WittIdeal) := opts -> I -> (
     toList I.wittGenerators
     )
 
---- ambient ring: TODO
-
----- containment: TODO
-
---- equality
 
 WittIdeal == WittIdeal := (I, J) -> (
     explicit(I) == explicit(J)
@@ -413,10 +380,6 @@ net WittIdeal := WI -> (
 ---------------- WittRingMap
 ---------------------------------
 
--- currently the implementation is for maps witt(n,R) -> witt(n,S) arising from maps R -> S
--- but it's less clear how to represent a general map WR -> WS
-
--- Do we want to allow syntax map(WittRing, WittRing, {...})?
 
 WittRingMap = new Type of MutableHashTable;
 
