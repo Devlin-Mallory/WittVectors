@@ -214,7 +214,7 @@ isWellDefined (explicit witt(2,S)).cache.overringMap
 S = ZZ/2[x]/x^2
 isWellDefined (explicit witt(2,S)).cache.overringMap 
 ///
-
+--TEST 17
 TEST ///
 S = ZZ/2
 assert(wittRingToTuple wittTupleToRing witt{1_S,0_S} == 1)
@@ -231,7 +231,7 @@ assert(wittOverringToTuple wittTupleToOverring witt{1_S,x_S} == witt{1_S,x_S})
 assert(wittRingToTuple wittTupleToRing witt{1_S,x_S,x^2_S} == witt{1_S,x_S,x^2_S})
 ///
 
---TEST 17
+--TEST 18
 TEST ///
 R = GF(3)[x,y]
 WR = witt(2, R)
@@ -243,7 +243,7 @@ for xx in -2..2 do(
     )
 ///
 
---TEST 18
+--TEST 19
 TEST ///
 R = GF(5)[x,y]
 WR = witt(3, R)
@@ -252,7 +252,7 @@ assert(1_WR*w == w)
 assert(0_WR*w == 0_WR)
 ///
 
---TEST 19
+--TEST 20
 TEST ///
 R = ZZ/2[x]
 WR = witt(2, R)
@@ -260,7 +260,7 @@ w = random(2, WR)
 assert(wittIdeal(w, sub(0, WR)) == wittIdeal(w))
 ///
 
---TEST 20
+--TEST 21
 TEST ///
 R = GF(2)[x]
 WR = witt(2, R)
@@ -274,7 +274,7 @@ assert(ring first w === ring first wittRingToTuple wittTupleToRing w)
 assert(wittIdeal(w, sub(0, WR)) == wittIdeal(w))
 ///
 
---TEST 21
+--TEST 22
 TEST ///
 R = ZZ/3[y,x]/(y^2)
 WR = witt(4, R)
@@ -291,7 +291,7 @@ assert((w1+w2)+w3 == w1+(w2+w3))
 assert((w1*w2)*w3 - w1*(w2*w3)  == 0)
 ///
 
---TEST 22
+--TEST 23
 TEST ///
 R = GF(4)[z]
 w = witt{(a+1)*z^4,0,0,0}
@@ -304,7 +304,7 @@ assert(wp - wp == 0)
 assert(wS-wS == 0)
 ///
 
---TEST 23
+--TEST 24
 TEST ///
 R = GF(4)[x,y,z]
 WR = witt(4, R)
@@ -319,7 +319,7 @@ assert( (w1 + w2) + w3 == w1 + (w2 + w3) )
 ///
 
 
---TEST 24
+--TEST 25
 TEST ///
 R = ZZ/2[x,y,z]/(x^3+y^3+z^3)
 WR = witt(3, R)
@@ -334,7 +334,7 @@ assert( (w1 + w2) + w3 == w1 + (w2 + w3) )
 ///
 
 
---TEST 25
+--TEST 26
 TEST ///
 R=ZZ/3[x_0,x_1,x_2,x_3]
 I=ideal(x_0^8*x_1+x_1^6*x_2+x_2^3+x_3^2*x_0)
@@ -342,7 +342,7 @@ assert(fSplittingHeight I == 8)
 ///
 
 
---TEST 26
+--TEST 27
 TEST ///
 R=ZZ/3[x_0,x_1,x_2,x_3]
 I=ideal((x_0^4+x_1^4+x_2^4+x_3^4)^2)

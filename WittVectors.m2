@@ -1,10 +1,10 @@
 newPackage(
     "WittVectors",
     Version => "0.01",
-    Date => "December 4, 2023",
+    Date => "April 1st, 2026",
     Authors => {
     	{Name => "Anne Fayolle", Email => "anne.fayolle@utah.edu", HomePage => "https://annefayolle.github.io/"},
-	{Name => "Abhay Goel", Email => "u1421426@utah.edu", HomePage => "https://faculty.utah.edu/u1421426-ABHAY_GOEL/teaching/index.hml"},
+	{Name => "Abhay Goel", Email => "u1421426@utah.edu", HomePage => "https://abhayg11.github.io/"},
 	{Name => "Devlin Mallory", Email => "dmallory@bcamath.org", HomePage => "https://devlin-mallory.github.io/"},
 	{Name => "Eamon Quinlan-Gallego", Email => "eamon.quinlan@utah.edu", HomePage => "https://eamonqg.github.io/"},
     	{Name => "Teppei Takamatsu", Email => "teppeitakamatsu.math@gmail.com", HomePage => "https://sites.google.com/view/teppei-takamatsu/home"}
