@@ -188,20 +188,27 @@ wittTupleToRing(WittRingElement):= w-> (
     R := W.unWitt;
     p := char R;
     WR := explicit W;
+    Phi := WR.cache.overringMap;
+    if (not isField R and class R === QuotientRing) or class baseRing' R === GaloisField then(
+    IOR := wittOverringIdeal(n,ideal makeCoefficientFieldPrime R);
+    subIOR := (map(target Phi, ring IOR, gens target Phi))(IOR);
+    piI := map(quotient subIOR, target Phi);
+    Phi = piI * Phi;
+);
+    --need to actually quotient by overring ideal
     G := wittTupleToOverring(w);
     if G == 0 then return 0_WR;
     Gcons := sum select(terms G, i-> degree i == {0});
     G = G-Gcons;
-    Phi := WR.cache.overringMap;
-    --note: this doesn't appear to be the right map! it doesn't have source WR
+    
     Grem := if G == 0 then 0 else (
 	    (B,pi) := flattenRing quotient ideal G;
             subMap := map (source pi, target Phi, gens source pi);
             L := subMap \ Phi \ gens source Phi;
             Phi' := map(source pi, source Phi,L);
 	    preimages := (kernelZZ(pi*Phi'))_*;
-	    multiplied := unique flatten for i in preimages list for j from 1 to p^n-1 list i*j;
-	    Preim := select(multiplied, i->Phi(i) == G);
+	    multiplied := unique flatten for i in preimages list for j from 0 to p^n-1 list { j*i,j*Phi i };
+	    Preim := first \ select(multiplied, i->(last i) == G);
             if length Preim == 1 then first Preim else error "no preimage found"
 	    );    
 sub(Gcons, source Phi) + Grem
@@ -222,7 +229,6 @@ wittRingToTuple(RingElement):=(F)->(
 -----------------------------
 -----------------------------
 
-
     takeRoot := (f, n) -> (
     --- in a ring of char p , takes the (1/p^n) root of a polynomial f
     R0 := ring f;
@@ -241,29 +247,44 @@ wittRingToTuple(RingElement):=(F)->(
     );
 
 
+
 wittOverringToTuple(RingElement) := F -> (
     OR := ring F;
+    (p, n) := toSequence (factor(char OR))#0;
     R := OR.cache.unWitt;
     k := baseRing' R;
-    unWittSub := if class k === GaloisField and (class R === PolynomialRing or class R === QuotientRing)
-        then map(R, OR, gens R|{k_0}) else map(R, OR, vars R); 
+
+    if class k === GaloisField then(
+        R' := makeCoefficientFieldPrime R;
+        OR' := wittOverring(n, R');
+        inc := map(OR',OR, gens OR');
+        return witt apply( (wittOverringToTuple(inc(F))).tuple, i->sub(i,R))
+    );
+
+    if class R === QuotientRing and not isFinitePrimeField R then(
+        S := ambient R;
+        ORs := wittOverring(n, S);
+        inc = map(ORs, OR, gens ORs);
+        return witt apply( (wittOverringToTuple(inc(F))).tuple, i->sub(i,R))
+    );
+
+    unWittSub := map(R, OR, vars R); 
     wittSub := OR.cache.wittSub;
-    R' := makeCoefficientFieldPrime R;
-    phi := if R' === R then id_R else R.cache.coeffFieldMap;
-    (p, n) := toSequence (factor(char OR))#0;
     
     if n == 1 then(
-	return witt{ unWittSub(F) });
+	return witt{ sub(unWittSub(F),R) });
     WR1 := witt(n-1, R); 
     OR1 := WR1.overring;
     wittReduce := map( OR1, OR, vars OR1);
     
     F0 := F % ideal(sub(p, OR));
-    f0 := takeRoot( unWittSub(F0), n-1 );
+    f0 := sub(takeRoot( unWittSub(F0), n-1 ), R);
     
-    nextF := wittReduce( ( F - (wittSub (phi f0))^(p^(n-1)) ) // p);
+    nextF := wittReduce( ( F - (wittSub (f0))^(p^(n-1)) ) // p);
     witt{f0} | wittOverringToTuple( nextF )
     )
+
+
 
 -----------------------------
 -----------------------------

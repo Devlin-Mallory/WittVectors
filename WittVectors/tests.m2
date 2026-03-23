@@ -207,6 +207,15 @@ assert(target (ring Rw).cache.overringMap === ring Ow)
 --TEST 16
 TEST ///
 S = ZZ/2
+isWellDefined (explicit witt(2,S)).cache.overringMap 
+S = ZZ/2[x]
+isWellDefined (explicit witt(2,S)).cache.overringMap 
+S = ZZ/2[x]/x^2
+isWellDefined (explicit witt(2,S)).cache.overringMap 
+///
+
+TEST ///
+S = ZZ/2
 assert(wittRingToTuple wittTupleToRing witt{1_S,0_S} == 1)
 assert(wittRingToTuple wittTupleToRing witt{1_S,0_S,0_S} == 1)
 S = GF 4
@@ -225,14 +234,12 @@ assert(wittRingToTuple wittTupleToRing witt{1_S,x_S,x^2_S} == witt{1_S,x_S,x^2_S
 TEST ///
 R = GF(3)[x,y]
 WR = witt(2, R)
-elapsedTime(
 for xx in -2..2 do(
     for yy in -2..2 do(
 	assert( sub(xx, WR) + sub(yy, WR) == sub(xx + yy, WR) );
 	assert( sub(xx, WR)*sub(yy, WR) == sub(xx*yy, WR) );
 	)
     )
-)
 ///
 
 --TEST 18
@@ -261,7 +268,7 @@ assert(ring wittTupleToOverring w === wittOverring(2,R))
 EWR = explicit WR
 Phi = EWR.cache.overringMap
 assert(target Phi === wittOverring(2,R))
-assert(Phi wittTupleToRing witt{0_R,x_R} == wittTupleToOverring witt{0_R,x_R})
+wittOverringToTuple(Phi wittTupleToRing witt{0_R,x_R} - wittTupleToOverring witt{0_R,x_R}) == 0
 assert(ring first w === ring first wittRingToTuple wittTupleToRing w)
 assert(wittIdeal(w, sub(0, WR)) == wittIdeal(w))
 ///
@@ -279,15 +286,42 @@ assert(0_WR*w2 == 0_WR)
 assert(1_WR*w3 == w3)
 u= (w1 + w2) + w3 
 v= w1 + (w2 + w3) 
-u-v
-wittTupleToOverring(u)- wittTupleToOverring(v)
-wittTupleToOverring (w1+w2)+wittTupleToOverring (w3)
-wittTupleToOverring (w1)+wittTupleToOverring (w2+w3)
-wittTupleToOverring (w1)+wittTupleToOverring (w2)+wittTupleToOverring(w3)
-(w1*w2)*w3 - w1*(w2*w3) 
+assert((w1+w2)+w3 == w1+(w2+w3))
+assert((w1*w2)*w3 - w1*(w2*w3)  == 0)
+///
 
+--TEST 22
+TEST ///
+R = GF(4)[z]
+w = witt{(a+1)*z^4,0,0,0}
+Rp = makeCoefficientFieldPrime R
+wp = witt{(a_Rp+1)*z_Rp^4,0,0,0}
+S = ambient Rp
+wS = witt{(a_S+1)*z_S^4,0,0,0}
+assert(w - w  == 0)
+assert(wp - wp == 0)
+assert(wS-wS == 0)
+///
+
+--TEST 23
+TEST ///
 R = GF(4)[x,y,z]
 WR = witt(4, R)
+w1 = random(1, WR)
+w2 = random(1, WR)
+w3 = random(3, WR)
+assert(2*w2 == w2 + w2)
+assert(w2 - w2 == 0_WR)
+assert(1_WR*w3 == w3)
+assert( (w1 + w2) + w3 == w1 + (w2 + w3) )
+( (w1*w2)*w3 - w1*(w2*w3) )
+///
+
+
+--TEST 24
+TEST ///
+R = ZZ/2[x,y,z]/(x^3+y^3+z^3)
+WR = witt(3, R)
 w1 = random(2, WR)
 w2 = random(3, WR)
 w3 = random(4, WR)
@@ -296,11 +330,10 @@ assert(w2 - w2 == 0_WR)
 assert(0_WR*w2 == 0_WR)
 assert(1_WR*w3 == w3)
 assert( (w1 + w2) + w3 == w1 + (w2 + w3) )
-(w1*w2)*w3 - w1*(w2*w3) 
 ///
 
 
---TEST 22
+--TEST 25
 TEST ///
 R=ZZ/3[x_0,x_1,x_2,x_3]
 I=ideal(x_0^8*x_1+x_1^6*x_2+x_2^3+x_3^2*x_0)
@@ -308,7 +341,7 @@ assert(fSplittingHeight I == 8)
 ///
 
 
---TEST 23
+--TEST 26
 TEST ///
 R=ZZ/3[x_0,x_1,x_2,x_3]
 I=ideal((x_0^4+x_1^4+x_2^4+x_3^4)^2)
