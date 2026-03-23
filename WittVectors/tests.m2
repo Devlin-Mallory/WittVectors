@@ -268,6 +268,24 @@ assert(wittIdeal(w, sub(0, WR)) == wittIdeal(w))
 
 --TEST 21
 TEST ///
+R = ZZ/3[y,x]/(y^2)
+WR = witt(4, R)
+w1 = random(2, WR)
+w2 = random(3, WR)
+w3 = random(4, WR)
+assert(2*w2 == w2 + w2)
+assert(w2 - w2 == 0_WR)
+assert(0_WR*w2 == 0_WR)
+assert(1_WR*w3 == w3)
+u= (w1 + w2) + w3 
+v= w1 + (w2 + w3) 
+u-v
+wittTupleToOverring(u)- wittTupleToOverring(v)
+wittTupleToOverring (w1+w2)+wittTupleToOverring (w3)
+wittTupleToOverring (w1)+wittTupleToOverring (w2+w3)
+wittTupleToOverring (w1)+wittTupleToOverring (w2)+wittTupleToOverring(w3)
+(w1*w2)*w3 - w1*(w2*w3) 
+
 R = GF(4)[x,y,z]
 WR = witt(4, R)
 w1 = random(2, WR)
