@@ -147,7 +147,6 @@ doc ///
 
 ///
 	
---- I put this here because it is next to WittQuotientRing but I am happy moving it later.
 doc ///
     Key
      (truncate,ZZ,WittQuotientRing)
@@ -240,7 +239,7 @@ doc ///
 
 
 -------------------------
---- some random stuff
+--- Random operations 
 -------------------------
 
 
@@ -330,13 +329,6 @@ doc ///
 	    R = (ZZ/3)[x,y];
 	    w = witt{x^2 + y^2, x}
 ///
-	
-
---------------------------------
---------- 
---------------------------------
-
-
 
 
 --------------------------------
@@ -1046,7 +1038,7 @@ doc ///
 
 
 --------------------------------
---------- 
+--------- unWitt
 --------------------------------
 
 doc ///
@@ -1071,6 +1063,10 @@ doc ///
 	    WR = witt(2, R);
 	    unWitt(WR)
 ///
+
+--------------------------------
+--------- Frobenius Lifts
+--------------------------------
 
 doc ///
     Key
@@ -1139,6 +1135,8 @@ doc ///
             J = createEquations(2, I,Homogeneous=>true,PerturbationTerm=>{0})
             J = createEquations(2, I,Homogeneous=>true,PerturbationTerm=>{1}) -- no solutions!
 ///
+
+
 
 
 doc ///
