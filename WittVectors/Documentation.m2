@@ -387,13 +387,6 @@ doc ///
 		fSplittingHeight I
 	 Text
 	    We get an error since S is not a polynomial ring over ZZ/p.
-	 --Let's please keep this commented while we are working on the package.
-	 -- Example 
-	 -- 	S = (ZZ/2)[x,y,z,w,u]
-	 -- 	I = ideal(x^5 + y^5 + z^5 + w^5 + u^5 + x*z^3*w + y*z*w^3 + x^2*z*u^2 + y^2*z^2*w + x*y^2*w*u + y*z*w*u^2)
-	 -- 	fSplittingHeight I
-	 -- Text
-	 --    This should give 60
 ///
 
 doc ///
