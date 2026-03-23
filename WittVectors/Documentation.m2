@@ -824,7 +824,7 @@ doc ///
 
 	    When the method is applied when R is a polynomial ring over a finite
 	    but not prime field, the package essentially treats R as a quotient of a
-	    polynomial ring over its prime subfield. --Devlin please check? 
+	    polynomial ring over its prime subfield. 
 	    
 	Example
 	    R = (ZZ/2)[x];
@@ -860,7 +860,7 @@ doc ///
 
 	    When the base field of R is a finite field, but not prime, the package essentially first
             writes R as a finitely generated algebra over its prime subfield, and then applies
-	    the method. -- Devlin please check?
+	    the method. 
 	    
 	Example
 	    R = (ZZ/2)[x] / ideal(x^2);
@@ -868,38 +868,6 @@ doc ///
 	    explicit(WR)	    
 ///
 
---doc ///
---    Key
---        (explicit, WittRingElement)
---
---    Headline
---        Obtains the explicit version of a WittRingElement.
---	
---    Usage
---	e = explicit(w)
---	
---    Inputs
---        w:WittRingElement
---	
---    Outputs
---        e:RingElement
---	
---    Description
---	Text
---	    If WR is a WittPolynomialRing or WittQuotientRing, and w is a WittRingElement
---	    in WR, explicit(w) outputs the element corresponding to w in explicit(WR).
---	    
---	Example
---	    R = (ZZ/2)[x,y];
---	    WR = witt(2, R);
---	    w = witt{0,x};
---	    explicit(w);
---
---    SeeAlso
---	(explicit, WittPolynomialRing)
---	(explicit, WittQuotientRing)
---	    
---///
 
 
 doc ///
@@ -1220,17 +1188,13 @@ doc ///
         Text 
                 This forces the lift to be nontrivial. Here, it can give a couple of values like (x^2,0) or (0,y^2). 
         Text 
-                If there is no Frobenius lift, the algorithm will run without ending. 
-        Example 
-            S= (ZZ/7)[x,y,z]
-            I= ideal(x^3+y^3+z^3)
-            --L= findFrobeniusLift(7,I,Verbose=>true,Homogeneous=>true,PerturbationTerm=>{3})
-        Text 
-                This will not end. By Serre-\-Tate theory, there is only one (canonical) lifting of S/I that has a Frobenius morphism compatible with that of S/I. However, this is not the lifting we are working with.
-            Text 
+                If there is no Frobenius lift, the algorithm will run without ending.  For example, if S/I is an elliptic curve, by Serre--Tate theory, there is only one (canonical) lifting of S/I that has a Frobenius morphism compatible with that of S/I; if one chooses the "wrong" lift of the equation, there will be no Frobenius lift.
+         Text 
                 One can also specify a different lift than the default one (which simply lifts the coefficients naively to W_2(k)) by using the PerturbationTerm option, which specifies coefficients of p in the lift of the defining equations
-            Example
-                S=(ZZ/3)[x,y,z]
+        Example
+                S=(ZZ/3)[x,y]
+                I=ideal(x*y)
+                findFrobeniusLift(2,I, PerturbationTerm=>{x}) -- this gives a lift to the ring W_2(k)[x,y]/(x*y + p*x)
 ///
 
 end
