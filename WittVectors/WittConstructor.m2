@@ -216,8 +216,6 @@ explicit(WittPolynomialRing) := (cacheValue (symbol explicit)) (WPR->wittVectors
 ------------- WittQuotientRing
 -------------------------------
 
---TODO: make sure arithmetic of witt vectors in WittQuotientRing work fine.
-
 WittQuotientRing = new Type of MutableHashTable;
 
 witt(ZZ, GaloisField) := 
