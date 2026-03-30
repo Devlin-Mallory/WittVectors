@@ -58,8 +58,4 @@ protect symbol kernelZZ;
             kernelZZ( map(R/J, R) * f ))
 
 
-----------
 
-end
---p=3;
---kernelZZ map(ZZ[t]/p^2,ZZ[T,S]/p^2,{t^p,p*t});
