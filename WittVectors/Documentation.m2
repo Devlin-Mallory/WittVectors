@@ -389,21 +389,6 @@ doc ///
 	    We get an error since S is not a polynomial ring over ZZ/p.
 ///
 
-doc ///
-    Key
-        (table2, ZZ)
-    Headline
-        Examples with known F-splitting height. It is table2 in the Fedder criterion for quasi-F-Splitting paper. 
-    Usage
-        table2(i)
-    Inputs
-        i: ZZ
-    Description
-        Example
-            u=table2(1)
-        Text
-            This should give x^4 + y^4 + z^4 + 2*w^4 + x^2* y*w + y*z^2*w
-///
 
 
 
