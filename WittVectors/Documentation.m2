@@ -389,7 +389,6 @@ doc ///
 	    We get an error since S is not a polynomial ring over ZZ/p.
 ///
 
-
 --------------------------------
 --------- WittRingElement operations
 --------------------------------

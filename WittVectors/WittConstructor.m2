@@ -41,11 +41,9 @@ witt(List) := L0 -> (
     --check all elements of the list lie in ZZ or same ring
     L := apply(L0,i->ring i);
     BaseRing := unique select(L,i-> i =!= ZZ);
-    --BaseRing := unique L;
     if length (BaseRing) == 0 then error "must specify ring; e.g., use sub";
     if  length (BaseRing) > 1 then error "expected elements from the same ring";
     charPCheck(first BaseRing);
-    --
     ww.tuple = apply(L0,i -> sub(i, first BaseRing ));
     for nn from 0 to (length L0)-1 do(
 	ww#nn = L0#nn;
@@ -221,7 +219,6 @@ WittQuotientRing = new Type of MutableHashTable;
 witt(ZZ, GaloisField) := 
 witt(ZZ, QuotientRing) := (n,R)->(
     F := baseRing' R;
-    --if F =!= null and not isFinitePrimeField' F then return witt(n, makeCoefficientFieldPrime(R));
     if n <= 0 then(
 	error "witt vectors must have positive length";
 	);
@@ -306,7 +303,6 @@ wittIdeal List := wittIdeal Sequence := LL -> (
     new WittIdeal from {wittGenerators => toSequence(LL)}
   )
 
----
 
 explicit(WittIdeal) := I -> (
     if not I.?explicit then(
