@@ -19,11 +19,9 @@ baseRing'(Ring) := R -> (
     if R === ZZ/p then return R;
     if class R === GaloisField then return R;
     if class R === PolynomialRing then baseRing R else baseRing'(ambient R)
-    )
+)
 
-isFinitePrimeField'(Ring) := R -> (
-    if isFinitePrimeField R and class R =!= GaloisField then true else false
-    )
+isFinitePrimeField'(Ring) := R -> if isFinitePrimeField R and class R =!= GaloisField then true else false
 
 
 ---
@@ -34,20 +32,19 @@ WittRingElement = new Type of MutableHashTable;
 
 charPCheck(Ring) :=  R -> (
     if char R == 0 then error "expected a ring of positive characteristic";
-    if not isPrime char R then error "expected a ring of prime characteristic";)
+    if not isPrime char R then error "expected a ring of prime characteristic";
+)
 
 witt(List) := L0 -> (
     ww := new WittRingElement from MutableHashTable;
     --check all elements of the list lie in ZZ or same ring
-    L := apply(L0,i->ring i);
-    BaseRing := unique select(L,i-> i =!= ZZ);
+    L := apply(L0, i -> ring i);
+    BaseRing := unique select(L, i-> i =!= ZZ);
     if length (BaseRing) == 0 then error "must specify ring; e.g., use sub";
     if  length (BaseRing) > 1 then error "expected elements from the same ring";
     charPCheck(first BaseRing);
-    ww.tuple = apply(L0,i -> sub(i, first BaseRing ));
-    for nn from 0 to (length L0)-1 do(
-	ww#nn = L0#nn;
-	);
+    ww.tuple = apply(L0, i -> sub(i, first BaseRing ));
+    for nn from 0 to length L0 - 1 do ww#nn = L0#nn;
     ww
 )
 
@@ -61,84 +58,57 @@ ring(WittRingElement) := W -> (
     R := ring(W.tuple#0); -- note that witt subs every entry into R so this is good enough
     n := length W;
     witt(n, R)
-    )
+)
 
-length WittRingElement := ww -> (
-    length ww.tuple
-    )
+length WittRingElement := ww -> length ww.tuple
 
 WittRingElement + WittRingElement := (w1, w2) -> (
     if length w1 != length w2 then error "expected vectors of the same length";
     if (ring w1) =!= (ring w2) then error "expected vectors over the same ring";
     w1over := wittTupleToOverring(w1);
     w2over := wittTupleToOverring(w2);
-    outputover := w1over + w2over;
-    wittOverringToTuple outputover
-    )
+    wittOverringToTuple(w1over + w2over)
+)
 
-- WittRingElement := ww -> (
-    wittOverringToTuple(-wittTupleToOverring (ww))
-    )
+- WittRingElement := ww -> wittOverringToTuple(-wittTupleToOverring (ww))
 
-WittRingElement - WittRingElement := (w1, w2) -> (
-    if length w1 != length w2 then error "expected vectors of the same length";
-    if ring w1 =!= ring w2 then error "expected vectors over the same ring";
-    w1 + (-w2)
-    )
-    
-ZZ * WittRingElement := (nn, ww) -> (
-    wwover := wittTupleToOverring(ww);
-    wittOverringToTuple(nn*wwover)
-    )
+WittRingElement - WittRingElement := (w1, w2) -> w1 + (-w2)
 
-WittRingElement * ZZ := (ww, nn) -> (
-    wwover := wittTupleToOverring(ww);
-    wittOverringToTuple(nn*wwover)
-    )
+ZZ * WittRingElement := (nn, ww) -> wittOverringToTuple(nn*wittTupleToOverring(ww))
+
+WittRingElement * ZZ := (ww, nn) -> nn * ww
 
 WittRingElement * WittRingElement := (w1, w2) -> (
     if length w1 != length w2 then error "expected vectors of the same length";
     if ring w1 =!= ring w2 then error "expected elements of the same ring";
     w1over := wittTupleToOverring(w1);
     w2over := wittTupleToOverring(w2);
-    outputover := w1over * w2over;
-    wittOverringToTuple outputover
-    )
+    wittOverringToTuple(w1over * w2over)
+)
 
 WittRingElement ^ ZZ := (ww, nn) -> (
     wwover := wittTupleToOverring(ww);
-    outputover := wwover^nn;
-    wittOverringToTuple outputover
-    )
+    wittOverringToTuple wwover^nn
+)
 
-WittRingElement | WittRingElement := (w1, w2) -> (
-    witt(w1.tuple | w2.tuple)
-    )
+WittRingElement | WittRingElement := (w1, w2) -> witt(w1.tuple | w2.tuple)
 
-WittRingElement == WittRingElement := (w1, w2) -> (
-    w1.tuple == w2.tuple
-    )
+WittRingElement == WittRingElement := (w1, w2) -> w1.tuple == w2.tuple
 
 WittRingElement == ZZ := (w1, n) -> (
-    w1 == n*witt({1_(unWitt ring w1)}|for i from 0 to wittLength ring w1 -2 list 0)
-    )
+    w1 == n*witt({1_(unWitt ring w1)} | for i from 0 to wittLength ring w1 - 2 list 0)
+)
 
 verschiebung(WittRingElement) := ww -> (
     R := (ring ww).unWitt;
     witt({0_R}|ww.tuple)
-    )
+)
+
 truncate(ZZ, WittRingElement) :=  {} >> opts -> (n, w) -> (
     if length w<n then error "Can't truncate to something longer";
     witt drop(w.tuple, n-length w)
-    ) 
-
-subInWittRing = method()
-subInWittRing(List,RingElement) := (L,f) -> (
-Lrings := unique apply(L,ring);
-if length Lrings > 1 then error "expected all WittRingElements to live in the same ring";
-Lexplicit := apply(L,wittTupleToOverring);
-wittOverringToTuple(sub(f, matrix{Lexplicit}))
 )
+
 
 
 -------------------------------
@@ -159,10 +129,9 @@ makeCoefficientFieldPrime(GaloisField) := makeCoefficientFieldPrime(PolynomialRi
 	FAmb := newRing(ambient(F), DegreeRank => 0);
         S' := if class R === GaloisField then FAmb else FAmb(monoid R);
         FS := flattenRing S';
-        R.cache#coeffFieldMap = map(first FS,R);
-        first FS
-    )
-    )
+        R.cache#coeffFieldMap = map(first FS, R);
+        first FS)
+)
 
 makeCoefficientFieldPrime(QuotientRing) := R -> R.cache#(coeffFieldPrime) ??= (
     F := baseRing' R;
@@ -175,9 +144,9 @@ makeCoefficientFieldPrime(QuotientRing) := R -> R.cache#(coeffFieldPrime) ??= (
     FR := flattenRing quotient sub(ideal R, S');
     R.cache#coeffFieldMap = map(first FR, R);
     first FR
-        )
+)
 
-witt(ZZ,PolynomialRing) := (n,R)->(
+witt(ZZ, PolynomialRing) := (n, R)->(
     charPCheck R;
     F := baseRing' R;
     if n <= 0 then(
@@ -193,7 +162,7 @@ witt(ZZ,PolynomialRing) := (n,R)->(
 	W := new WittPolynomialRing from MutableHashTable;
 	W.wittLength = n;
 	W.unWitt = R;
-        W.overring = wittOverring(n,R);
+        W.overring = wittOverring(n, R);
 	R.cache.wittRings#n = W;
 	);
     R.cache.wittRings#n
@@ -216,8 +185,8 @@ explicit(WittPolynomialRing) := (cacheValue (symbol explicit)) (WPR->wittVectors
 
 WittQuotientRing = new Type of MutableHashTable;
 
-witt(ZZ, GaloisField) := 
-witt(ZZ, QuotientRing) := (n,R)->(
+witt(ZZ, GaloisField) :=
+witt(ZZ, QuotientRing) := (n, R)->(
     F := baseRing' R;
     if n <= 0 then(
 	error "witt vectors must have positive length";
@@ -241,14 +210,14 @@ witt(ZZ, QuotientRing) := (n,R)->(
 
 unWitt(WittQuotientRing) := WQR -> (
     WQR.unWitt
-    )
+)
 
 wittLength(WittQuotientRing) := W -> W.wittLength
 wittLength(WittPolynomialRing) := W -> W.wittLength
 
 net(WittQuotientRing) := WQR -> (
     horizontalJoin("Witt", (net(WQR.wittLength))^-1, "(", net WQR.unWitt, ")")
-    )
+)
 
 
 explicit(WittQuotientRing) := (cacheValue (symbol explicit)) (WPR->wittVectors(WPR.wittLength, WPR.unWitt))
@@ -263,7 +232,7 @@ random(ZZ, WittQuotientRing) := opts -> (nn, WPR) -> (
     R := WPR.unWitt;
     ll := WPR.wittLength;
     witt apply(toList(1..ll), xx -> random(nn, R))
-    )
+)
 
 sub(ZZ, WittPolynomialRing) :=
 sub(ZZ, WittQuotientRing) := (nn, WR) -> (
@@ -275,11 +244,9 @@ sub(ZZ, WittQuotientRing) := (nn, WR) -> (
     ) else(
 	return nn*sub(1, WR)
 	);
-    )
+)
 
-ZZ_WittPolynomialRing := ZZ_WittQuotientRing := (nn, WR) -> (
-    sub(nn, WR)
-    )
+ZZ_WittPolynomialRing := ZZ_WittQuotientRing := (nn, WR) -> sub(nn, WR)
 
 -------------
 ------------- WittIdeal
@@ -289,9 +256,7 @@ WittIdeal = new Type of MutableHashTable;
 
 protect wittGenerators
 
-wittIdeal(WittRingElement) := ww -> (
-    new WittIdeal from {wittGenerators => toSequence{ww}}
-    )
+wittIdeal(WittRingElement) := ww -> new WittIdeal from {wittGenerators => toSequence{ww}}
 
 wittIdeal List := wittIdeal Sequence := LL -> (
     if not all(LL, ll -> class(ll) === WittRingElement) then(
@@ -301,7 +266,7 @@ wittIdeal List := wittIdeal Sequence := LL -> (
 	error "the generators do not have the same length";
 	);
     new WittIdeal from {wittGenerators => toSequence(LL)}
-  )
+)
 
 
 explicit(WittIdeal) := I -> (
@@ -311,37 +276,33 @@ explicit(WittIdeal) := I -> (
 	I.explicit = ideal(Igensover);
 	);
     I.explicit
-    )
+)
 
 trim (WittIdeal) := opts -> I -> (
     Iexp := trim(explicit(I));
     ggs := apply( flatten entries gens Iexp, wittRingToTuple);
     wittIdeal(ggs)
-    )
+)
 
-generators (WittIdeal) := opts -> I -> (
-    toList I.wittGenerators
-    )
+generators (WittIdeal) := opts -> I -> toList I.wittGenerators
 
 
-WittIdeal == WittIdeal := (I, J) -> (
-    explicit(I) == explicit(J)
-    )
+WittIdeal == WittIdeal := (I, J) -> explicit(I) == explicit(J)
 
 --- addition and multiplication
 
-WittIdeal + WittIdeal := (I,J) -> (
+WittIdeal + WittIdeal := (I, J) -> (
     Igens := I.wittGenerators;
     Jgens := J.wittGenerators;
     wittIdeal(Igens | Jgens)
-    )
+)
 
 WittIdeal * WittIdeal := (I, J) -> (
     Igens := I.wittGenerators;
     Jgens := J.wittGenerators;
     outputGens := flatten (for gg in Igens list (for xx in Jgens list( gg*xx ) ));
     wittIdeal(outputGens)
-    )
+)
 
 --WittIdeal display
 
@@ -356,17 +317,15 @@ addCommas := LL -> (
 	    );
 	);
     out
-    )
+)
 
 net WittIdeal := WI -> (
     wgs := WI.wittGenerators;
-    if #wgs == 1 then(
-	 horizontalJoin("ideal ", net (wgs#0))
-	) else (
+    if #wgs == 1 then( horizontalJoin("ideal ", net (wgs#0))) else (
 	wgsnet := apply( wgs, net );
 	wgsnet = addCommas(wgsnet);
 	horizontalJoin("ideal (", wgsnet, ")"  )
-    )
+        )
 )
 
 
@@ -393,11 +352,11 @@ witt(ZZ, ZZ , RingMap) := WittRingMap => (mm, nn, ff) -> (
     Wf.target = WS;
     Wf.baseMap = ff;
     Wf
-    )
+)
 
 witt(ZZ, RingMap) := WittRingMap => (n, f) -> (
-    witt(n,n,f)
-    )
+    witt(n, n, f)
+)
 
 WittRingMap * WittRingMap :=  WittRingMap => (gg, ff) -> (
     if source gg =!= target ff then error "the WittRingMaps given are not composable";
@@ -419,7 +378,7 @@ WittRingMap ^ ZZ := (Wf, mm) -> (
     ll := wittLength source Wf;
     fm := f^mm;
     witt(ll, fm)
-    )
+)
 
 target(WittRingMap) := W -> W.target
 source(WittRingMap) := W -> W.source
@@ -436,7 +395,7 @@ WittRingMap WittRingElement := WittRingElement => (Wf, w) -> (
     wList := toList(w);
     outputList := toList apply(0..outputLength-1, xx -> f( w#xx ) );
     witt(outputList)
-    )
+)
 
 ---
 
@@ -448,7 +407,7 @@ wittFrobenius(WittQuotientRing) := WittRingMap => WPR -> (
     Rvarsp := apply(Rvars, xx -> xx^pp);
     frob := map(R, R, Rvarsp);
     witt(nn, frob)
-    )
+)
 
 
 wittFrobenius(WittPolynomialRing) := WittRingMap => WPR -> (
@@ -459,16 +418,16 @@ wittFrobenius(WittPolynomialRing) := WittRingMap => WPR -> (
     Rvarsp := apply(Rvars, xx -> xx^pp);
     frob := map(R, R, Rvarsp);
     witt(nn, frob)
-    )
+)
 
 wittFrobenius(ZZ, Ring) := WittRingMap => (n, R) -> (
     wittFrobenius(witt(n, R))
-    )
+)
 
 wittFrobenius(WittRingElement) := WittRingElement => ww -> (
     wF := wittFrobenius(ring(ww));
     wF(ww)
-    )
+)
 
 truncate(ZZ, WittPolynomialRing) := {} >> opts -> (n, W) -> (
     if n > wittLength W then error "can't truncate to something longer";
